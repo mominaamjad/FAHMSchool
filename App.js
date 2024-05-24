@@ -1,16 +1,6 @@
 /* eslint-disable prettier/prettier */
-import {
-  FIREBASE_API_KEY,
-  FIREBASE_APP_ID,
-  FIREBASE_AUTH_DOMAIN,
-  FIREBASE_MEASUREMENT_ID,
-  FIREBASE_MESSAGING_SENDER_ID,
-  FIREBASE_PROJECT_ID,
-  FIREBASE_STORAGE_BUCKET,
-} from '@env';
-import firebase from '@react-native-firebase/app';
-import firestore from '@react-native-firebase/firestore';
-import React, {useEffect} from 'react';
+
+import React from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -27,6 +17,8 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+<<<<<<< backend
+=======
 
 import AdminMainScreen from './components/admin/AdminMainScreen';
 const firebaseConfig = {
@@ -38,26 +30,10 @@ const firebaseConfig = {
   appId: FIREBASE_APP_ID,
   measurementId: FIREBASE_MEASUREMENT_ID,
 };
+>>>>>>> main
 
 function Section({children, title}) {
   const isDarkMode = useColorScheme() === 'dark';
-
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  }
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    try {
-      const data = await firestore().collection('admin').doc('admin').get();
-      console.debug(data);
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   return (
     <View style={styles.sectionContainer}>
