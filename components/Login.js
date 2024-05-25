@@ -9,18 +9,16 @@ import {
     
 } from 'react-native';
 
-const Login = () => {
-    const [reg, setReg] = useState("")
+const Login = ({imagePath, role}) => {
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const checkReg = () => {
-        if (reg.trim()==="")
+    const checkEmail = () => {
+        if (email.trim()==="")
             return false;
-        // TODO: figure out format of reg numbers and form regex
-        // const regRegex = /^$/;
-        // let isValid = regRegex.test(reg);
-        // return isValid;
-        return true;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        let isValid = emailRegex.test(email);
+        return isValid;
     };
 
     const checkPassword = ()=>{
@@ -32,12 +30,12 @@ const Login = () => {
 
     return (<View style={styles.alignment}>
         <View style={styles.container}>
-            <Image source={require('../assets/studentLogin.png')} style={styles.image} />
+            <Image source={imagePath} style={styles.image} />
         </View>
-        <Text style={styles.login}>Welcome!</Text>
-        <TextInput style={styles.input} placeholder='Enter your registration no.' placeholderTextColor={'#333333'} onChangeText={setReg}></TextInput>
+        <Text style={styles.login}>Login as {role}</Text>
+        <TextInput style={styles.input} placeholder='Enter your email address' placeholderTextColor={'#333333'} onChangeText={setEmail}></TextInput>
         <TextInput style={styles.input} placeholder='Enter your password' placeholderTextColor={'#333333'} onChangeText={setPassword} secureTextEntry></TextInput>
-        <TouchableOpacity style={styles.submitButton} onPress={() => {} } disabled={!checkReg()||!checkPassword()}><Text style={styles.submitText}>Log in</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.submitButton} onPress={() => {} } disabled={!checkEmail()||!checkPassword()}><Text style={styles.submitText}>Log in</Text></TouchableOpacity>
         
     </View>
     )
