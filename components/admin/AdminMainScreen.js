@@ -41,12 +41,11 @@ const AdminMainScreen = () => {
                     fontFamily: 'Poppins-Medium',
                 },
 
-                headerTitle: "Welcome, Admin!",
+                // headerTitle: "Welcome, Admin!",
                 headerShadowVisible: false,
                 headerLeftLabelVisible: true,
                 headerStyle: {
                     backgroundColor: "#8349EA",
-                    
                     borderBottomLeftRadius: 20,
                     borderBottomRightRadius: 20,
                     height: 120   
@@ -54,8 +53,7 @@ const AdminMainScreen = () => {
 
                 headerTitleStyle: {
                     fontFamily: 'Poppins-SemiBold',
-                    fontSize: 22,
-                    margin: 30
+                    fontSize: 22, 
                 },
 
                 drawerActiveTintColor: "#BFA8E5",
