@@ -1,127 +1,54 @@
 /* eslint-disable prettier/prettier */
-
-import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-<<<<<<< backend
-=======
-
-import AdminMainScreen from './components/admin/AdminMainScreen';
+// import {
+//   FIREBASE_API_KEY,
+//   FIREBASE_APP_ID,
+//   FIREBASE_AUTH_DOMAIN,
+//   FIREBASE_MEASUREMENT_ID,
+//   FIREBASE_MESSAGING_SENDER_ID,
+//   FIREBASE_PROJECT_ID,
+//   FIREBASE_STORAGE_BUCKET,
+// } from '@env';
+import {initializeApp} from 'firebase/app';
+import {collection, getDocs, getFirestore} from 'firebase/firestore';
+import React, {useEffect} from 'react';
 const firebaseConfig = {
-  apiKey: FIREBASE_API_KEY,
-  authDomain: FIREBASE_AUTH_DOMAIN,
-  projectId: FIREBASE_PROJECT_ID,
-  storageBucket: FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
-  appId: FIREBASE_APP_ID,
-  measurementId: FIREBASE_MEASUREMENT_ID,
+  apiKey: 'AIzaSyCc10irQDB4le9CUCch7NpDqbPl_QuQKoY',
+  authDomain: 'studentportalsystem01.firebaseapp.com',
+  projectId: 'studentportalsystem01',
+  storageBucket: 'studentportalsystem01.appspot.com',
+  messagingSenderId: '946267194685',
+  appId: '1:946267194685:web:58ce4e7628833b3fd13154',
+  measurementId: 'G-LGBECZH699',
 };
->>>>>>> main
-
-function Section({children, title}) {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
 
 function App() {
-  // const isDarkMode = useColorScheme() === 'dark';
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  useEffect(() => {
+    console.log('mfkefmo');
+  });
 
-  // const backgroundStyle = {
-  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  // };
+  const fetchData = async () => {
+    try {
+      console.log('hiihihi');
 
-  return (
+      const querySnapshot = await getDocs(collection(db, 'admin'));
+      console.log('ijooj');
 
-    <AdminMainScreen></AdminMainScreen>
+      const dataList = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log(dataList);
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  };
 
-
-
-    // <SafeAreaView style={backgroundStyle}>
-    //   <StatusBar
-    //     barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-    //     backgroundColor={backgroundStyle.backgroundColor}
-    //   />
-    //   <ScrollView
-    //     contentInsetAdjustmentBehavior="automatic"
-    //     style={backgroundStyle}>
-    //     <Header />
-    //     <View
-    //       style={{
-    //         backgroundColor: isDarkMode ? Colors.black : Colors.white,
-    //       }}>
-    //       <Section title="Step One">
-    //         Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-    //         screen and then come back to see your edits.
-    //       </Section>
-    //       <Section title="See Your Changes">
-    //         <ReloadInstructions />
-    //       </Section>
-    //       <Section title="Debug">
-    //         <DebugInstructions />
-    //       </Section>
-    //       <Section title="Learn More">
-    //         Read the docs to discover what to do next:
-    //       </Section>
-    //       <LearnMoreLinks />
-    //     </View>
-    //   </ScrollView>
-    // </SafeAreaView>
-  );
+  useEffect(() => {
+    fetchData();
+  });
+  return <></>;
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
