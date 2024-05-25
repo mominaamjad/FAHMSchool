@@ -1,6 +1,12 @@
 /* eslint-disable prettier/prettier */
+
 import React, {useEffect} from 'react';
 import {fetchAdminData} from './api/admin';
+
+
+
+import AdminMainScreen from './components/admin/AdminMainScreen'
+
 function App() {
   const fetchData = async () => {
     try {

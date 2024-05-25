@@ -24,7 +24,7 @@ const AdminMainScreen = () => {
     return(
         <NavigationContainer>
             <Drawer.Navigator>
-                <Drawer.Screen name = "Dashboard" component={AdminDashboard}/>
+                <Drawer.Screen name = "Dashboard" style = {styles.option} component={AdminDashboard}/>
                 <Drawer.Screen name = "Classes" component={ClassesScreen}/>
                 <Drawer.Screen name = "Records"  component={RecordsScreen}/>
                 <Drawer.Screen name = "Fee"  component={FeeScreen}/>
@@ -41,5 +41,11 @@ const AdminMainScreen = () => {
 
     );
 }
+
+const styles = StyleSheet.create({
+    
+
+
+})
 
 export default AdminMainScreen
