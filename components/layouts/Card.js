@@ -1,6 +1,7 @@
 import {View, ScrollView, Text, Image, StyleSheet} from 'react-native'
 
 
+
 const Card = ({name,regNo,assigned=false,pic,cardType}) => {
     const a = 12
     return(
@@ -10,11 +11,9 @@ const Card = ({name,regNo,assigned=false,pic,cardType}) => {
                 {cardType == "student" ? <Text style= {styles.reg}>{regNo}</Text> : <></>}
             </View>
             <View style = {styles.cardLeft}>
-                {cardType == "student" ? <Image source={pic}></Image> : <Text style={[styles.assignedText, {color : assigned ? "green" : "red"}]}>{assigned ? "Assigned" : "Not Assigned"}</Text>}
-                
+                {cardType == "student" ? <Image source={pic}></Image> : <Text style={[styles.assignedText, {color : assigned ? "green" : "red"}]}>{assigned ? "Assigned" : "Not Assigned"}</Text>}   
             </View>
         </View>
-
     )
 }
 
@@ -36,16 +35,20 @@ const styles = StyleSheet.create({
         color: "#000000",
         fontSize: 18,
         fontWeight: "600",
+        fontFamily: 'Poppins-SemiBold',
         textAlignVertical: "center"
     },
 
     reg:{
         color: "#555555",
-        fontSize: 14
+        fontSize: 14,
+        fontFamily: 'Poppins-Medium'
+        
     },
 
     assignedText: {
-        alignSelf: "flex-end"
+        alignSelf: "flex-end",
+        fontFamily: 'Poppins-Regular'
     }
 
 

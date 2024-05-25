@@ -14,7 +14,6 @@ const AdminDashboard = () => {
             <Text>Welcome, Admin</Text>
         </ScrollView>
         
-
     );
 }
 
