@@ -76,7 +76,7 @@ const RecordsScreen = () => {
                     value={search}
                     onBlur={() => { setSearch(""); setList(students); }}
                 />
-                <Icon name="magnify" size={30} style={styles.editIcon}/>
+                <Icon name="magnify" size={30} style={styles.searchIcon}/>
             </View>
 
             <ScrollView>
@@ -90,7 +90,7 @@ const RecordsScreen = () => {
 
             {index != null && (
             <Modal
-                animationType='fade'
+                animationType='slide'
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
@@ -194,7 +194,7 @@ const RecordsScreen = () => {
                         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
 
                             <TouchableOpacity
-                                style={[styles.button, styles.buttonCancel]}
+                                style={styles.buttonCancel}
                                 onPress={() => { handleChangedStudent() }}>
                                 <Text style={styles.textStyle}>{edit ? 'Done' : 'Close' }</Text>
                             </TouchableOpacity>
@@ -221,16 +221,32 @@ const styles = StyleSheet.create({
         margin: 10,
         backgroundColor: 'lavender',
         width: 250,
-        flexDirection: 'row-reverse'
+        padding: 3,
+        
+        borderRadius: 30
+        
     },
     search: {
         height: 40,
         width: 200,
-        
+        color: "#000000",
+        fontFamily: 'Poppins-Regular',
+        fontSize: 14,
+        paddingHorizontal: 15 
     },
     editIcon: {
         paddingTop: 3,
+        color: "#8349EA"
     },
+
+    searchIcon:{
+        alignSelf: "center",
+        backgroundColor: "#8349EA",
+        padding: 5,
+        borderRadius: 20
+        
+    },
+
     centeredView: {
         flex: 1,
         justifyContent: 'center',
@@ -240,59 +256,51 @@ const styles = StyleSheet.create({
     TextInput: {
         height: 36,
         fontSize: 14,
-        color: '#333333'
+        color: '#333333',
+        fontFamily: 'Poppins-Regular'
     },
     modalView: {
-        width: 370,
-        // margin: 10,
+        width: 350,
         backgroundColor: 'white',
         borderRadius: 20,
         padding: 45,
-        // alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
+        shadowColor: '#8349EA',
+        shadowOpacity: 0.2,
         shadowRadius: 4,
-        elevation: 5,
-        backgroundColor: 'lavender'
+        elevation: 4,
+        backgroundColor: '#FFFFFF'
     },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-    },
-    buttonOpen: {
-        margin: 30
-    },
-    buttonSubmit: {
-        backgroundColor: '#2196F3',
-    },
+
+    
     buttonCancel: {
         marginTop: 10,
-        padding: 13,
-        backgroundColor: '#7239D6'
+        paddingVertical: 7,
+        paddingHorizontal: 30,
+        borderRadius: 20,
+        backgroundColor: '#8349EA'
+
     },
+
     textStyle: {
         color: 'white',
-        fontWeight: 'bold',
+        fontFamily: 'Poppins-SemiBold',
         textAlign: 'center',
     },
+
     modalHeading: {
         fontSize: 20,
-        fontWeight: 'bold',
+        fontFamily: 'Poppins-Bold',
         marginBottom: 15,
         textAlign: 'center',
         color: 'black'
     },
     modalText: {
-        fontSize: 15,
+        fontSize: 14,
         marginBottom: 15,
         textAlign: 'left',
         color: 'black',
+        fontFamily: 'Poppins-Medium'
     },
 })
 
