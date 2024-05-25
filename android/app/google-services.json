@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:946267194685:android:fb4103eccb7deef2d13154",
+        "mobilesdk_app_id": "1:946267194685:android:e1c04b329852b705d13154",
         "android_client_info": {
-          "package_name": "com.android.application"
+          "package_name": "com.schoolsystem"
         }
       },
       "oauth_client": [],
