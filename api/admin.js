@@ -8,7 +8,7 @@ import {
   FIREBASE_STORAGE_BUCKET,
 } from '@env';
 import {initializeApp} from 'firebase/app';
-import {collection, getDocs, getFirestore} from 'firebase/firestore';
+import {addDoc, collection, getDocs, getFirestore} from 'firebase/firestore';
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
   authDomain: FIREBASE_AUTH_DOMAIN,
@@ -30,5 +30,16 @@ export const fetchAdminData = async () => {
     return dataList;
   } catch (error) {
     console.error('Error fetching admin data: ', error);
+  }
+};
+
+export const addAdmin = async adminData => {
+  try {
+    const docRef = await addDoc(collection(db, 'admin'), adminData);
+    console.log('Admin added with ID: ', docRef.id);
+    return docRef.id;
+  } catch (error) {
+    console.error('Error adding admin: ', error);
+    throw error;
   }
 };
