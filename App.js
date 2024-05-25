@@ -18,6 +18,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import AdminMainScreen from './components/admin/AdminMainScreen'
+
 function Section({children, title}) {
   const isDarkMode = useColorScheme() === 'dark';
 
