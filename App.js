@@ -8,19 +8,25 @@ import {fetchAdminData} from './api/admin';
 import AdminMainScreen from './components/admin/AdminMainScreen'
 
 function App() {
-  const fetchData = async () => {
-    try {
-      const dataList = await fetchAdminData();
-      console.log(dataList);
-    } catch (error) {
-      console.error('Error fetching admin data: ', error);
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     const dataList = await fetchAdminData();
+  //     console.log(dataList);
+  //   } catch (error) {
+  //     console.error('Error fetching admin data: ', error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-  return <></>;
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+  // return <></>;
+
+  return(
+    <AdminMainScreen></AdminMainScreen>
+  )
 }
+
+<AdminMainScreen></AdminMainScreen>
 
 export default App;

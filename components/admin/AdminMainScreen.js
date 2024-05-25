@@ -40,6 +40,7 @@ const AdminMainScreen = () => {
                     fontSize: 14,
                     fontFamily: 'Poppins-Medium',
                 },
+
                 headerTitle: "Welcome, Admin!",
                 headerShadowVisible: false,
                 headerLeftLabelVisible: true,
@@ -48,9 +49,7 @@ const AdminMainScreen = () => {
                     
                     borderBottomLeftRadius: 20,
                     borderBottomRightRadius: 20,
-                    height: 120,
-                    
-                    
+                    height: 120   
                 },
 
                 headerTitleStyle: {
