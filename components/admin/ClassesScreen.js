@@ -1,67 +1,99 @@
 import React, { useState } from 'react';
-import { ScrollView,
-    View, 
-    Text,
-    StyleSheet,
-    Modal, 
-    TouchableOpacity,
-    Alert
- } from "react-native";
+import {
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  Modal,
+  TouchableOpacity,
+  Alert,
+  TextInput
+} from "react-native";
 
- import  DropDownPicker  from 'react-native-dropdown-picker';
- import Card from "../layouts/Card";
+import DropDownPicker from 'react-native-dropdown-picker';
+
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import Card from "../layouts/Card";
 
 // import { TouchableOpacity } from "react-native-gesture-handler";
 
 
-
-
 const ClassesScreen = () => {
 
-    // for pop-up 
-    const [modalVisible, setModalVisible] = useState(false);
+  // for pop-up 
+  const [modalVisible, setModalVisible] = useState(false);
 
-    // for dropdown 
-    const [value, setValue] = useState();
-    const [open, setOpen] = useState(false);
-    const [items, setItems] = useState([
-        {label: 'Sir', value: 'sir'},
-        {label: 'Ma\'am', value: 'maam'}
-    ]);
+  // for dropdown 
+  const [value, setValue] = useState();
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState([
+    { label: 'Sir', value: 'sir' },
+    { label: 'Ma\'am', value: 'maam' }
+  ]);
 
-    // classes list to be displayed
-    const [classes, setClass] = useState([
-        // example data for now
+  // classes list to be displayed
+  const [classes, setClass] = useState([
+    // example data for now
 
         { class: 'Class 8', assigned: false},
         { class: 'Class 9', assigned: false},
         { class: 'Class 10', assigned: false},
     ])
 
-    // to set index of class array for assigning true or false
-    const [index, setIndex] = useState();
-           
-    handleAssignedClass = () => {
-        if (value == null) {
-            Alert.alert("pls select teacher");
-            return;
-        }
-        setModalVisible(false);
-        const newClass = [...classes];
-        newClass[index].assigned = true;
-        setClass(newClass);   
+  // to set index of class array for assigning true or false
+  const [index, setIndex] = useState(null);
+
+  const [list, setList] = useState(classes);
+
+  const [search, setSearch] = useState("")
+
+
+  const searchItem = (text) => {
+
+    if (text === "") {
+      setList(classes)
     }
+    else {
+      setList(() => classes.filter((element) => element.class.toLowerCase().includes(text.toLowerCase())))
+    }
+    setSearch(text)
 
-    return(
-        <View>
+  }
 
-        <ScrollView>
-            {classes.map((element, index) => 
-            <TouchableOpacity onPress={()=> {setModalVisible(true); setIndex(index)}}>
-                <Card name = {element.class} assigned = {element.assigned} cardType= "class"></Card>
-            </TouchableOpacity>
-            )}
-        </ScrollView>
+  handleAssignedClass = () => {
+    if (value == null) {
+      Alert.alert("pls select teacher");
+      return;
+    }
+    setModalVisible(false);
+    const newClass = [...classes];
+    newClass[index].assigned = true;
+    setClass(newClass);
+  }
+
+  return (
+    <View>
+
+      <View style={styles.searchBar}>
+        <TextInput
+          style={styles.search}
+          label="Search"
+          onChangeText={(text) => { searchItem(text) }}
+          value={search}
+          onBlur={() => { setSearch(""); setList(classes); }}
+        />
+        <Icon name="magnify" size={30} style={styles.editIcon} />
+      </View>
+
+
+      <ScrollView>
+        {list.map((element, index) =>
+          <TouchableOpacity onPress={() => { setModalVisible(true); setIndex(index) }}>
+            <Card name={element.class} assigned={element.assigned} cardType="class"></Card>
+          </TouchableOpacity>
+        )}
+      </ScrollView>
 
         <Modal
             animationType= "slide"   
