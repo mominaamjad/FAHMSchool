@@ -1,10 +1,10 @@
 import Login from "../Login";
 import React from "react";
 
-const adminLogin = ()=>{
+const AdminLogin = ()=>{
     return (
         <Login imagePath={require('../assets/adminLogin.png')} role="Admin"></Login>
     )
 }
 
-export default adminLogin;
+export default AdminLogin;
