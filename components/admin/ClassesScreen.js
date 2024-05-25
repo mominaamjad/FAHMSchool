@@ -28,8 +28,9 @@ const ClassesScreen = () => {
   const [value, setValue] = useState();
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
+    { label: 'Unassign', value: 'unassign' },
     { label: 'Sir', value: 'sir' },
-    { label: 'Ma\'am', value: 'maam' }
+    { label: 'Ma\'am', value: 'maam' },
   ]);
 
   // classes list to be displayed
@@ -68,7 +69,11 @@ const ClassesScreen = () => {
     }
     setModalVisible(false);
     const newClass = [...classes];
-    newClass[index].assigned = true;
+    if (value == 'unassign') {
+      newClass[index].assigned = false;
+    } else {
+      newClass[index].assigned = true;
+    }
     setClass(newClass);
   }
 
@@ -84,6 +89,7 @@ const ClassesScreen = () => {
           onBlur={() => { setSearch(""); setList(classes); }}
         />
         <Icon name="magnify" size={30} style={styles.editIcon} />
+      
       </View>
 
 
