@@ -47,12 +47,13 @@ const Main = () => {
 
     return (
         <View style={styles.main}>
-            <Text style={styles.heading}>Student Marks</Text>
+
             <View style={styles.topBar}>
+
                 {(edit) ? (
-                    <Icon name="check" size={20} style={styles.editIcon} onPress={() => setEdit(false)} />
+                    <Icon name="check" size={25} style={styles.editIcon} onPress={() => setEdit(false)} />
                 ) : (
-                    <Icon name="pencil" size={20} style={styles.editIcon} onPress={() => setEdit(true)} />
+                    <Icon name="pencil" size={25} style={styles.editIcon} onPress={() => setEdit(true)} />
                 )}
 
                 <DropDownPicker
@@ -66,6 +67,10 @@ const Main = () => {
                     dropDownContainerStyle={styles.dropdown}
                     textStyle={styles.dropdownText}
                 />
+
+
+
+
             </View>
 
 
@@ -167,14 +172,16 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     topBar: {
+        display: "flex",
         flexDirection: 'row',
         margin: 10,
-        marginLeft: 240,
         // elevation: 10
     },
     editIcon: {
         paddingTop: 13,
-        marginRight: 10
+        paddingLeft: 20,
+        color: "#8349EA",
+        alignSelf: "flex-start"
     },
     TextInput: {
         marginLeft: 80,
@@ -182,7 +189,8 @@ const styles = StyleSheet.create({
     },
     dropdown: {
         marginLeft: 20,
-        width: 120,
+        width: 220,
+        align: "center",
         backgroundColor: '#F4F4F4',
         borderColor: '#8349EA'
     },
