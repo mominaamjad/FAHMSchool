@@ -16,7 +16,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Card from "../layouts/Card";
 
-// import { TouchableOpacity } from "react-native-gesture-handler";
 
 
 const ClassesScreen = () => {

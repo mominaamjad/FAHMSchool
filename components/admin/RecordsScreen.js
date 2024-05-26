@@ -50,7 +50,7 @@ const RecordsScreen = () => {
 
 
     // for dropdown 
-    const [value, setValue] = useState();
+    const [value, setValue] = useState('allClasses');
     const [open, setOpen] = useState(false);
     const [items, setItems] = useState([
         { label: 'All Classes', value: 'allClasses' },
@@ -74,10 +74,12 @@ const RecordsScreen = () => {
 
     }
 
-    handleChangedStudent = () => {
-        setModalVisible(!modalVisible);
-        setEdit(false);
-    }
+    handleChangedStudent = (property, changedValue) => {
+        console.log(index)
+        const newValue = [...students];
+        newValue[index][property] = changedValue;
+        setStudents(newValue);
+     }
 
     handleFilteredList = () => {
         if (value == 'allClasses') {
@@ -139,6 +141,7 @@ const RecordsScreen = () => {
                                 <TextInput
                                     value={students[index].name}
                                     style={styles.TextInput}
+                                    onChangeText={(text) => {handleChangedStudent('name',text)}}
                                     editable={edit}
                                     underlineColor='transparent'
                                 />
@@ -149,6 +152,7 @@ const RecordsScreen = () => {
                                 <TextInput
                                     value={students[index].fathername}
                                     style={styles.TextInput}
+                                    onChangeText={(text) => {handleChangedStudent('fathername',text)}}
                                     editable={edit}
                                     underlineColor='transparent'
                                 />
@@ -159,6 +163,7 @@ const RecordsScreen = () => {
                                 <TextInput
                                     value={students[index].dob}
                                     style={styles.TextInput}
+                                    onChangeText={(text) => {handleChangedStudent('dob',text)}}
                                     editable={edit}
                                     underlineColor='transparent'
                                 />
@@ -169,6 +174,7 @@ const RecordsScreen = () => {
                                 <TextInput
                                     value={students[index].gender}
                                     style={styles.TextInput}
+                                    onChangeText={(text) => {handleChangedStudent('gender',text)}}
                                     editable={edit}
                                     underlineColor='transparent'
                                 />
@@ -179,6 +185,7 @@ const RecordsScreen = () => {
                                 <TextInput
                                     value={students[index].caste}
                                     style={styles.TextInput}
+                                    onChangeText={(text) => {handleChangedStudent('caste',text)}}
                                     editable={edit}
                                     underlineColor='transparent'
                                 />
@@ -189,6 +196,7 @@ const RecordsScreen = () => {
                                 <TextInput
                                     value={students[index].occupation}
                                     style={styles.TextInput}
+                                    onChangeText={(text) => {handleChangedStudent('occupation',text)}}
                                     editable={edit}
                                     underlineColor='transparent'
                                 />
@@ -199,6 +207,7 @@ const RecordsScreen = () => {
                                 <TextInput
                                     value={students[index].residence}
                                     style={styles.TextInput}
+                                    onChangeText={(text) => {handleChangedStudent('residence',text)}}
                                     editable={edit}
                                     underlineColor='transparent'
                                 />
@@ -209,6 +218,7 @@ const RecordsScreen = () => {
                                 <TextInput
                                     value={students[index].dateOfAdmission}
                                     style={styles.TextInput}
+                                    onChangeText={(text) => {handleChangedStudent('dateOfAdmission',text)}}
                                     editable={edit}
                                     underlineColor='transparent'
                                 />
@@ -216,11 +226,21 @@ const RecordsScreen = () => {
 
                             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
 
+<<<<<<< Updated upstream
                             <TouchableOpacity
                                 style={[styles.button, styles.buttonCancel]}
                                 onPress={() => { handleChangedStudent() }}>
                                 <Text style={styles.textStyle}>{edit ? 'Done' : 'Close' }</Text>
                             </TouchableOpacity>
+=======
+                                <TouchableOpacity
+                                    style={[styles.button, styles.buttonCancel]}
+                                    onPress={() => { setModalVisible(!modalVisible);
+                                        setEdit(false); }}>
+                                    <Text style={styles.textStyle}>{edit ? 'Done' : 'Close'}</Text>
+                                </TouchableOpacity>
+                            </View>
+>>>>>>> Stashed changes
                         </View>
                     </View>
                 </View>
