@@ -1,94 +1,80 @@
-import { ScrollView,
-    View, 
-    Text,
-    StyleSheet
+/* eslint-disable prettier/prettier */
+import {StyleSheet} from 'react-native';
 
- } from "react-native"
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {NavigationContainer} from '@react-navigation/native';
 
-import { NavigationContainer } from "@react-navigation/native"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { createDrawerNavigator } from "@react-navigation/drawer"
-
-
-
-
-import AdminDashboard from "./AdminDashboard.js"
-import ClassesScreen from "./ClassesScreen.js"
-import RecordsScreen from "./RecordsScreen.js"
-import FeeScreen from "./FeeScreen.js"
-import TimetableScreen from "./TimetableScreen.js"
-import SyllabusScreen from "./SyllabusScreen.js"
-import AdminLogin from "./AdminLogin.js"
-
+import AdminDashboard from './AdminDashboard.js';
+import AdminLogin from './adminLogin';
+import ClassesScreen from './ClassesScreen.js';
+import FeeScreen from './FeeScreen.js';
+import RecordsScreen from './RecordsScreen.js';
+import SyllabusScreen from './SyllabusScreen.js';
+import TimetableScreen from './TimetableScreen.js';
 
 const Drawer = createDrawerNavigator();
 
 const AdminMainScreen = () => {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator
+        screenOptions={{
+          drawerStyle: {
+            paddingVertical: 80,
+            backgroundColor: '#8349EA',
+            width: 250,
+          },
+          drawerLabelStyle: {
+            color: '#FFFFFF',
+            fontSize: 14,
+            fontFamily: 'Poppins-Medium',
+          },
 
-    
-    return(
+          // headerTitle: "Welcome, Admin!",
+          headerShadowVisible: false,
+          headerLeftLabelVisible: true,
+          headerStyle: {
+            backgroundColor: '#8349EA',
+            borderBottomLeftRadius: 20,
+            borderBottomRightRadius: 20,
+            height: 120,
+          },
 
-        <NavigationContainer> 
-            <Drawer.Navigator screenOptions={{
-                drawerStyle : {
-                    paddingVertical: 80,
-                    backgroundColor: "#8349EA",
-                    width: 250
-                },
-                drawerLabelStyle: {
-                    color: "#FFFFFF",
-                    fontSize: 14,
-                    fontFamily: 'Poppins-Medium',
-                },
+          headerTitleStyle: {
+            fontFamily: 'Poppins-SemiBold',
+            fontSize: 22,
+          },
 
-                // headerTitle: "Welcome, Admin!",
-                headerShadowVisible: false,
-                headerLeftLabelVisible: true,
-                headerStyle: {
-                    backgroundColor: "#8349EA",
-                    borderBottomLeftRadius: 20,
-                    borderBottomRightRadius: 20,
-                    height: 120   
-                },
+          drawerActiveTintColor: '#BFA8E5',
+        }}>
+        <Drawer.Screen
+          name="Dashboard"
+          component={AdminDashboard}
+          options={
+            {
+              // drawerIcon: () =>{
+              //     <Icon name = "home-filled"/>
+              // }
+            }
+          }
+        />
+        <Drawer.Screen name="Classes" component={ClassesScreen} />
+        <Drawer.Screen name="Records" component={RecordsScreen} />
+        <Drawer.Screen name="Fee" component={FeeScreen} />
+        <Drawer.Screen name="Syllabus" component={SyllabusScreen} />
+        <Drawer.Screen name="Timetable" component={TimetableScreen} />
 
-                headerTitleStyle: {
-                    fontFamily: 'Poppins-SemiBold',
-                    fontSize: 22, 
-                },
+        {/* yahan pe iss ko logout karao  */}
+        <Drawer.Screen name="Logout" component={AdminLogin} />
+      </Drawer.Navigator>
+    </NavigationContainer>
 
-                drawerActiveTintColor: "#BFA8E5",
-                
-            }}>
-                <Drawer.Screen name = "Dashboard" component={AdminDashboard} options={{
-                    // drawerIcon: () =>{
-                    //     <Icon name = "home-filled"/>
-                    // }
-                }} />
-                <Drawer.Screen name = "Classes" component={ClassesScreen}/>
-                <Drawer.Screen name = "Records"  component={RecordsScreen}/>
-                <Drawer.Screen name = "Fee"  component={FeeScreen}/>
-                <Drawer.Screen name = "Syllabus"  component={SyllabusScreen}/>
-                <Drawer.Screen name = "Timetable"  component={TimetableScreen}/>
+    // <ScrollView>
+    //     <Text>Admin Dashboard</Text>
+    // </ScrollView>
+  );
+};
 
+const styles = StyleSheet.create({});
 
-                {/* yahan pe iss ko logout karao  */}
-                <Drawer.Screen name = "Logout" component={AdminLogin}/>
-
-            </Drawer.Navigator>
-
-        </NavigationContainer>
-
-        // <ScrollView>
-        //     <Text>Admin Dashboard</Text>
-        // </ScrollView>
-
-    );
-}
-
-const styles = StyleSheet.create({
-
-
-
-})
-
-export default AdminMainScreen
+export default AdminMainScreen;
