@@ -274,17 +274,18 @@ const styles = StyleSheet.create({
     },
     searchBar: {
         flexDirection: 'row',
+        marginTop: 30,
         margin: 10,
         marginRight: 10,
         backgroundColor: 'lavender',
         width: 250,
         padding: 3,
-        
+        height: 50,
         borderRadius: 30
         
     },
     search: {
-        height: 40,
+        height: 30,
         width: 200,
         color: "#000000",
         paddingLeft: 10,
@@ -393,10 +394,8 @@ const styles = StyleSheet.create({
     },
 
     dropdown: {
-        marginTop: 5,
         marginLeft: 20,
         width: 120,
-        marginBottom: 10,
         backgroundColor: '#F4F4F4',
         borderColor: '#8349EA'
       },
