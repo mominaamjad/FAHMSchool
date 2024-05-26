@@ -12,8 +12,13 @@ const TimetableScreen = () => {
 
     return(
         <ScrollView>
-            <Text>kuch data</Text>
-            <Image source = {require('../assets/adminLogin.png') }/>
+
+
+            {/* put the dropdown before this  */}
+
+            <View>
+                <Image source = {require('../assets/timetable.jpeg') } style = {styles.pic}/>
+            </View>
         </ScrollView>
     
     );
@@ -25,6 +30,14 @@ const styles = StyleSheet.create({
         color: "#000000",
         fontSize: 24,
         fontFamily: "Poppins-Light"
+    },
+
+    pic:{ 
+        width: 340,
+        height: 220,
+        alignSelf: "center",
+        borderRadius: 10,
+        elevation: 7,
     }
 }
    
