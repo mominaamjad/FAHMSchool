@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         borderRadius: 10,
         elevation: 7,
-        marginTop: 100
+        marginTop: 70
     },
     uploadText: {
         color: 'white',
@@ -108,10 +108,11 @@ const styles = StyleSheet.create({
     },
 
     dropdown: {
-        marginLeft: 20,
-        width: 120,
+        width: 320,
+        alignSelf: 'center',
         backgroundColor: '#F4F4F4',
-        borderColor: '#8349EA'
+        borderColor: '#8349EA',
+        marginTop: 20
     },
 
     dropdownText: {

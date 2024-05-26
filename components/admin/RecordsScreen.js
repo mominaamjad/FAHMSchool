@@ -95,7 +95,7 @@ const RecordsScreen = () => {
             <View style={styles.searchBar}>
                 <TextInput
                     style={styles.search}
-                    label="Search"
+                    label="Search" placeholder='Search...' placeholderTextColor="#000000"
                     onChangeText={(text) => { searchItem(text) }}
                     value={search}
                     onBlur={() => { setSearch(""); setList(students); }}
@@ -278,15 +278,14 @@ const styles = StyleSheet.create({
         margin: 10,
         marginRight: 10,
         backgroundColor: 'lavender',
-        width: 250,
-        padding: 3,
-        height: 50,
+        width: 200,
+        height: 40,
         borderRadius: 30
         
     },
     search: {
-        height: 30,
-        width: 200,
+        // height: 30,
+        width: 160,
         color: "#000000",
         paddingLeft: 10,
         fontSize: 14,

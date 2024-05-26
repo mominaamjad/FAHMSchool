@@ -81,7 +81,7 @@ const ClassesScreen = () => {
 
       <View style={styles.searchBar}>
         <TextInput style={styles.search} 
-        label="Search" 
+        label="Search" placeholder='Search...' placeholderTextColor="#000000"
         onChangeText={(text) => { searchItem(text) }}
         value={search}
         onBlur={() => { setSearch(""); setList(classes); }}
@@ -150,7 +150,7 @@ styles = StyleSheet.create({
     flexDirection: 'row',
     margin: 10,
     backgroundColor: 'lavender',
-    width: 250,
+    width: 340,
     padding: 3,
     
     borderRadius: 30
@@ -158,7 +158,7 @@ styles = StyleSheet.create({
   },
   search: {
     height: 40,
-    width: 200,
+    width: 295,
     color: "#000000",
     paddingLeft: 10,
     fontSize: 14,
