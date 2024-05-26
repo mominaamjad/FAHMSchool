@@ -114,7 +114,7 @@ const RecordsScreen = () => {
 
             {index != null && (
             <Modal
-                animationType='fade'
+                animationType='slide'
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
@@ -223,14 +223,24 @@ const RecordsScreen = () => {
                                 />
                             </View>
 
-                            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                            
 
-                            <TouchableOpacity
-                                style={[styles.button, styles.buttonCancel]}
-                                onPress={() => { setModalVisible(false); setEdit(false) }}>
-                                <Text style={styles.textStyle}>{edit ? 'Done' : 'Close' }</Text>
-                            </TouchableOpacity>
-                        </View>
+                                <View style = {styles.btnRow}>
+
+                                    <TouchableOpacity
+                                        style={styles.buttonSubmit}
+                                        onPress={() => handleAssignedClass()}>
+                                        <Text style={styles.submitText}>Add Fee Status</Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        style={styles.cancelButton}
+                                        onPress={() => setModalVisible(!modalVisible)}>
+                                        <Text style={styles.cancelText}>OK</Text>
+                                    </TouchableOpacity>
+
+                                </View>
+                            
                     </View>
                 </View>
             </Modal>
@@ -261,6 +271,10 @@ const styles = StyleSheet.create({
     search: {
         height: 40,
         width: 200,
+        color: "#000000",
+        paddingLeft: 10,
+        fontSize: 14,
+        fontFamily: 'Poppins-Regular'
         
     },
     editIcon: {
@@ -315,6 +329,37 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'Poppins-SemiBold',
         textAlign: 'center',
+    },
+    btnRow:{
+        flexDirection:'row', 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        marginTop: 20
+      },
+
+    buttonSubmit: {
+        borderRadius: 17,
+        paddingHorizontal: 22,
+        paddingVertical: 10,
+        elevation: 2,
+        backgroundColor: '#8349EA',
+        marginLeft: 10,
+        marginRight: 10
+    },
+    
+    cancelText:{ 
+        color: '#6D6D6D',
+        paddingLeft: 20,
+        paddingRight: 20,
+        fontFamily: 'Poppins-Light'
+      
+    },
+
+    submitText: {
+        color: 'white',
+        textAlign: 'center',
+        fontFamily: 'Poppins-SemiBold',
+    
     },
 
     modalHeading: {

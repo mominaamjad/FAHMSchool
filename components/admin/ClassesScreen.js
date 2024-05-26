@@ -80,15 +80,13 @@ const ClassesScreen = () => {
     <View>
 
       <View style={styles.searchBar}>
-        <TextInput
-          style={styles.search}
-          label="Search"
-          onChangeText={(text) => { searchItem(text) }}
-          value={search}
-          onBlur={() => { setSearch(""); setList(classes); }}
-        />
-        <Icon name="magnify" size={30} style={styles.editIcon} />
-      
+        <TextInput style={styles.search} 
+        label="Search" 
+        onChangeText={(text) => { searchItem(text) }}
+        value={search}
+        onBlur={() => { setSearch(""); setList(classes); }}
+            />
+         <Icon name="magnify" size={30} style={styles.searchIcon}/>
       </View>
 
 
@@ -147,6 +145,34 @@ const ClassesScreen = () => {
 }
 
 styles = StyleSheet.create({
+
+  searchBar: {
+    flexDirection: 'row',
+    margin: 10,
+    backgroundColor: 'lavender',
+    width: 250,
+    padding: 3,
+    
+    borderRadius: 30
+    
+  },
+  search: {
+    height: 40,
+    width: 200,
+    color: "#000000",
+    paddingLeft: 10,
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular'
+    
+  },
+
+  searchIcon:{
+    alignSelf: "center",
+    backgroundColor: "#8349EA",
+    padding: 5,
+    borderRadius: 20
+    
+  },
     centeredView: {
         flex: 1,
         justifyContent: 'center',
