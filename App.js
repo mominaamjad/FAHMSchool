@@ -1,23 +1,11 @@
 /* eslint-disable prettier/prettier */
 
 import React, {useEffect} from 'react';
-import {
-  addAdmin,
-  addTeacher,
-  deleteTeacher,
-  fetchAdminData,
-  loginAdmin,
-} from './api/admin';
-import AdminMainScreen from './components/admin/AdminMainScreen';
+import {addAdmin, addTeacher, deleteTeacher, fetchAdminData} from './api/admin';
 import Admin from './models/admin';
 
-import Teacher from './models/teacher';
-
-import Marks from './models/marks';
-import Student from './models/student';
-
 import AdminMainScreen from './components/admin/AdminMainScreen';
-
+import Teacher from './models/teacher';
 
 function App() {
   const fetchData = async () => {
@@ -36,21 +24,6 @@ function App() {
     // handleAddTeacher();
     handleDeleteTeacher();
   });
-
-  const handleLogin = async () => {
-    try {
-      const admin = await loginAdmin({
-        email: 'fas.arsh@example.com',
-        password: 'password123',
-      });
-      console.log(
-        'Login Successful',
-        `Welcome ${admin.firstName} ${admin.lastName}`,
-      );
-    } catch (error) {
-      console.log('Login Failed', error.message);
-    }
-  };
 
   const handleDeleteTeacher = async () => {
     try {
