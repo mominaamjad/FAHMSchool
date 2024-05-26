@@ -1,20 +1,11 @@
-import { ScrollView,
-    View, 
-    Text,
-    StyleSheet
-
- } from "react-native"
-
+import {ScrollView, Text} from 'react-native';
 
 const SyllabusScreen = () => {
+  return (
+    <ScrollView>
+      <Text>Manage Syllabus</Text>
+    </ScrollView>
+  );
+};
 
-
-    return(
-        <ScrollView>
-            <Text>Manage Syllabus</Text>
-        </ScrollView>
-    
-    );
-}
-
-export default SyllabusScreen
+export default SyllabusScreen;
