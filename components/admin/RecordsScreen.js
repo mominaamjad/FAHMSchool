@@ -75,7 +75,6 @@ const RecordsScreen = () => {
     }
 
     handleChangedStudent = (property, changedValue) => {
-        console.log(index)
         const newValue = [...students];
         newValue[index][property] = changedValue;
         setStudents(newValue);
