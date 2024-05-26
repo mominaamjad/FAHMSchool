@@ -9,6 +9,7 @@ import {
 } from '@env';
 import {initializeApp} from 'firebase/app';
 import {addDoc, collection, getDocs, getFirestore} from 'firebase/firestore';
+import Admin from '../models/admin';
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
   authDomain: FIREBASE_AUTH_DOMAIN,
@@ -22,11 +23,16 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 export const fetchAdminData = async () => {
   try {
-    const querySnapshot = await getDocs(collection(db, 'admin'));
-    const dataList = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    const querySnapshot = await getDocs(collection(db, 'admins'));
+    const dataList = querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      return new Admin(
+        data.firstName,
+        data.lastName,
+        data.email,
+        data.password,
+      );
+    });
     return dataList;
   } catch (error) {
     console.error('Error fetching admin data: ', error);
@@ -35,7 +41,12 @@ export const fetchAdminData = async () => {
 
 export const addAdmin = async adminData => {
   try {
-    const docRef = await addDoc(collection(db, 'admin'), adminData);
+    const docRef = await addDoc(collection(db, 'admins'), {
+      firstName: adminData.firstName,
+      lastName: adminData.lastName,
+      email: adminData.email,
+      password: adminData.password,
+    });
     console.log('Admin added with ID: ', docRef.id);
     return docRef.id;
   } catch (error) {

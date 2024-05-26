@@ -1,9 +1,15 @@
 /* eslint-disable prettier/prettier */
 
-import React, { useEffect } from 'react';
-import { addAdmin, fetchAdminData } from './api/admin';
-
+import {doc, getFirestore} from 'firebase/firestore';
+import React, {useEffect} from 'react';
+import {addAdmin, fetchAdminData} from './api/admin';
+import {addMarks} from './api/marks';
+import {addStudent} from './api/student';
+import Admin from './models/admin';
+import Marks from './models/marks';
+import Student from './models/student';
 function App() {
+  const db = getFirestore();
   const fetchData = async () => {
     try {
       const dataList = await fetchAdminData();
@@ -14,21 +20,42 @@ function App() {
   };
 
   useEffect(() => {
-    fetchData();
-    handleAddAdmin();
-  }, []);
+    // fetchData();
+    // handleAddAdmin();
+    handleAddStudentAndMarks();
+  });
 
   const handleAddAdmin = async () => {
     try {
-      const adminId = await addAdmin({
-        first_name: 'Fas',
-        last_name: 'arsh',
-        email: 'nskjans',
-        password: 'snkjn',
-      });
+      const newAdmin = new Admin(
+        'mkmlm',
+        'ksnkna',
+        'fas.arsh@example.com',
+        'password123',
+      );
+      const adminId = await addAdmin(newAdmin);
       console.log('Admin added with ID: ', adminId);
     } catch (error) {
       console.error('Failed to add admin: ', error);
+    }
+  };
+
+  const handleAddStudentAndMarks = async () => {
+    try {
+      const newStudent = new Student(
+        null,
+        'John',
+        'Doe',
+        'john.doe@example.com',
+      );
+      const addedStudent = await addStudent(newStudent);
+      console.log('Student added with ID: ', addedStudent.id);
+      const studentRef = doc(db, 'students', addedStudent.id);
+      const newMarks = new Marks(null, studentRef, 'Math', 95);
+      const addedMarks = await addMarks(newMarks);
+      console.log('Marks added with ID: ', addedMarks.id);
+    } catch (error) {
+      console.error('Failed to add student or marks: ', error);
     }
   };
   return <></>;
