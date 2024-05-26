@@ -13,9 +13,11 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   query,
+  setDoc,
   where,
 } from 'firebase/firestore';
 import Admin from '../models/admin';
@@ -228,10 +230,19 @@ export const viewResultSheet = async studentId => {
   }
 };
 
-export const viewTimetable = async () => {
+export const getTimetable = async year => {
   try {
+    const docRef = doc(db, 'timetables', year);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const timetableData = docSnap.data();
+      return timetableData;
+    } else {
+      throw new Error('Timetable not found for the specified year');
+    }
   } catch (error) {
-    console.error('Error viewing Timetable: ', error);
+    console.error('Error fetching timetable: ', error);
     throw error;
   }
 };
@@ -246,6 +257,10 @@ export const removeTimetable = async timetableId => {
 
 export const uploadTimetable = async timetableData => {
   try {
+    await setDoc(doc(collection(db, 'timetables'), timetableData.id), {
+      timetableImg: timetableData.timetableImg,
+    });
+    console.log('TimeTable Uploaded: ', timetableData.id);
   } catch (error) {
     console.error('Error uploading Timetable: ', error);
     throw error;

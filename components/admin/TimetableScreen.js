@@ -1,125 +1,147 @@
-import React, { useState } from 'react';
-import {
-    ScrollView,
-    View,
-    Text,
-    StyleSheet,
-    Image,
-    TouchableOpacity
-
-} from "react-native"
-
-
+/* eslint-disable prettier/prettier */
+import React, {useEffect, useState} from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {getTimetable, uploadTimetable} from '../../api/admin';
 
 const TimetableScreen = () => {
+  const [value, setValue] = useState();
+  const [open, setOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [timetableImg, setTimetableImg] = useState(null);
+  useEffect(() => {
+    if (value) {
+      fetchTimetable();
+    }
+  }, [value]);
 
-    // for dropdown 
-    const [value, setValue] = useState();
-    const [open, setOpen] = useState(false);
-    const [items, setItems] = useState([
-        { label: 'All Classes', value: 'allClasses' },
-        { label: 'Class 1', value: 'class1' },
-        { label: 'Class 2', value: 'class2' },
-        { label: 'Class 3', value: 'class3' },
-        { label: 'Class 4', value: 'class4' },
-        { label: 'Class 5', value: 'class5' },
-        { label: 'Class 6', value: 'class6' },
-    ]);
+  const fetchTimetable = async () => {
+    try {
+      const timetableData = await getTimetable(value);
+      if (timetableData && timetableData.timetableImg) {
+        setTimetableImg(timetableData.timetableImg);
+      } else {
+        setTimetableImg(null);
+      }
+    } catch (error) {
+      console.error('Error fetching timetable: ', error);
+    }
+  };
+  const openImagePicker = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
 
-    // const [classes, setClass] = useState([
-    //     // example data for now
-    //         { class: 'Class1', table: '../assets/timetable.jpeg'},
-    //         { class: 'Class2', table: '../assets/timetable.jpeg'},
-    //         { class: 'Class3', table: '../assets/timetable.jpeg'},
-    //     ])
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('Image picker error: ', response.error);
+      } else {
+        let imageUri = response.uri || response.assets?.[0]?.uri;
+        setSelectedImage(imageUri);
+      }
+    });
+  };
 
-    // handleFilteredList = () => {
+  const handleUpload = async () => {
+    if (!selectedImage) {
+      console.log('Please select an image first');
+      return;
+    }
 
-    //     setClass(() => classes.filter((element) => element.class.toLowerCase().includes(value)))
+    try {
+      await uploadTimetable({id: value, timetableImg: selectedImage});
+      console.log('Timetable uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading timetable: ', error);
+    }
+  };
 
-    //   }
+  return (
+    <View>
+      <DropDownPicker
+        textStyle={styles.dropdownText}
+        style={styles.dropdown}
+        dropDownContainerStyle={styles.dropdown}
+        open={open}
+        value={value}
+        items={[
+          {label: 'Year 2024', value: '2024'},
+          {label: 'Year 2023', value: '2023'},
+          {label: 'Year 2022', value: '2022'},
+          {label: 'Year 2021', value: '2021'},
+          {label: 'Year 2020', value: '2020'},
+          {label: 'Year 2019', value: '2019'},
+        ]}
+        setOpen={setOpen}
+        setValue={setValue}
+      />
 
+      <View>
+        {timetableImg && (
+          <Image source={{uri: timetableImg}} style={styles.pic} />
+        )}
 
-    return (
-        <View >
-            <DropDownPicker
-                textStyle={styles.dropdownText}
-                style={styles.dropdown}
-                dropDownContainerStyle={styles.dropdown}
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setItems}
-                onChangeValue={() => handleFilteredList()}
-            />
+        <TouchableOpacity style={styles.buttonUpload} onPress={openImagePicker}>
+          <Text style={styles.uploadText}>Upload</Text>
+        </TouchableOpacity>
 
-            <View>
-                <View>
-                    <Image source={require('../assets/timetable.jpeg')} style={styles.pic} />
-                </View>
-
-                <View>
-                    <TouchableOpacity style={styles.buttonUpload}>
-                        <Text style={styles.uploadText}>Upload</Text>
-                    </TouchableOpacity>
-
-                </View>
-            </View>
-        </View>
-
-    );
-}
+        <TouchableOpacity style={styles.buttonUpload} onPress={handleUpload}>
+          <Text style={styles.uploadText}>Done</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
+  main: {
+    color: '#000000',
+    fontSize: 24,
+    fontFamily: 'Poppins-Light',
+  },
 
-    main: {
-        color: "#000000",
-        fontSize: 24,
-        fontFamily: "Poppins-Light"
-    },
+  pic: {
+    width: 340,
+    height: 220,
+    alignSelf: 'center',
+    borderRadius: 10,
+    elevation: 7,
+    marginTop: 70,
+  },
+  uploadText: {
+    color: 'white',
+    textAlign: 'center',
+    fontFamily: 'Poppins-SemiBold',
+  },
 
-    pic: {
-        width: 340,
-        height: 220,
-        alignSelf: "center",
-        borderRadius: 10,
-        elevation: 7,
-        marginTop: 70
-    },
-    uploadText: {
-        color: 'white',
-        textAlign: 'center',
-        fontFamily: 'Poppins-SemiBold',
+  buttonUpload: {
+    borderRadius: 17,
+    paddingHorizontal: 22,
+    paddingVertical: 10,
+    elevation: 2,
+    backgroundColor: '#8349EA',
+    marginLeft: 10,
+    marginRight: 10,
+    marginVertical: 60,
+  },
 
-    },
+  dropdown: {
+    width: 320,
+    alignSelf: 'center',
+    backgroundColor: '#F4F4F4',
+    borderColor: '#8349EA',
+    marginTop: 20,
+  },
 
-    buttonUpload: {
-        borderRadius: 17,
-        paddingHorizontal: 22,
-        paddingVertical: 10,
-        elevation: 2,
-        backgroundColor: '#8349EA',
-        marginLeft: 10,
-        marginRight: 10,
-        marginVertical: 60
-    },
+  dropdownText: {
+    fontFamily: 'Poppins-Medium',
+  },
+});
 
-    dropdown: {
-        width: 320,
-        alignSelf: 'center',
-        backgroundColor: '#F4F4F4',
-        borderColor: '#8349EA',
-        marginTop: 20
-    },
-
-    dropdownText: {
-        fontFamily: 'Poppins-Medium'
-    }
-}
-
-)
-
-export default TimetableScreen
+export default TimetableScreen;
