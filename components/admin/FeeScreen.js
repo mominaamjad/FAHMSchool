@@ -26,10 +26,14 @@ const FeeScreen = () => {
   const [value, setValue] = useState();
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
-    { label: 'Unassign', value: 'unassign' },
-    { label: 'Sir', value: 'sir' },
-    { label: 'Ma\'am', value: 'maam' },
-  ]);
+    { label: 'All Classes', value: 'allClasses' },
+    { label: 'Class 1', value: 'class1' },
+    { label: 'Class 2', value: 'class2' },
+    { label: 'Class 3', value: 'class3' },
+    { label: 'Class 4', value: 'class4' },
+    { label: 'Class 5', value: 'class5' },
+    { label: 'Class 6', value: 'class6' },
+]);
 
   // students list to be displayed
   const [students, setStudents] = useState([
@@ -39,7 +43,7 @@ const FeeScreen = () => {
         residence: 'smth', dateOfAdmission: '13/7/2021'
     },
     {
-        class: 'class2' , regNo: 'fa21-bcs-011', name: 'amna sohaib', fathername: 'sohaib ahmed',
+        class: 'class2' , regNo: 'fa21-bcs-011', name: 'haneen ehsan', fathername: 'sohaib ahmed',
         dob: '29/11/2003', gender: 'female', caste: 'smth', occupation: 'smth',
         residence: 'smth', dateOfAdmission: '13/7/2021'
     },
@@ -86,6 +90,16 @@ const FeeScreen = () => {
     setStudents(newClass);
   }
 
+
+  handleFilteredList = () => {
+    if (value == 'allClasses') {
+        setList(students)
+    }
+    else {
+    setList(() => students.filter((element) => element.class.toLowerCase().includes(value)))
+    }
+  }
+
   return (
     <View>
 
@@ -100,10 +114,24 @@ const FeeScreen = () => {
         onBlur={() => { setSearch(""); setList(students); }}
             />
          <Icon name="magnify" size={30} style={styles.searchIcon}/>
+
+         <DropDownPicker
+              textStyle = {styles.dropdownText}
+              style={styles.dropdown}
+              dropDownContainerStyle={styles.dropdown}
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setItems}
+              onChangeValue={()=>handleFilteredList()}
+          />
+
       </View>
 
 
-      <ScrollView>
+      <ScrollView style={{zIndex: -1}}>
         {list.map((element, index) =>
           <TouchableOpacity onPress={() => { setModalVisible(true); setIndex(index) }}>
             <Card name={element.name} regNo={element.regNo} paid ={element.paid} cardType="fee"></Card>
@@ -162,6 +190,7 @@ styles = StyleSheet.create({
 
     searchBar: {
         flexDirection: 'row',
+        marginTop: 20,
         margin: 10,
         backgroundColor: 'lavender',
         width: 250,
@@ -260,16 +289,17 @@ styles = StyleSheet.create({
       },
 
 
-      dropdown: {
-        // width: 150,
-        marginBottom: 10,
-        backgroundColor: '#F4F4F4',
-        borderColor: '#8349EA'
-      },
+      
+    dropdown: {
+      marginLeft: 20,
+      width: 120,
+      backgroundColor: '#F4F4F4',
+      borderColor: '#8349EA'
+    },
 
-      dropdownText:{
-        fontFamily: 'Poppins-Medium'
-      }
+    dropdownText:{
+      fontFamily: 'Poppins-Medium'
+    }
 })
 
 export default FeeScreen

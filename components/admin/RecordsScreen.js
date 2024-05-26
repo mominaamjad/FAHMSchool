@@ -117,7 +117,7 @@ const RecordsScreen = () => {
 
             </View>
 
-            <ScrollView style={{zIndex: -123}}>
+            <ScrollView style={{zIndex: -1}}>
                 {list.map((element, index) =>
                     <TouchableOpacity onPress={() => { setModalVisible(true); setIndex(index) }}>
                         <Card name={element.name} regNo={element.regNo} cardType="student"></Card>
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     },
     searchBar: {
         flexDirection: 'row',
-        marginTop: 30,
+        marginTop: 20,
         margin: 10,
         marginRight: 10,
         backgroundColor: 'lavender',
