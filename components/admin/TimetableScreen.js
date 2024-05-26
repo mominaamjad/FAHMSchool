@@ -1,7 +1,8 @@
 import { ScrollView,
     View, 
     Text,
-    StyleSheet
+    StyleSheet,
+    Image
 
  } from "react-native"
 
@@ -11,7 +12,9 @@ const TimetableScreen = () => {
 
     return(
         <ScrollView>
-            <Text style = {styles.main}>Manage Timetable</Text>
+            <Text>kuch data</Text>
+            <Image src='.\assets\pictures\timetable.jpeg' />
+            
         </ScrollView>
         
 
