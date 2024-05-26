@@ -1,19 +1,25 @@
 /* eslint-disable prettier/prettier */
 
-import {doc, getFirestore} from 'firebase/firestore';
 import React, {useEffect} from 'react';
-import {addAdmin, fetchAdminData} from './api/admin';
-import {addMarks} from './api/marks';
-import {addStudent} from './api/student';
+import {
+  addAdmin,
+  addTeacher,
+  deleteTeacher,
+  fetchAdminData,
+  loginAdmin,
+} from './api/admin';
+import AdminMainScreen from './components/admin/AdminMainScreen';
 import Admin from './models/admin';
+
+import Teacher from './models/teacher';
+
 import Marks from './models/marks';
 import Student from './models/student';
 
 import AdminMainScreen from './components/admin/AdminMainScreen';
 
-function App() {
 
-  const db = getFirestore();
+function App() {
   const fetchData = async () => {
     try {
       const dataList = await fetchAdminData();
@@ -26,8 +32,49 @@ function App() {
   useEffect(() => {
     // fetchData();
     // handleAddAdmin();
-    handleAddStudentAndMarks();
+    // handleLogin();
+    // handleAddTeacher();
+    handleDeleteTeacher();
   });
+
+  const handleLogin = async () => {
+    try {
+      const admin = await loginAdmin({
+        email: 'fas.arsh@example.com',
+        password: 'password123',
+      });
+      console.log(
+        'Login Successful',
+        `Welcome ${admin.firstName} ${admin.lastName}`,
+      );
+    } catch (error) {
+      console.log('Login Failed', error.message);
+    }
+  };
+
+  const handleDeleteTeacher = async () => {
+    try {
+      await deleteTeacher('teacher');
+      console.log('Success', 'Teacher deleted successfully');
+    } catch (error) {
+      console.log('Error', 'Failed to delete teacher: ' + error.message);
+    }
+  };
+  const handleAddTeacher = async () => {
+    try {
+      const newTeacher = new Teacher(
+        'Fasiha',
+        'Arshad',
+        'fasiha@mail.com',
+        'password123',
+        'classref123',
+      );
+      const teacherID = await addTeacher(newTeacher);
+      console.log('Teacher added with ID: ', teacherID);
+    } catch (error) {
+      console.error('Failed to add Teacher: ', error);
+    }
+  };
 
   const handleAddAdmin = async () => {
     try {
@@ -44,32 +91,11 @@ function App() {
     }
   };
 
-  const handleAddStudentAndMarks = async () => {
-    try {
-      const newStudent = new Student(
-        null,
-        'John',
-        'Doe',
-        'john.doe@example.com',
-      );
-      const addedStudent = await addStudent(newStudent);
-      console.log('Student added with ID: ', addedStudent.id);
-      const studentRef = doc(db, 'students', addedStudent.id);
-      const newMarks = new Marks(null, studentRef, 'Math', 95);
-      const addedMarks = await addMarks(newMarks);
-      console.log('Marks added with ID: ', addedMarks.id);
-    } catch (error) {
-      console.error('Failed to add student or marks: ', error);
-    }
-  };
-  return <></>;
-
-  return(
-    <AdminMainScreen></AdminMainScreen>
-  )
-
+  return (
+    <>
+      <AdminMainScreen />
+    </>
+  );
 }
-
-<AdminMainScreen></AdminMainScreen>
 
 export default App;
