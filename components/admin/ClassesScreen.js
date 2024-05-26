@@ -36,9 +36,9 @@ const ClassesScreen = () => {
   const [classes, setClass] = useState([
     // example data for now
 
-        { class: 'Class 8', assigned: false},
-        { class: 'Class 9', assigned: false},
-        { class: 'Class 10', assigned: false},
+        { id: 1, class: 'Class 8', assigned: false},
+        { id: 2, class: 'Class 9', assigned: false},
+        { id: 3, class: 'Class 10', assigned: false},
     ])
 
   // to set index of class array for assigning true or false
@@ -92,7 +92,7 @@ const ClassesScreen = () => {
 
       <ScrollView>
         {list.map((element, index) =>
-          <TouchableOpacity onPress={() => { setModalVisible(true); setIndex(index) }}>
+          <TouchableOpacity key={element.id} onPress={() => { setModalVisible(true); setIndex(index) }}>
             <Card name={element.class} assigned={element.assigned} cardType="class"></Card>
           </TouchableOpacity>
         )}
