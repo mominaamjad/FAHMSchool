@@ -8,6 +8,9 @@ import {addStudent} from './api/student';
 import Admin from './models/admin';
 import Marks from './models/marks';
 import Student from './models/student';
+
+import AdminMainScreen from './components/admin/AdminMainScreen';
+
 function App() {
 
   const db = getFirestore();
