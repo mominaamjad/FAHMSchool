@@ -9,6 +9,7 @@ import Admin from './models/admin';
 import Marks from './models/marks';
 import Student from './models/student';
 function App() {
+
   const db = getFirestore();
   const fetchData = async () => {
     try {
@@ -59,6 +60,13 @@ function App() {
     }
   };
   return <></>;
+
+  return(
+    <AdminMainScreen></AdminMainScreen>
+  )
+
 }
+
+<AdminMainScreen></AdminMainScreen>
 
 export default App;

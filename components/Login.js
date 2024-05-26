@@ -33,9 +33,9 @@ const Login = ({imagePath, role}) => {
             <Image source={imagePath} style={styles.image} />
         </View>
         <Text style={styles.login}>Login as {role}</Text>
-        <TextInput style={styles.input} placeholder='Enter your email address' placeholderTextColor={'#333333'} onChangeText={setEmail}></TextInput>
-        <TextInput style={styles.input} placeholder='Enter your password' placeholderTextColor={'#333333'} onChangeText={setPassword} secureTextEntry></TextInput>
-        <TouchableOpacity style={styles.submitButton} onPress={() => {} } disabled={!checkEmail()||!checkPassword()}><Text style={styles.submitText}>Log in</Text></TouchableOpacity>
+        <TextInput style={styles.input} placeholder='Email' placeholderTextColor={'#333333'} onChangeText={setEmail}></TextInput>
+        <TextInput style={styles.input} placeholder='Password' placeholderTextColor={'#333333'} onChangeText={setPassword} secureTextEntry></TextInput>
+        <TouchableOpacity style={styles.submitButton} onPress={() => {} } disabled={!checkEmail()||!checkPassword()}><Text style={styles.submitText}>Login</Text></TouchableOpacity>
         
     </View>
     )
@@ -63,15 +63,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+
     input: {
         height: 45,
         margin: 8,
         padding: 10,
         width: '80%', 
-        borderWidth: 1,
         borderRadius: 8,
-        color: "#333333"
+        color: "#333333",
+        backgroundColor: "#F4F4F4",
+        fontFamily: 'Poppins-Regular',
+        fontSize: 14
     },
+
+
     submitButton:{
         backgroundColor: '#7239d6',
         borderRadius: 18,
@@ -80,14 +85,13 @@ const styles = StyleSheet.create({
         margin:20,
         elevation: 7,
     },
+    
     submitText:{
-        fontFamily: 'Poppins-Regular',
-        fontSize: 15,
+        fontFamily: 'Poppins-SemiBold',
+        fontSize: 14,
         color:'#ffffff',
-        paddingTop: 7,
-        paddingBottom:5,
-        paddingLeft:10,
-        paddingRight:10,
+        paddingVertical: 14,
+        paddingHorizontal: 20
     },
 });
 
