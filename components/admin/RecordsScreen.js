@@ -226,21 +226,11 @@ const RecordsScreen = () => {
 
                             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
 
-<<<<<<< Updated upstream
                             <TouchableOpacity
                                 style={[styles.button, styles.buttonCancel]}
-                                onPress={() => { handleChangedStudent() }}>
+                                onPress={() => { setModalVisible(false); setEdit(false) }}>
                                 <Text style={styles.textStyle}>{edit ? 'Done' : 'Close' }</Text>
                             </TouchableOpacity>
-=======
-                                <TouchableOpacity
-                                    style={[styles.button, styles.buttonCancel]}
-                                    onPress={() => { setModalVisible(!modalVisible);
-                                        setEdit(false); }}>
-                                    <Text style={styles.textStyle}>{edit ? 'Done' : 'Close'}</Text>
-                                </TouchableOpacity>
-                            </View>
->>>>>>> Stashed changes
                         </View>
                     </View>
                 </View>
