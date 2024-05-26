@@ -28,7 +28,7 @@ const RecordsScreen = () => {
             residence: 'smth', dateOfAdmission: '13/7/2021'
         },
         {
-            class: 'class2' , regNo: 'fa21-bcs-011', name: 'amna sohaib', fathername: 'sohaib ahmed',
+            class: 'class2' , regNo: 'fa21-bcs-011', name: 'haneen ehsan', fathername: 'sohaib ahmed',
             dob: '29/11/2003', gender: 'female', caste: 'smth', occupation: 'smth',
             residence: 'smth', dateOfAdmission: '13/7/2021'
         },
@@ -101,9 +101,23 @@ const RecordsScreen = () => {
                     onBlur={() => { setSearch(""); setList(students); }}
                 />
                 <Icon name="magnify" size={30} style={styles.searchIcon}/>
+
+                <DropDownPicker
+                        textStyle = {styles.dropdownText}
+                        style={styles.dropdown}
+                        dropDownContainerStyle={styles.dropdown}
+                        open={open}
+                        value={value}
+                        items={items}
+                        setOpen={setOpen}
+                        setValue={setValue}
+                        setItems={setItems}
+                        onChangeValue={()=>handleFilteredList()}
+                    />
+
             </View>
 
-            <ScrollView>
+            <ScrollView style={{zIndex: -123}}>
                 {list.map((element, index) =>
                     <TouchableOpacity onPress={() => { setModalVisible(true); setIndex(index) }}>
                         <Card name={element.name} regNo={element.regNo} cardType="student"></Card>
@@ -261,6 +275,7 @@ const styles = StyleSheet.create({
     searchBar: {
         flexDirection: 'row',
         margin: 10,
+        marginRight: 10,
         backgroundColor: 'lavender',
         width: 250,
         padding: 3,
@@ -376,6 +391,19 @@ const styles = StyleSheet.create({
         color: 'black',
         fontFamily: 'Poppins-Medium'
     },
+
+    dropdown: {
+        marginTop: 5,
+        marginLeft: 20,
+        width: 120,
+        marginBottom: 10,
+        backgroundColor: '#F4F4F4',
+        borderColor: '#8349EA'
+      },
+
+      dropdownText:{
+        fontFamily: 'Poppins-Medium'
+      }
 })
 
 export default RecordsScreen
