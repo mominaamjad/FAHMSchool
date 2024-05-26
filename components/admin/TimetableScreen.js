@@ -13,11 +13,9 @@ const TimetableScreen = () => {
     return(
         <ScrollView>
             <Text>kuch data</Text>
-            <Image src='.\assets\pictures\timetable.jpeg' />
-            
+            <Image source = {require('../assets/adminLogin.png') }/>
         </ScrollView>
-        
-
+    
     );
 }
 
