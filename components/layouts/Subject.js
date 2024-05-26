@@ -2,13 +2,12 @@ import {View, ScrollView, Text, Image, StyleSheet} from 'react-native'
 
 
 
-const Card = ({name,regNo,assigned=false, paid = false ,pic,cardType}) => {
+const Subject = ({subject}) => {
     return(
         <View style = {styles.mainCard}>
 
             <View>
-                <Text style={styles.title}>{name}</Text>
-                {cardType == "student" || cardType == "fee" ? <Text style= {styles.reg}>{regNo}</Text> : <></>}
+                <Text style={styles.title}>{subject}</Text>
             </View>
 
             
@@ -40,48 +39,15 @@ const styles = StyleSheet.create({
 
     },
 
-    innerCard:{
-        display: "flex",
-        
-    },
 
     title:{
         color: "#000000",
         fontSize: 18,
         fontWeight: "600",
         fontFamily: 'Poppins-SemiBold',
-    },
-
-    reg:{
-        color: "#555555",
-        fontSize: 14,
-        fontFamily: 'Poppins-Medium'
-        
-    },
-
-    pfp:{
-        width: 75,
-        height: 75,
-        alignSelf: "flex-end",
-        borderRadius: 50,
-        marginLeft: 110
-    },
-
-    assignedText: {
-        alignSelf: "flex-end",
-        fontFamily: 'Poppins-Regular',
-        paddingLeft: 150,
-        paddingTop: 30
-    },
-
-    feeText:{
-        alignSelf: "flex-end",
-        fontFamily: 'Poppins-Regular',
-        paddingLeft: 150,
-        paddingTop: 30
     }
 
 
 })
 
-export default Card
+export default Subject

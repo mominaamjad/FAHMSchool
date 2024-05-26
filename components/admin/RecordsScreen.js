@@ -28,7 +28,7 @@ const RecordsScreen = () => {
             residence: 'smth', dateOfAdmission: '13/7/2021'
         },
         {
-            class: 'class2' , regNo: 'fa21-bcs-011', name: 'amna sohaib', fathername: 'sohaib ahmed',
+            class: 'class2' , regNo: 'fa21-bcs-011', name: 'haneen ehsan', fathername: 'sohaib ahmed',
             dob: '29/11/2003', gender: 'female', caste: 'smth', occupation: 'smth',
             residence: 'smth', dateOfAdmission: '13/7/2021'
         },
@@ -75,7 +75,6 @@ const RecordsScreen = () => {
     }
 
     handleChangedStudent = (property, changedValue) => {
-        console.log(index)
         const newValue = [...students];
         newValue[index][property] = changedValue;
         setStudents(newValue);
@@ -96,15 +95,29 @@ const RecordsScreen = () => {
             <View style={styles.searchBar}>
                 <TextInput
                     style={styles.search}
-                    label="Search"
+                    label="Search" placeholder='Search...' placeholderTextColor="#000000"
                     onChangeText={(text) => { searchItem(text) }}
                     value={search}
                     onBlur={() => { setSearch(""); setList(students); }}
                 />
                 <Icon name="magnify" size={30} style={styles.searchIcon}/>
+
+                <DropDownPicker
+                        textStyle = {styles.dropdownText}
+                        style={styles.dropdown}
+                        dropDownContainerStyle={styles.dropdown}
+                        open={open}
+                        value={value}
+                        items={items}
+                        setOpen={setOpen}
+                        setValue={setValue}
+                        setItems={setItems}
+                        onChangeValue={()=>handleFilteredList()}
+                    />
+
             </View>
 
-            <ScrollView>
+            <ScrollView style={{zIndex: -1}}>
                 {list.map((element, index) =>
                     <TouchableOpacity onPress={() => { setModalVisible(true); setIndex(index) }}>
                         <Card name={element.name} regNo={element.regNo} cardType="student"></Card>
@@ -115,7 +128,7 @@ const RecordsScreen = () => {
 
             {index != null && (
             <Modal
-                animationType='fade'
+                animationType='slide'
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
@@ -224,14 +237,24 @@ const RecordsScreen = () => {
                                 />
                             </View>
 
-                            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                            
 
-                            <TouchableOpacity
-                                style={[styles.button, styles.buttonCancel]}
-                                onPress={() => { setModalVisible(false); setEdit(false) }}>
-                                <Text style={styles.textStyle}>{edit ? 'Done' : 'Close' }</Text>
-                            </TouchableOpacity>
-                        </View>
+                                <View style = {styles.btnRow}>
+
+                                    <TouchableOpacity
+                                        style={styles.buttonSubmit}
+                                        onPress={() => handleAssignedClass()}>
+                                        <Text style={styles.submitText}>Add Fee Status</Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        style={styles.cancelButton}
+                                        onPress={() => setModalVisible(!modalVisible)}>
+                                        <Text style={styles.cancelText}>OK</Text>
+                                    </TouchableOpacity>
+
+                                </View>
+                            
                     </View>
                 </View>
             </Modal>
@@ -251,17 +274,22 @@ const styles = StyleSheet.create({
     },
     searchBar: {
         flexDirection: 'row',
+        marginTop: 20,
         margin: 10,
+        marginRight: 10,
         backgroundColor: 'lavender',
-        width: 250,
-        padding: 3,
-        
+        width: 200,
+        height: 40,
         borderRadius: 30
         
     },
     search: {
-        height: 40,
-        width: 200,
+        // height: 30,
+        width: 160,
+        color: "#000000",
+        paddingLeft: 10,
+        fontSize: 14,
+        fontFamily: 'Poppins-Regular'
         
     },
     editIcon: {
@@ -317,6 +345,37 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-SemiBold',
         textAlign: 'center',
     },
+    btnRow:{
+        flexDirection:'row', 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        marginTop: 20
+      },
+
+    buttonSubmit: {
+        borderRadius: 17,
+        paddingHorizontal: 22,
+        paddingVertical: 10,
+        elevation: 2,
+        backgroundColor: '#8349EA',
+        marginLeft: 10,
+        marginRight: 10
+    },
+    
+    cancelText:{ 
+        color: '#6D6D6D',
+        paddingLeft: 20,
+        paddingRight: 20,
+        fontFamily: 'Poppins-Light'
+      
+    },
+
+    submitText: {
+        color: 'white',
+        textAlign: 'center',
+        fontFamily: 'Poppins-SemiBold',
+    
+    },
 
     modalHeading: {
         fontSize: 20,
@@ -332,6 +391,17 @@ const styles = StyleSheet.create({
         color: 'black',
         fontFamily: 'Poppins-Medium'
     },
+
+    dropdown: {
+        marginLeft: 20,
+        width: 120,
+        backgroundColor: '#F4F4F4',
+        borderColor: '#8349EA'
+      },
+
+      dropdownText:{
+        fontFamily: 'Poppins-Medium'
+      }
 })
 
 export default RecordsScreen

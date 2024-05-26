@@ -10,7 +10,15 @@ import {
 } from './api/admin';
 import AdminMainScreen from './components/admin/AdminMainScreen';
 import Admin from './models/admin';
+
 import Teacher from './models/teacher';
+
+import Marks from './models/marks';
+import Student from './models/student';
+
+import AdminMainScreen from './components/admin/AdminMainScreen';
+
+
 function App() {
   const fetchData = async () => {
     try {
