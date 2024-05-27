@@ -13,8 +13,8 @@ import {
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import Card from '../layouts/Card';
+
 
 const FeeScreen = () => {
   // for pop-up
@@ -103,20 +103,23 @@ const FeeScreen = () => {
     setSearch(text);
   };
 
-  handlePaidClass = () => {
-    if (value == null) {
-      Alert.alert('pls select teacher');
-      return;
-    }
-    setModalVisible(false);
-    const newClass = [...students];
-    if (value == 'unassign') {
-      newClass[index].paid = false;
-    } else {
-      newClass[index].paid = true;
-    }
-    setStudents(newClass);
-  };
+
+  // handlePaidClass = () => {
+  //   if (value == null) {
+  //     Alert.alert("pls select teacher");
+  //     return;
+  //   }
+  //   setModalVisible(false);
+  //   const newClass = [...students];
+  //   if (value == 'unassign') {
+  //     newClass[index].paid = false;
+  //   } else {
+  //     newClass[index].paid = true;
+  //   }
+  //   setStudents(newClass);
+  // }
+
+
 
   handleFilteredList = () => {
     if (value == 'allClasses') {
@@ -425,6 +428,7 @@ styles = StyleSheet.create({
     color: 'black',
     fontFamily: 'Poppins-Medium',
   },
+
 
   dropdown: {
     marginLeft: 20,

@@ -263,12 +263,13 @@ const styles = StyleSheet.create({
     color: 'black',
   },
 
-  dropdown: {
-    // width: 150,
-    marginBottom: 10,
-    backgroundColor: '#F4F4F4',
-    borderColor: '#8349EA',
-  },
+      dropdown: {
+        // width: 200,
+        marginBottom: 10,
+        backgroundColor: '#F4F4F4',
+        borderColor: '#8349EA'
+      },
+
 
   dropdownText: {
     fontFamily: 'Poppins-Medium',

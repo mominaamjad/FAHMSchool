@@ -2,22 +2,13 @@ import {View, ScrollView, Text, Image, StyleSheet} from 'react-native'
 
 
 
-const Subject = ({subject}) => {
+const Subject = ({name}) => {
     return(
         <View style = {styles.mainCard}>
 
             <View>
-                <Text style={styles.title}>{subject}</Text>
-            </View>
-
-            
-            <View>
-
-                {/* check if the card type is fee, if yes, then do paid/unpaid. if NO, check if 
-                the type is student. If yes, add a picture. 
-                if NO, then its "classes", and add assigned/unassigned */}
-
-                {cardType == "fee" ? <Text style={[styles.feeText, {color : paid ? "green" : "red"}]}>{paid ? "Paid" : "Unpaid"}</Text> : cardType == "student" ? <Image source={require('../assets/pfp.jpg') } style = {styles.pfp}></Image> : <Text style={[styles.assignedText, {color : assigned ? "green" : "red"}]}>{assigned ? "Assigned" : "Not Assigned"}</Text>}   
+                <Text style={styles.title}>{name}</Text>
+                
             </View>
         </View>
     )
@@ -26,16 +17,16 @@ const Subject = ({subject}) => {
 const styles = StyleSheet.create({
 
     mainCard: {
-        display: "flex",
-        flex: 1,
-        flexDirection: "row",
         backgroundColor: "#FFFFFF",
         borderRadius: 15,
-        padding: 18,
+        padding: 24,
+        width: 330,
+        alignSelf: 'center',
         marginLeft: 8,
         marginRight: 8,
         marginVertical: 5,
-        elevation: 4
+        elevation: 4,
+        shadowColor: '#8349EA'
 
     },
 

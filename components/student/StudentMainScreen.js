@@ -1,21 +1,20 @@
-/* eslint-disable prettier/prettier */
 import {StyleSheet} from 'react-native';
 
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
 
-import AdminDashboard from './AdminDashboard.js';
-import AdminLogin from './AdminLogin.js';
-import ClassesScreen from './ClassesScreen.js';
-import FeeScreen from './FeeScreen.js';
-import RecordsScreen from './RecordsScreen.js';
-import SyllabusScreen from './SyllabusScreen.js';
-import TimetableScreen from './TimetableScreen.js';
+
+import StudentDashboard from './StudentDashboard'
+import MarksSummaryScreen from './MarksSummaryScreen'
+import StudentFee from './StudentFee';
+import StudentTimetable from './StudentTimetable'
+import StudentSyllabus from './StudentSyllabus'
+import StudentLogin from './StudentLogin'
 
 const Drawer = createDrawerNavigator();
 
-const AdminMainScreen = () => {
-  return (
+const StudentMainScreen = () =>{
+    return(
     <NavigationContainer>
       <Drawer.Navigator
         screenOptions={{
@@ -30,7 +29,6 @@ const AdminMainScreen = () => {
             fontFamily: 'Poppins-Medium',
           },
 
-          // headerTitle: "Welcome, Admin!",
           headerShadowVisible: false,
           headerLeftLabelVisible: true,
           headerStyle: {
@@ -49,7 +47,7 @@ const AdminMainScreen = () => {
         }}>
         <Drawer.Screen
           name="Dashboard"
-          component={AdminDashboard}
+          component={StudentDashboard}
           options={
             {
               // drawerIcon: () =>{
@@ -58,23 +56,15 @@ const AdminMainScreen = () => {
             }
           }
         />
-        <Drawer.Screen name="Classes" component={ClassesScreen} />
-        <Drawer.Screen name="Records" component={RecordsScreen} />
-        <Drawer.Screen name="Fee" component={FeeScreen} />
-        <Drawer.Screen name="Syllabus" component={SyllabusScreen} />
-        <Drawer.Screen name="Timetable" component={TimetableScreen} />
+        <Drawer.Screen name="Marks Summary" component={MarksSummaryScreen} />
+        <Drawer.Screen name="Fee" component={StudentFee} />
+        <Drawer.Screen name="Timetable" component={StudentTimetable} />
+        <Drawer.Screen name="Syllabus" component={StudentSyllabus} />
+        <Drawer.Screen name="Logout" component={StudentLogin} />
 
-        {/* yahan pe iss ko logout karao  */}
-        <Drawer.Screen name="Logout" component={AdminLogin} />
-      </Drawer.Navigator>
+        </Drawer.Navigator>
     </NavigationContainer>
+    )
+}
 
-    // <ScrollView>
-    //     <Text>Admin Dashboard</Text>
-    // </ScrollView>
-  );
-};
-
-const styles = StyleSheet.create({});
-
-export default AdminMainScreen;
+export default StudentMainScreen
