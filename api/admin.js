@@ -18,6 +18,7 @@ import {
   getFirestore,
   query,
   setDoc,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 import Admin from '../models/admin';
@@ -78,7 +79,10 @@ export const loginAdmin = async loginData => {
       where('email', '==', loginData.email),
       where('password', '==', loginData.password),
     );
+    console.log(adminQuery);
     const querySnapshot = await getDocs(adminQuery);
+    console.log(querySnapshot.docs);
+
     if (querySnapshot.empty) {
       throw new Error('Invalid email or password');
     }
@@ -97,15 +101,72 @@ export const loginAdmin = async loginData => {
     throw error;
   }
 };
+export const fetchClasses = async () => {
+  try {
+    const classesCollection = collection(db, 'classes');
+    const classesSnapshot = await getDocs(classesCollection);
+    const classesList = classesSnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        className: data.className,
+        assigned: data.assigned || false,
+        teacher: data.teacher || null,
+      };
+    });
+    console.log(classesList);
+    return classesList;
+  } catch (error) {
+    console.error('Error fetching classes: ', error);
+    throw error;
+  }
+};
 
+export const fetchTeachers = async () => {
+  try {
+    const teachersCollection = collection(db, 'teachers');
+    const teachersSnapshot = await getDocs(teachersCollection);
+    const teachersList = teachersSnapshot.docs.map(Teacherdoc => ({
+      label: Teacherdoc.data().teacherName,
+      value: Teacherdoc.id,
+    }));
+    return teachersList;
+  } catch (error) {
+    console.error('Error fetching teachers: ', error);
+    throw error;
+  }
+};
 export const assignClassToTeacher = async classData => {
   try {
+    const classDocRef = doc(db, 'classes', classData.classId);
+
+    if (!classData.teacherId) {
+      await updateDoc(classDocRef, {
+        teacher: null,
+        assigned: false,
+      });
+    } else {
+      const teacherDocRef = doc(db, 'teachers', classData.teacherId);
+      const teacherDocSnap = await getDoc(teacherDocRef);
+
+      if (teacherDocSnap.exists()) {
+        await updateDoc(teacherDocRef, {
+          classRef: classData.classId,
+        });
+
+        await updateDoc(classDocRef, {
+          teacher: classData.teacherId,
+          assigned: true,
+        });
+      } else {
+        throw new Error("Teacher document doesn't exist");
+      }
+    }
   } catch (error) {
     console.error('Error Assigning Class To Teacher: ', error);
     throw error;
   }
 };
-
 export const addTeacher = async teacherData => {
   try {
     const teacherRef = await addDoc(collection(db, 'teachers'), {

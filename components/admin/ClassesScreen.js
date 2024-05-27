@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Alert,
   Modal,
@@ -10,68 +10,79 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
 import DropDownPicker from 'react-native-dropdown-picker';
-
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import {
+  assignClassToTeacher,
+  fetchClasses,
+  fetchTeachers,
+} from '../../api/admin';
 import Card from '../layouts/Card';
 
 const ClassesScreen = () => {
-  // for pop-up
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false); // for pop-up
+  const [value, setValue] = useState(null); // for dropdown value
+  const [open, setOpen] = useState(false); // for dropdown open state
+  const [teachers, setTeachers] = useState([]); // to store teachers
+  const [classes, setClasses] = useState([]); // to store classes
+  const [list, setList] = useState([]); // to store filtered list of classes
+  const [search, setSearch] = useState(''); // to store search text
+  const [selectedClassIndex, setSelectedClassIndex] = useState(null);
 
-  // for dropdown
-  const [value, setValue] = useState();
-  const [open, setOpen] = useState(false);
-  const [items, setItems] = useState([
-    {label: 'Unassign', value: 'unassign'},
-    {label: 'Sir', value: 'sir'},
-    {label: "Ma'am", value: 'maam'},
-  ]);
-
-  // classes list to be displayed
-  const [classes, setClass] = useState([
-    // example data for now
-
-    {id: 1, class: 'Class 8', assigned: false},
-    {id: 2, class: 'Class 9', assigned: false},
-    {id: 3, class: 'Class 10', assigned: false},
-  ]);
-
-  // to set index of class array for assigning true or false
-  const [index, setIndex] = useState(null);
-
-  const [list, setList] = useState(classes);
-
-  const [search, setSearch] = useState('');
+  useEffect(() => {
+    async function fetchTeachersData() {
+      try {
+        const teachersList = await fetchTeachers();
+        setTeachers(teachersList);
+        const classesList = await fetchClasses();
+        setClasses(classesList);
+        setList(classesList);
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    }
+    fetchTeachersData();
+  }, []);
 
   const searchItem = text => {
     if (text === '') {
       setList(classes);
     } else {
-      setList(() =>
+      setList(
         classes.filter(element =>
-          element.class.toLowerCase().includes(text.toLowerCase()),
+          element.className.toLowerCase().includes(text.toLowerCase()),
         ),
       );
     }
     setSearch(text);
   };
 
-  const handleAssignedClass = () => {
-    if (value == null) {
-      Alert.alert('pls select teacher');
+  const handleAssignedClass = async () => {
+    if (value === null) {
+      Alert.alert('Please select a teacher');
       return;
     }
     setModalVisible(false);
-    const newClass = [...classes];
-    if (value == 'unassign') {
-      newClass[index].assigned = false;
-    } else {
-      newClass[index].assigned = true;
+
+    const newClasses = [...classes];
+    newClasses[selectedClassIndex].assigned = value !== 'unassign';
+    newClasses[selectedClassIndex].teacher =
+      value === 'unassign' ? null : value;
+
+    const classData = {
+      classId: newClasses[selectedClassIndex].id.toString(),
+      teacherId: value === 'unassign' ? null : value,
+    };
+
+    try {
+      await assignClassToTeacher(classData);
+      setClasses(newClasses);
+      setList(newClasses);
+      Alert.alert('Class assigned successfully');
+    } catch (error) {
+      console.error('Error assigning class:', error);
+      Alert.alert('Error assigning class');
     }
-    setClass(newClass);
   };
 
   return (
@@ -82,9 +93,7 @@ const ClassesScreen = () => {
           label="Search"
           placeholder="Search..."
           placeholderTextColor="#000000"
-          onChangeText={text => {
-            searchItem(text);
-          }}
+          onChangeText={text => searchItem(text)}
           value={search}
           onBlur={() => {
             setSearch('');
@@ -100,12 +109,21 @@ const ClassesScreen = () => {
             key={element.id}
             onPress={() => {
               setModalVisible(true);
-              setIndex(index);
+              setSelectedClassIndex(index);
+              setValue(element.teacher ? element.teacher : null);
             }}>
             <Card
-              name={element.class}
-              assigned={element.assigned}
-              cardType="class"></Card>
+              name={element.className}
+              assigned={element.assigned ? 'Assigned' : 'Not Assigned'}
+              teacher={
+                element.teacher
+                  ? `Assigned to ${
+                      teachers.find(t => t.value === element.teacher)?.label
+                    }`
+                  : 'Not Assigned'
+              }
+              cardType="class"
+            />
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -127,10 +145,11 @@ const ClassesScreen = () => {
               style={styles.dropdown}
               open={open}
               value={value}
-              items={items}
+              items={[{label: 'Unassign', value: 'unassign'}, ...teachers]}
               setOpen={setOpen}
               setValue={setValue}
-              setItems={setItems}
+              setItems={setTeachers}
+              placeholder="Select a teacher"
             />
 
             <View style={styles.btnRow}>
