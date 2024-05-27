@@ -41,7 +41,7 @@ const TeacherMainScreen = () => {
                     backgroundColor: "#8349EA",
                     borderBottomLeftRadius: 20,
                     borderBottomRightRadius: 20,
-                    height: 120   
+                    height: 120,
                 },
 
                 headerTitleStyle: {
@@ -57,11 +57,12 @@ const TeacherMainScreen = () => {
                     //     <Icon name = "home-filled"/>
                     // }
                 }} />
-                
 
+
+                <Drawer.Screen name = "Table yahan nae aaye ga" component={MarksScreen}/>
 
                 {/* yahan pe iss ko logout karao  */}
-                {/* <Drawer.Screen name = "Logout" component={TeacherLogin}/> */}
+                <Drawer.Screen name = "Logout" component={TeacherLogin}/>
 
             </Drawer.Navigator>
 

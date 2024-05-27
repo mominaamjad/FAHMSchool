@@ -2,12 +2,12 @@ import {View, ScrollView, Text, Image, StyleSheet} from 'react-native'
 
 
 
-const Subject = ({subject}) => {
+const Subject = ({name}) => {
     return(
         <View style = {styles.mainCard}>
 
             <View>
-                <Text style={styles.title}>{subject}</Text>
+                <Text style={styles.title}>{name}</Text>
                 
             </View>
         </View>
@@ -17,16 +17,16 @@ const Subject = ({subject}) => {
 const styles = StyleSheet.create({
 
     mainCard: {
-        display: "flex",
-        flex: 1,
-        flexDirection: "row",
         backgroundColor: "#FFFFFF",
         borderRadius: 15,
-        padding: 18,
+        padding: 24,
+        width: 330,
+        alignSelf: 'center',
         marginLeft: 8,
         marginRight: 8,
         marginVertical: 5,
-        elevation: 4
+        elevation: 4,
+        shadowColor: '#8349EA'
 
     },
 

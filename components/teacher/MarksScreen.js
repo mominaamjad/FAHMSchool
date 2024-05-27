@@ -146,11 +146,11 @@ const styles = StyleSheet.create({
     head: {
         zIndex: -1,
         height: 50,
-        backgroundColor: 'lavender',
+        backgroundColor: '#8349EA',
         justifyContent: 'space-between',
         marginHorizontal: 10,
         borderRadius: 20,
-        marginTop: 65
+        marginTop: 10
     },
     tableTitle: {
         fontWeight: 'bold',
@@ -175,6 +175,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: 'row',
         margin: 10,
+        marginTop: 30
         // elevation: 10
     },
     editIcon: {

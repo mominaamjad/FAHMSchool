@@ -14,13 +14,24 @@ import Card from '../layouts/Card';
 
 
 const SubjectsScreen = () => {
+
+    return(
     <ScrollView>
-        <Text>kuch data</Text>
-        
-        <Subject subject={"Mobile App Dev"}></Subject>
-        <Subject subject={"Mobile App Dev"}></Subject>
-        <Subject subject={"Mobile App Dev"}></Subject>
+
+        <TouchableOpacity>
+            <Subject name="Mobile App Dev"></Subject>
+        </TouchableOpacity>
+        <TouchableOpacity>
+            <Subject name="Mobile App Dev"></Subject>
+        </TouchableOpacity>
+        <TouchableOpacity>
+            <Subject name="Mobile App Dev"></Subject>
+        </TouchableOpacity>
+            
+      
     </ScrollView>
+
+    )
 }
 
 export default SubjectsScreen
