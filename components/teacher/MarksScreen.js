@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, StyleSheet, View, ScrollView } from "react-native";
+import { Text, StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import { TextInput, DataTable } from "react-native-paper";
 
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -68,9 +68,6 @@ const Main = () => {
                     textStyle={styles.dropdownText}
                 />
 
-
-
-
             </View>
 
 
@@ -92,7 +89,7 @@ const Main = () => {
                                         value={String(element.mids)}
                                         editable={edit}
                                         onChangeText={(text) => handleMidMarks(text, index)}
-                                        underlineColorAndroid="transparent"
+                                        underlineColor="transparent"
                                         keyboardType="numeric"
                                         style={styles.TextInput}
                                     />
@@ -103,7 +100,7 @@ const Main = () => {
                                         value={String(element.finals)}
                                         editable={edit}
                                         onChangeText={(text) => handleFinalMarks(text, index)}
-                                        underlineColorAndroid="transparent"
+                                        underlineColor="transparent"
                                         keyboardType="numeric"
                                         style={styles.TextInput}
                                     />
@@ -114,7 +111,7 @@ const Main = () => {
                                         value={String(element.first)}
                                         editable={edit}
                                         onChangeText={(text) => handleFirstMarks(text, index)}
-                                        underlineColorAndroid="transparent"
+                                        underlineColor="transparent"
                                         keyboardType="numeric"
                                         style={styles.TextInput}
                                     />
@@ -125,6 +122,9 @@ const Main = () => {
                                 <DataTable.Row key={index} style={styles.row}>
                                     <DataTable.Cell>{element.name}</DataTable.Cell>
                                     <DataTable.Cell>{inputComponent}</DataTable.Cell>
+                                    <TouchableOpacity>
+                                        <Icon name="delete" size={20} onPress = { ()=>{} } style = {styles.deleteIcon}/>
+                                    </TouchableOpacity>
                                 </DataTable.Row>
                             );
                         })}
@@ -158,8 +158,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 13,
         marginTop: 13
     },
+
+    deleteIcon: {
+        marginTop: 13
+    },
     row: {
-        height: 40,
+        // height: 40,
         backgroundColor: 'lavender'
     },
     main: {
@@ -185,8 +189,9 @@ const styles = StyleSheet.create({
         alignSelf: "flex-start"
     },
     TextInput: {
-        marginLeft: 80,
+        marginLeft: 70,
         backgroundColor: 'lavender',
+        height: 20
     },
     dropdown: {
         marginLeft: 20,
