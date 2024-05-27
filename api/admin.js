@@ -109,10 +109,12 @@ export const assignClassToTeacher = async classData => {
 export const addTeacher = async teacherData => {
   try {
     const teacherRef = await addDoc(collection(db, 'teachers'), {
-      firstName: teacherData.firstName,
-      lastName: teacherData.lastName,
+      teacherName: teacherData.teacherName,
       email: teacherData.email,
       password: teacherData.password,
+
+      phoneNo: teacherData.phoneNo,
+      address: teacherData.address,
       classRef: teacherData.classRef,
     });
     console.log('Teacher added with ID: ', teacherRef.id);
@@ -263,6 +265,19 @@ export const uploadTimetable = async timetableData => {
     console.log('TimeTable Uploaded: ', timetableData.id);
   } catch (error) {
     console.error('Error uploading Timetable: ', error);
+    throw error;
+  }
+};
+
+export const addClass = async classData => {
+  try {
+    await setDoc(doc(collection(db, 'classes'), classData.id), {
+      classData: classData.className,
+      subjects: classData.subjects,
+    });
+    console.log('class added: ', classData.id);
+  } catch (error) {
+    console.error('Error adding class: ', error);
     throw error;
   }
 };
