@@ -16,8 +16,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Card from "../layouts/Card";
 
-import FeeDetailScreen from './FeeDetailScreen';
-
 const FeeScreen = () => {
 
   // for pop-up 
@@ -79,20 +77,20 @@ const FeeScreen = () => {
 
   }
 
-  handlePaidClass = () => {
-    if (value == null) {
-      Alert.alert("pls select teacher");
-      return;
-    }
-    setModalVisible(false);
-    const newClass = [...students];
-    if (value == 'unassign') {
-      newClass[index].paid = false;
-    } else {
-      newClass[index].paid = true;
-    }
-    setStudents(newClass);
-  }
+  // handlePaidClass = () => {
+  //   if (value == null) {
+  //     Alert.alert("pls select teacher");
+  //     return;
+  //   }
+  //   setModalVisible(false);
+  //   const newClass = [...students];
+  //   if (value == 'unassign') {
+  //     newClass[index].paid = false;
+  //   } else {
+  //     newClass[index].paid = true;
+  //   }
+  //   setStudents(newClass);
+  // }
 
 
   handleFilteredList = () => {
@@ -383,7 +381,6 @@ search: {
     color: 'black',
     fontFamily: 'Poppins-Medium'
   },
-
 
 
   dropdown: {
