@@ -1,11 +1,8 @@
 /* eslint-disable prettier/prettier */
 
 import React, {useEffect} from 'react';
-import {addAdmin, addTeacher, deleteTeacher, fetchAdminData} from './api/admin';
-import Admin from './models/admin';
+import {addTeacher, deleteTeacher} from './api/admin';
 import AdminMainScreen from './components/admin/AdminMainScreen';
-import Teacher from './models/teacher';
-
 
 function App() {
   // const fetchData = async () => {
@@ -25,7 +22,6 @@ function App() {
   //   handleDeleteTeacher();
   // });
 
-
   const handleDeleteTeacher = async () => {
     try {
       await deleteTeacher('teacher');
@@ -34,21 +30,26 @@ function App() {
       console.log('Error', 'Failed to delete teacher: ' + error.message);
     }
   };
+
   const handleAddTeacher = async () => {
     try {
-      const newTeacher = new Teacher(
-        'Fasiha',
-        'Arshad',
-        'fasiha@mail.com',
-        'password123',
-        'classref123',
-      );
-      const teacherID = await addTeacher(newTeacher);
-      console.log('Teacher added with ID: ', teacherID);
+      await addTeacher({
+        teacherName: 'Malva Burden',
+        email: 'mburdenf@cbc.ca',
+        password: 'qB0+7>QK!*P8vK',
+        phoneNo: '130-442-2868',
+        address: '7421 Macpherson Junction',
+        classRef: '06',
+      });
+      console.log('Teacher added with ID: ');
     } catch (error) {
       console.error('Failed to add Teacher: ', error);
     }
   };
+
+  useEffect(() => {
+    // handleAddTeacher();
+  });
 
   // const handleLogin = async () => {
   //   try {
@@ -88,7 +89,6 @@ function App() {
   //     console.error('Failed to add Teacher: ', error);
   //   }
   // };
-
 
   // const handleAddAdmin = async () => {
   //   try {
