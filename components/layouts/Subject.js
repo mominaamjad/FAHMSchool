@@ -8,16 +8,7 @@ const Subject = ({subject}) => {
 
             <View>
                 <Text style={styles.title}>{subject}</Text>
-            </View>
-
-            
-            <View>
-
-                {/* check if the card type is fee, if yes, then do paid/unpaid. if NO, check if 
-                the type is student. If yes, add a picture. 
-                if NO, then its "classes", and add assigned/unassigned */}
-
-                {cardType == "fee" ? <Text style={[styles.feeText, {color : paid ? "green" : "red"}]}>{paid ? "Paid" : "Unpaid"}</Text> : cardType == "student" ? <Image source={require('../assets/pfp.jpg') } style = {styles.pfp}></Image> : <Text style={[styles.assignedText, {color : assigned ? "green" : "red"}]}>{assigned ? "Assigned" : "Not Assigned"}</Text>}   
+                
             </View>
         </View>
     )

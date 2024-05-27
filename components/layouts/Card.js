@@ -36,13 +36,8 @@ const styles = StyleSheet.create({
         marginLeft: 8,
         marginRight: 8,
         marginVertical: 5,
-        elevation: 4
-
-    },
-
-    innerCard:{
-        display: "flex",
-        
+        elevation: 4,
+        shadowColor: '#8349EA'
     },
 
     title:{

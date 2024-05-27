@@ -11,6 +11,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer"
 
 import MarksScreen from "./MarksScreen"
 import TeacherLogin from "./teacherLogin"
+import Subjects from "./Subjects"
 
 const Drawer = createDrawerNavigator();
 
@@ -51,7 +52,7 @@ const TeacherMainScreen = () => {
                 drawerActiveTintColor: "#BFA8E5",
                 
             }}>
-                <Drawer.Screen name = "Manage Marks" component={MarksScreen} options={{
+                <Drawer.Screen name = "Manage Marks" component={Subjects} options={{
                     // drawerIcon: () =>{
                     //     <Icon name = "home-filled"/>
                     // }
