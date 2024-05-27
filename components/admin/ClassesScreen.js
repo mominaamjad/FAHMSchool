@@ -246,7 +246,7 @@ styles = StyleSheet.create({
 
 
       dropdown: {
-        // width: 150,
+        // width: 200,
         marginBottom: 10,
         backgroundColor: '#F4F4F4',
         borderColor: '#8349EA'
