@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Card from "../layouts/Card";
 
-const FeeScreen = () => {
+const StudentFee = () => {
 
     // for pop-up 
     const [modalVisible, setModalVisible] = useState(false);
@@ -306,4 +306,4 @@ styles = StyleSheet.create({
     }
 })
 
-export default FeeScreen
+export default StudentFee
