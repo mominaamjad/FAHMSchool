@@ -188,14 +188,15 @@ styles = StyleSheet.create({
         margin: 10,
         marginRight: 10,
         backgroundColor: 'lavender',
-        width: 200,
+        width: 330,
         height: 40,
-        borderRadius: 30
+        borderRadius: 30,
+        alignSelf: 'center'
 
     },
     search: {
         // height: 30,
-        width: 160,
+        width:290,
         color: "#000000",
         paddingLeft: 10,
         fontSize: 14,

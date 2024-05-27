@@ -66,3 +66,5 @@ const StudentMainScreen = () =>{
     </NavigationContainer>
     )
 }
+
+export default StudentMainScreen
