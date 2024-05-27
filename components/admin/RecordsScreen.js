@@ -495,13 +495,16 @@ const styles = StyleSheet.create({
 
     buttonAdd: {
         width: 150,
+        alignSelf: 'flex-end',
         alignItems: 'center',
         borderRadius: 17,
         paddingHorizontal: 22,
         paddingVertical: 10,
         backgroundColor: '#8349EA',
-        marginLeft: 10,
-        marginRight: 10
+        marginTop: 20,
+        marginRight:12,
+        marginBottom: 10
+
     },
 
     textStyle: {
