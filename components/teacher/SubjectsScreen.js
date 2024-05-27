@@ -10,14 +10,17 @@ import {
 } from "react-native"
 
 import Subject from '../layouts/Subject';
+import Card from '../layouts/Card';
 
 
-const Subjects = () =>{
+const SubjectsScreen = () => {
     <ScrollView>
+        <Text>kuch data</Text>
+        
         <Subject subject={"Mobile App Dev"}></Subject>
         <Subject subject={"Mobile App Dev"}></Subject>
         <Subject subject={"Mobile App Dev"}></Subject>
     </ScrollView>
 }
 
-export default Subjects
+export default SubjectsScreen

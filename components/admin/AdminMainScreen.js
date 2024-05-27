@@ -5,7 +5,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
 
 import AdminDashboard from './AdminDashboard.js';
-import AdminLogin from './adminLogin';
+import AdminLogin from './AdminLogin.js';
 import ClassesScreen from './ClassesScreen.js';
 import FeeScreen from './FeeScreen.js';
 import RecordsScreen from './RecordsScreen.js';

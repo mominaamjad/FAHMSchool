@@ -10,8 +10,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createDrawerNavigator } from "@react-navigation/drawer"
 
 import MarksScreen from "./MarksScreen"
-import TeacherLogin from "./teacherLogin"
-import Subjects from "./Subjects"
+import TeacherLogin from "./TeacherLogin.js"
+import SubjectsScreen from "./SubjectsScreen.js"
 
 const Drawer = createDrawerNavigator();
 
@@ -52,7 +52,7 @@ const TeacherMainScreen = () => {
                 drawerActiveTintColor: "#BFA8E5",
                 
             }}>
-                <Drawer.Screen name = "Manage Marks" component={Subjects} options={{
+                <Drawer.Screen name = "Manage Marks" component={SubjectsScreen} options={{
                     // drawerIcon: () =>{
                     //     <Icon name = "home-filled"/>
                     // }
@@ -61,7 +61,7 @@ const TeacherMainScreen = () => {
 
 
                 {/* yahan pe iss ko logout karao  */}
-                <Drawer.Screen name = "Logout" component={TeacherLogin}/>
+                {/* <Drawer.Screen name = "Logout" component={TeacherLogin}/> */}
 
             </Drawer.Navigator>
 
