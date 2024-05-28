@@ -10,7 +10,8 @@ import {
     TextInput
 } from "react-native";
 
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import Card from "../layouts/Card";
 
@@ -39,26 +40,36 @@ const StudentFee = () => {
         },
     ]);
 
+    const [list, setList] = useState(students);
 
     // to set index of class array for assigning true or false
     const [index, setIndex] = useState(null);
 
-    const [list, setList] = useState(students);
+    const [value, setValue] = useState('Select');
+    const [open, setOpen] = useState(false);
+    const [items, setItems] = useState([
+        { label: 'All', value: 'allFees' },
+        { label: 'Paid', value: 'paid' },
+        { label: 'Unpaid', value: 'unpaid' },
+    ]);
 
-    const [search, setSearch] = useState("")
+    handleFilteredList = () => {
+        var check; 
+        if (value == 'paid') {
+            check = false   // fees is not late
+        } else if (value == 'unpaid') {
+            check = true    // fees is late
+        }
 
-
-    const searchItem = (text) => {
-
-        if (text === "") {
+        if (value == 'allFees') {
             setList(students)
         }
         else {
-            setList(() => students.filter((element) => element.name.toLowerCase().includes(text.toLowerCase())))
+            setList(() => students.filter((element) => element.lateFees === check))
         }
-        setSearch(text)
-
     }
+
+    // dropdown dalna hai instead of search 
 
     // handlePaidClass = () => {
     //     if (value == null) {
@@ -83,14 +94,20 @@ const StudentFee = () => {
 
             {/* change the function to find fee instead of students  */}
 
-            <View style={styles.searchBar}>
-                <TextInput style={styles.search}
-                    label="Search" placeholder='Search...' placeholderTextColor="#000000"
-                    onChangeText={(text) => { searchItem(text) }}
-                    value={search}
-                    onBlur={() => { setSearch(""); setList(students); }}
+            <View>
+
+                <DropDownPicker
+                    textStyle={styles.dropdownText}
+                    style={styles.dropdown}
+                    dropDownContainerStyle={styles.dropdown}
+                    open={open}
+                    value={value}
+                    items={items}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    setItems={setItems}
+                    onChangeValue={() => handleFilteredList()}
                 />
-                <Icon name="magnify" size={30} style={styles.searchIcon} />
 
             </View>
 
@@ -296,7 +313,8 @@ styles = StyleSheet.create({
     },
 
     dropdown: {
-        marginLeft: 20,
+        marginLeft: 250,
+        marginVertical: 10,
         width: 120,
         backgroundColor: '#F4F4F4',
         borderColor: '#8349EA'

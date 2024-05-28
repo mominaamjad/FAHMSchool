@@ -334,6 +334,7 @@ styles = StyleSheet.create({
     height: 40,
     borderRadius: 30,
   },
+  
   search: {
     // height: 30,
     width: 160,
