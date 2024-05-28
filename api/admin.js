@@ -146,6 +146,7 @@ export const fetchTeachers = async () => {
     throw error;
   }
 };
+
 export const assignClassToTeacher = async classData => {
   try {
     const classDocRef = doc(db, 'classes', classData.classId);
@@ -201,6 +202,7 @@ export const assignClassToTeacher = async classData => {
     throw error;
   }
 };
+
 export const addTeacher = async teacherData => {
   try {
     const teacherRef = await addDoc(collection(db, 'teachers'), {
@@ -231,10 +233,24 @@ export const deleteTeacher = async teacherEmail => {
   }
 };
 
-export const createStudent = async studentData => {
+export const addStudent = async studentData => {
   try {
+    const studentRef = await addDoc(collection(db, 'students'), {
+      class: studentData.class,
+      regNo: studentData.regNo,
+      name: studentData.name,
+      fathername: studentData.fathername,
+      dob: studentData.dob,
+      gender: studentData.gender,
+      caste: studentData.caste,
+      occupation: studentData.occupation,
+      residence: studentData.residence,
+      dateOfAdmission: studentData.dateOfAdmission,
+    });
+    console.log('Student added with ID: ', studentRef.id);
+    return studentRef.id;
   } catch (error) {
-    console.error('Error creating Student: ', error);
+    console.error('Error adding student: ', error);
     throw error;
   }
 };
@@ -244,6 +260,23 @@ export const viewAllStudent = async () => {
   } catch (error) {
     console.error('Error viewing All Student: ', error);
     throw error;
+  }
+};
+
+const fetchStudents = async () => {
+  try {
+    const studentList = [];
+    const querySnapshot = await firestore().collection('students').get();
+    querySnapshot.forEach(documentSnapshot => {
+      studentList.push({
+        ...documentSnapshot.data(),
+        id: documentSnapshot.id,
+      });
+    });
+    setStudents(studentList);
+    setList(studentList);
+  } catch (error) {
+    console.error('Error fetching students: ', error);
   }
 };
 
