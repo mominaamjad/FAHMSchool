@@ -30,6 +30,7 @@ const SyllabusScreen = () => {
     }
   };
 
+  //image selection
   const openImagePicker = () => {
     const options = {
       mediaType: 'photo',
