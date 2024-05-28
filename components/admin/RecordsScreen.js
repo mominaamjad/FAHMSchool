@@ -67,6 +67,11 @@ const RecordsScreen = () => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const [feeModalVisible, setFeeModalVisible] = useState(false);
+
+
+    const [addModalVisible, setAddModalVisible] = useState(false);
+
+
     const [edit, setEdit] = useState(false);
 
 
@@ -145,13 +150,13 @@ const RecordsScreen = () => {
             </View>
 
             <TouchableOpacity
-                    style={styles.buttonAdd}
-                    onPress={() => { }}>
-                    <View style={{flexDirection: 'row'}}>
+                style={styles.buttonAdd}
+                onPress={() => { setAddModalVisible(true); }}>
+                <View style={{ flexDirection: 'row' }}>
                     <Icon name="plus" size={30} color='white' />
                     <Text style={styles.textStyle}> Add Record</Text>
-                    </View>
-                </TouchableOpacity>
+                </View>
+            </TouchableOpacity>
 
             <ScrollView style={{ zIndex: -1 }}>
                 {list.map((element, index) =>
@@ -162,8 +167,8 @@ const RecordsScreen = () => {
 
             </ScrollView>
 
-            
-            
+
+
 
             {index != null && (
                 <Modal
@@ -288,7 +293,7 @@ const RecordsScreen = () => {
 
                                 <TouchableOpacity
                                     style={styles.cancelButton}
-                                    onPress={() => setModalVisible(false)}>
+                                    onPress={() => { setModalVisible(false); setEdit(false) }}>
                                     <Text style={styles.cancelText}>OK</Text>
                                 </TouchableOpacity>
 
@@ -298,6 +303,129 @@ const RecordsScreen = () => {
                     </View>
                 </Modal>
             )}
+
+
+
+
+
+            <Modal
+                animationType='slide'
+                transparent={true}
+                visible={addModalVisible}
+                onRequestClose={() => {
+                    setAddModalVisible(!addModalVisible);
+                }}>
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <View style={styles.rowStyle}>
+                            <Text style={styles.modalHeading}>Add Student Record</Text>
+                        </View>
+
+
+                        <View style={styles.rowStyle}>
+                            <Text style={styles.modalText}>Registration Number </Text>
+                            <TextInput
+                                value=''
+                                style={styles.TextInput}
+                                onChangeText={() => { }}
+                            />
+                        </View>
+
+                        <View style={styles.rowStyle}>
+                            <Text style={styles.modalText}>Name </Text>
+                            <TextInput
+                                value=''
+                                style={styles.TextInput}
+                                onChangeText={() => { }}
+                            />
+                        </View>
+
+                        <View style={styles.rowStyle}>
+                            <Text style={styles.modalText}>Father Name </Text>
+                            <TextInput
+                                value=''
+                                style={styles.TextInput}
+                                onChangeText={() => { }}
+                            />
+                        </View>
+
+                        <View style={styles.rowStyle}>
+                            <Text style={styles.modalText}>Date of Birth </Text>
+                            <TextInput
+                                value=''
+                                style={styles.TextInput}
+                                onChangeText={() => { }}
+                            />
+                        </View>
+
+                        <View style={styles.rowStyle}>
+                            <Text style={styles.modalText}>Gender </Text>
+                            <TextInput
+                                value=''
+                                style={styles.TextInput}
+                                onChangeText={() => { }}
+                                underlineColor='transparent'
+                            />
+                        </View>
+
+                        <View style={styles.rowStyle}>
+                            <Text style={styles.modalText}>Caste </Text>
+                            <TextInput
+                                value=''
+                                style={styles.TextInput}
+                                onChangeText={() => { }}
+                                underlineColor='transparent'
+                            />
+                        </View>
+
+                        <View style={styles.rowStyle}>
+                            <Text style={styles.modalText}>Occupation </Text>
+                            <TextInput
+                                value=''
+                                style={styles.TextInput}
+                                onChangeText={() => { }}
+                                underlineColor='transparent'
+                            />
+                        </View>
+
+                        <View style={styles.rowStyle}>
+                            <Text style={styles.modalText}>Residence </Text>
+                            <TextInput
+                                value=''
+                                style={styles.TextInput}
+                                onChangeText={() => { }}
+                                underlineColor='transparent'
+                            />
+                        </View>
+
+                        <View style={styles.rowStyle}>
+                            <Text style={styles.modalText}>Date of Admission </Text>
+                            <TextInput
+                                value=''
+                                style={styles.TextInput}
+                                onChangeText={() => { }}
+                                underlineColor='transparent'
+                            />
+                        </View>
+
+
+
+                        <View style={styles.btnRow}>
+
+                            <TouchableOpacity
+                                style={styles.buttonSubmit}
+                                onPress={() => { setAddModalVisible(false); }}>
+                                <Text style={styles.submitText}>Add Record</Text>
+                            </TouchableOpacity>
+
+                        </View>
+
+                    </View>
+                </View>
+            </Modal>
+
+
+
 
 
             {index != null && (
@@ -502,9 +630,9 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         backgroundColor: '#8349EA',
         marginTop: 20,
-        marginRight:12,
-        marginBottom: 10
-
+        marginRight: 12,
+        marginBottom: 10,
+        zIndex: -1
     },
 
     textStyle: {

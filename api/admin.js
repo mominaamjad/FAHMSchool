@@ -343,16 +343,31 @@ export const addClass = async classData => {
   }
 };
 
-export const viewSpecificSyllabus = async syllabusId => {
+export const viewSpecificSyllabus = async classId => {
   try {
+    const docRef = doc(db, 'classes', classId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const syllabusData = docSnap.data();
+      return syllabusData;
+    } else {
+      throw new Error('Timetable not found for the specified year');
+    }
   } catch (error) {
-    console.error('Error viewing Specific Syllabus: ', error);
+    console.error('Error fetching timetable: ', error);
     throw error;
   }
 };
 
 export const uploadSyllabus = async syllabusData => {
   try {
+    console.log(syllabusData);
+    const classDocRef = doc(db, 'classes', syllabusData.id);
+    await updateDoc(classDocRef, {
+      syllabus: syllabusData.syllabus,
+    });
+    console.log('Syllabus Uploaded: ', syllabusData.id);
   } catch (error) {
     console.error('Error uploading Syllabus: ', error);
     throw error;
