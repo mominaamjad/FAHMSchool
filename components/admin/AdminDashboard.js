@@ -8,6 +8,8 @@ import { ScrollView,
  } from "react-native"
 
  import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+ import ReportOne from "./ReportOne";
+ import ReportTwo from "./ReportTwo";
 
 
 const AdminDashboard = () => {
@@ -59,7 +61,7 @@ const AdminDashboard = () => {
             </View>
 
             <ScrollView>
-                 {selectedTab == 0? <Text style = {{color: "black"}}> yeh pehli hai </Text> : <Text style = {{color: "black"}}>yeh dusri hai </Text> }
+                 {selectedTab == 0? <ReportOne></ReportOne> : <ReportTwo></ReportTwo> }
             </ScrollView>
 
             
