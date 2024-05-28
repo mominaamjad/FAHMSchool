@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
         height: 250,
     },
     login: {
-        // fontWeight: 'bold',
         fontFamily: 'Poppins-SemiBold',
         color: 'black',
         fontSize: 30,
@@ -70,27 +69,38 @@ const styles = StyleSheet.create({
         margin: 8,
         padding: 10,
         width: '80%', 
-        borderWidth: 1,
+        borderWidth: 0.3,
         borderRadius: 8,
-        color: "#333333"
+        color: "#333333",
+        backgroundColor: '#F4F4F4',
+        fontFamily: 'Poppins-Regular',
+        fontSize: 13
     },
     submitButton:{
         backgroundColor: '#7239d6',
         borderRadius: 18,
         alignItems: 'center',
-        width: '80%', 
+        width: 290, 
+        height: 50,
         margin:20,
         elevation: 7,
+        justifyContent: 'center'
     },
     submitText:{
-        fontFamily: 'Poppins-Regular',
+        fontFamily: 'Poppins-SemiBold',
         fontSize: 15,
         color:'#ffffff',
         paddingTop: 7,
+        alignSelf: 'center',
         paddingBottom:5,
         paddingLeft:10,
         paddingRight:10,
     },
+    errorText: {
+            color: 'red',
+            fontSize: 12,
+            fontFamily: 'Poppins-Regular',
+          }
 });
 
 export default Login;
