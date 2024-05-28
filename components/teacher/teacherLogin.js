@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
-// needs work still with authentication
-import React, {useState} from 'react';
+// needs work still with navigation
+import React, { useState } from 'react';
 import {
+  Alert,
   Image,
   StyleSheet,
   Text,
@@ -9,23 +10,28 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {loginAdmin} from '../api/admin';
+import { useNavigation } from '@react-navigation/native';
+import { loginTeacher } from '../../api/teacher';
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loginError, setLoginError] = useState('');
+  const navigation = useNavigation();
+
   const handleLogin = async () => {
     try {
-      const admin = await loginAdmin({
-        email: email,
+      const teacher = await loginTeacher({
+        email: email, 
         password: password,
       });
-      console.log(
-        'Login Successful',
-        `Welcome ${admin.firstName} ${admin.lastName}`,
-      );
+      if (teacher!=undefined){
+        console.log(`Login Successful for ${teacher}`);
+        navigation.navigate('TeacherMainScreen', {teacher});
+      }
+
     } catch (error) {
       console.log('Login Failed', error.message);
       setLoginError('Login failed. Please try again!');
@@ -75,8 +81,8 @@ const Login = () => {
         placeholderTextColor={'#333333'}
         onChangeText={text => setEmail(text)}
         onBlur={checkEmail}></TextInput>
-
       {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -84,9 +90,8 @@ const Login = () => {
         onChangeText={text => setPassword(text)}
         secureTextEntry
         onBlur={checkPassword}></TextInput>
-      {passwordError ? (
-        <Text style={styles.errorText}>{passwordError}</Text>
-      ) : null}
+      {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+
       <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
         <Text style={styles.submitText}>Login</Text>
       </TouchableOpacity>

@@ -13,14 +13,17 @@ import MarksScreen from "./MarksScreen"
 import TeacherLogin from "./TeacherLogin.js"
 import SubjectsScreen from "./SubjectsScreen.js"
 
+import { useNavigation } from '@react-navigation/native';
+import { loginTeacher } from '../../api/teacher';
+
 const Drawer = createDrawerNavigator();
 
-const TeacherMainScreen = () => {
-
+const TeacherMainScreen = ({ route }) => {
+    const {teacher}=route.params;
     
     return(
 
-        <NavigationContainer> 
+        // <NavigationContainer> 
             <Drawer.Navigator screenOptions={{
                 drawerStyle : {
                     paddingVertical: 80,
@@ -36,7 +39,7 @@ const TeacherMainScreen = () => {
                 // headerTitle: "Welcome, Admin!",
                 headerShadowVisible: false,
                 headerLeftLabelVisible: true,
-                headerTitle: "Welcome!",
+                headerTitle: `Welcome! ${teacher.teacherName}`,
                 headerStyle: {
                     backgroundColor: "#8349EA",
                     borderBottomLeftRadius: 20,
@@ -66,7 +69,7 @@ const TeacherMainScreen = () => {
 
             </Drawer.Navigator>
 
-        </NavigationContainer>
+        // </NavigationContainer>
 
         // <ScrollView>
         //     <Text>Admin Dashboard</Text>

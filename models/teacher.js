@@ -1,9 +1,10 @@
 export default class Teacher {
-  constructor(firstName, lastName, email, password, classRef) {
-    this.firstName = firstName;
-    this.lastName = lastName;
+  constructor(teacherName, phoneNo, address, classRef, email, password) {
+    this.address = address;
+    this.classRef = classRef;
     this.email = email;
     this.password = password;
-    this.classRef = classRef;
+    this.phoneNo = phoneNo;
+    this.teacherName=teacherName;
   }
 }

@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {loginAdmin} from '../api/admin';
+import { loginAdmin } from '../../api/admin';
 
 const Login = () => {
   const [email, setEmail] = useState('');
