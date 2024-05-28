@@ -1,16 +1,24 @@
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {getTimetable, uploadTimetable} from '../../api/admin';
 
 const TimetableScreen = () => {
+
+  const [modalVisible, setModalVisible] = useState(false); // for pop-up
+  
   const [value, setValue] = useState();
   const [open, setOpen] = useState(false);
+
   const [isUploaded, setIsUploaded] = useState(false);
+  
+  const [isLoading, setIsLoading] = useState(false);
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [timetableImg, setTimetableImg] = useState(null);
+
   useEffect(() => {
     if (value) {
       fetchTimetable();
@@ -20,6 +28,7 @@ const TimetableScreen = () => {
 
   const fetchTimetable = async () => {
     try {
+      setIsLoading(true);
       const timetableData = await getTimetable(value);
       if (timetableData && timetableData.timetableImg) {
         console.log("image ka link ", timetableImg)
@@ -28,6 +37,7 @@ const TimetableScreen = () => {
         console.log("image ka link ", timetableImg)
         setTimetableImg(null);
       }
+      setIsLoading(false);
     } catch (error) {
       console.error('Error fetching timetable: ', error);
     }
@@ -46,12 +56,14 @@ const TimetableScreen = () => {
       } else if (response.error) {
         console.log('Image picker error: ', response.error);
       } else {
+        setIsLoading(true);
         console.log(response)
         let imageUri = response.uri || response.assets?.[0]?.uri;
         setSelectedImage(imageUri);
         setTimetableImg(imageUri);
         console.log("selected image ka link ", imageUri)
         setIsUploaded(true)
+        setIsLoading(false);
       }
     });
   };
@@ -67,6 +79,7 @@ const TimetableScreen = () => {
       await uploadTimetable({id: value, timetableImg: selectedImage});
       console.log('Timetable uploaded successfully');
       setIsUploaded(false);
+
     } catch (error) {
       console.error('Error uploading timetable: ', error);
     }
@@ -93,9 +106,11 @@ const TimetableScreen = () => {
       />
 
       <View>
-        {/* {timetableImg && ( */}
+      {isLoading ? <ActivityIndicator size="large" color= '#8349EA' /> : (
+        timetableImg && (
           <Image source={{uri: timetableImg}} style={styles.pic} />
-        {/* )} */}
+        )
+      )}
 
         <TouchableOpacity style={styles.buttonUpload} onPress={openImagePicker}>
           <Text style={styles.uploadText}>{isUploaded ? 'Upload Again' : 'Upload'}</Text>
@@ -134,11 +149,12 @@ const styles = StyleSheet.create({
     borderRadius: 17,
     paddingHorizontal: 22,
     paddingVertical: 10,
-    elevation: 2,
+    alignSelf: 'center',
     backgroundColor: '#8349EA',
     marginLeft: 10,
     marginRight: 10,
-    marginVertical: 60,
+    marginTop: 10,
+    width: 200
   },
 
   dropdown: {

@@ -6,7 +6,7 @@ import {
     TextInput,
     TouchableOpacity,
     View,
-    
+
 } from 'react-native';
 
 const Login = () => {
@@ -14,7 +14,7 @@ const Login = () => {
     const [password, setPassword] = useState("")
 
     const checkReg = () => {
-        if (reg.trim()==="")
+        if (reg.trim() === "")
             return false;
         // TODO: figure out format of reg numbers and form regex
         // const regRegex = /^$/;
@@ -23,10 +23,10 @@ const Login = () => {
         return true;
     };
 
-    const checkPassword = ()=>{
-        if (password==="")
+    const checkPassword = () => {
+        if (password === "")
             return false;
-        let isValid = password.length>6;
+        let isValid = password.length > 6;
         return isValid;
     }
 
@@ -37,8 +37,8 @@ const Login = () => {
         <Text style={styles.login}>Welcome!</Text>
         <TextInput style={styles.input} placeholder='Enter your registration no.' placeholderTextColor={'#333333'} onChangeText={setReg}></TextInput>
         <TextInput style={styles.input} placeholder='Enter your password' placeholderTextColor={'#333333'} onChangeText={setPassword} secureTextEntry></TextInput>
-        <TouchableOpacity style={styles.submitButton} onPress={() => {} } disabled={!checkReg()||!checkPassword()}><Text style={styles.submitText}>Log in</Text></TouchableOpacity>
-        
+        <TouchableOpacity style={styles.submitButton} onPress={() => { }} disabled={!checkReg() || !checkPassword()}><Text style={styles.submitText}>Log in</Text></TouchableOpacity>
+
     </View>
     )
 }
@@ -69,27 +69,29 @@ const styles = StyleSheet.create({
         height: 45,
         margin: 8,
         padding: 10,
-        width: '80%', 
-        borderWidth: 1,
+        width: '80%',
         borderRadius: 8,
-        color: "#333333"
+        color: '#333333',
+        backgroundColor: '#F4F4F4',
+        fontFamily: 'Poppins-Regular',
+        fontSize: 14,
     },
-    submitButton:{
+    submitButton: {
         backgroundColor: '#7239d6',
         borderRadius: 18,
         alignItems: 'center',
-        width: '80%', 
-        margin:20,
+        width: '80%',
+        margin: 20,
         elevation: 7,
     },
-    submitText:{
+    submitText: {
         fontFamily: 'Poppins-Regular',
         fontSize: 15,
-        color:'#ffffff',
+        color: '#ffffff',
         paddingTop: 7,
-        paddingBottom:5,
-        paddingLeft:10,
-        paddingRight:10,
+        paddingBottom: 5,
+        paddingLeft: 10,
+        paddingRight: 10,
     },
 });
 

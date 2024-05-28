@@ -11,6 +11,7 @@ import {initializeApp} from 'firebase/app';
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   setDoc,
@@ -61,6 +62,40 @@ export const addStudent = async studentData => {
     );
   } catch (error) {
     console.error('Error adding student: ', error);
+    throw error;
+  }
+};
+
+export const getTimetable = async year => {
+  try {
+    const docRef = doc(db, 'timetables', year);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const timetableData = docSnap.data();
+      return timetableData;
+    } else {
+      throw new Error('Timetable not found for the specified year');
+    }
+  } catch (error) {
+    console.error('Error fetching timetable: ', error);
+    throw error;
+  }
+};
+
+export const viewSyllabus = async classId => {
+  try {
+    const docRef = doc(db, 'classes', classId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const syllabusData = docSnap.data();
+      return syllabusData;
+    } else {
+      throw new Error('Timetable not found for the specified year');
+    }
+  } catch (error) {
+    console.error('Error fetching timetable: ', error);
     throw error;
   }
 };
