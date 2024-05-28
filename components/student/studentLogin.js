@@ -13,21 +13,42 @@ const Login = () => {
     const [reg, setReg] = useState("")
     const [password, setPassword] = useState("")
 
+    const [regError, setRegError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [loginError, setLoginError] = useState('');
+
     const checkReg = () => {
-        if (reg.trim()==="")
+        if (reg.trim()===""){
+            setRegError('Registration no. is required');
             return false;
-        // TODO: figure out format of reg numbers and form regex
-        // const regRegex = /^$/;
-        // let isValid = regRegex.test(reg);
-        // return isValid;
-        return true;
+
+        }
+
+        const regRegex = /^\(\d{2}\)-\d{3}$/;
+
+        let isValid = regRegex.test(reg);
+        if (!isValid) {
+            setRegError('Invalid registration no. format');
+            return false;
+        } else {
+            setRegError('');
+            return true;
+        }
     };
 
     const checkPassword = ()=>{
-        if (password==="")
+        if (password === '') {
+            setPasswordError('Password is required');
             return false;
-        let isValid = password.length>6;
-        return isValid;
+          }
+          let isValid = password.length > 6;
+          if (!isValid) {
+            setPasswordError('Password must be at least 7 characters long');
+            return false;
+          } else {
+            setPasswordError('');
+            return true;
+          }
     }
 
     return (<View style={styles.alignment}>
@@ -35,8 +56,27 @@ const Login = () => {
             <Image source={require('../assets/studentLogin.png')} style={styles.image} />
         </View>
         <Text style={styles.login}>Welcome!</Text>
-        <TextInput style={styles.input} placeholder='Enter your registration no.' placeholderTextColor={'#333333'} onChangeText={setReg}></TextInput>
-        <TextInput style={styles.input} placeholder='Enter your password' placeholderTextColor={'#333333'} onChangeText={setPassword} secureTextEntry></TextInput>
+        <TextInput 
+            style={styles.input} 
+            placeholder='Registration no.' 
+            placeholderTextColor={'#333333'} 
+            onChangeText={setReg}
+            // onBlur={checkReg}
+            ></TextInput>
+
+        {regError ? <Text style={styles.errorText}>{regError}</Text> : null}
+
+        <TextInput 
+            style={styles.input} 
+            placeholder='Password' 
+            placeholderTextColor={'#333333'} 
+            onChangeText={setPassword} 
+            secureTextEntry
+            // onBlur={checkPassword}
+            ></TextInput>
+        
+        {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+
         <TouchableOpacity style={styles.submitButton} onPress={() => {} } disabled={!checkReg()||!checkPassword()}><Text style={styles.submitText}>Log in</Text></TouchableOpacity>
         
     </View>

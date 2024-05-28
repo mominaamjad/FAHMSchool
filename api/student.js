@@ -27,8 +27,19 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-export const fetchStudentData = async () => {
+
+export const fetchStudentData = async (loginData) => {
   try {
+
+      console.log(loginData.email);
+      console.log(loginData.password);
+
+      const teacherQuery = query(
+        collection(db, 'students'),
+        where('id', '==', loginData.email),
+        where('password', '==', loginData.password)            
+    );
+
     const querySnapshot = await getDocs(collection(db, 'students'));
     const dataList = querySnapshot.docs.map(doc => {
       const data = doc.data();
