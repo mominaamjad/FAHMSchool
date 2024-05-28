@@ -120,7 +120,7 @@ const Main = () => {
 
                             return (
                                 <DataTable.Row key={index} style={styles.row}>
-                                    <DataTable.Cell>{element.name}</DataTable.Cell>
+                                    <DataTable.Cell> <Text style = {styles.names}> {element.name}</Text></DataTable.Cell>
                                     <DataTable.Cell>{inputComponent}</DataTable.Cell>
                                     <TouchableOpacity>
                                         <Icon name="delete" size={20} onPress = { ()=>{} } style = {styles.deleteIcon}/>
@@ -153,14 +153,21 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     tableTitle: {
-        fontWeight: 'bold',
-        fontSize: 17,
+        fontFamily: 'Poppins-SemiBold',
+        fontSize: 16,
         marginHorizontal: 13,
         marginTop: 13
     },
 
+    names: {
+        fontFamily: 'Poppins-Regular',
+        fontSize: 14,
+    },
+
     deleteIcon: {
-        marginTop: 13
+        marginTop: 13,
+        marginLeft: 15,
+        color: 'red'
     },
     row: {
         // height: 40,
@@ -189,6 +196,7 @@ const styles = StyleSheet.create({
         alignSelf: "flex-start"
     },
     TextInput: {
+        fontFamily: 'Poppins-Regular',
         marginLeft: 70,
         backgroundColor: 'lavender',
         height: 20
