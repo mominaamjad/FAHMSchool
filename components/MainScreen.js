@@ -4,6 +4,7 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
+    Image
 } from "react-native";
 
 
@@ -42,10 +43,10 @@ const MainScreen = ( { navigation }) => {
     return (
         <View style={styles.main}>
                 
-                <Text style={styles.textHeading}>School System</Text>
-
+                <View style={styles.logoView}>
+                <Image style={{height:250,width:250}}source={require('./assets/logo.png')}/>
+                </View>
                 <View style={styles.options}>
-
                     <Text style={styles.text}>Login as</Text>
 
                     <TouchableOpacity onPress={() => { navigation.navigate('Admin') }}>
@@ -59,24 +60,27 @@ const MainScreen = ( { navigation }) => {
                     <TouchableOpacity onPress={() => { navigation.navigate('Student') }}>
                         <Main name={"Student"} />
                     </TouchableOpacity>
-
                 </View>
-
         </View>
-
     );
 }
 
 styles = StyleSheet.create({
    main: {
     backgroundColor: "#8349EA",
+    flex:1,
+    alignItems:'center'
    },
 
-   textHeading: {
-    fontFamily: 'Poppins-SemiBold',
-        margin: 5,
-        fontSize: 30,
-        color: '#ffff'
+  //  textHeading: {
+  //   fontFamily: 'Poppins-SemiBold',
+  //       margin: 5,
+  //       fontSize: 30,
+  //       color: '#ffff'
+  //  },
+
+   logoView:{
+    marginVertical:45
    },
 
     text: {
@@ -87,7 +91,7 @@ styles = StyleSheet.create({
     },
 
     options: {
-        marginVertical: 260
+        marginVertical: 10
     }
 })
 
