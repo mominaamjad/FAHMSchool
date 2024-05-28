@@ -65,7 +65,9 @@ const TeacherMainScreen = ({ route }) => {
                 <Drawer.Screen name = "Table yahan nae aaye ga" component={MarksScreen}/>
 
                 {/* yahan pe iss ko logout karao  */}
-                <Drawer.Screen name = "Logout" component={TeacherLogin}/>
+                <Drawer.Screen name = "Logout" component={TeacherLogin} options={{
+        headerShown: false
+      }}/>
 
             </Drawer.Navigator>
 

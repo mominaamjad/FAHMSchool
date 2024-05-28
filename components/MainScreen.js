@@ -14,8 +14,12 @@ import AdminLogin from './admin/AdminLogin'
 import TeacherLogin from './teacher/TeacherLogin'
 import StudentLogin from './student/StudentLogin'
 
+import AdminMainScreen from './admin/AdminMainScreen';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import TeacherMainScreen from './teacher/TeacherMainScreen';
+import StudentMainScreen from './student/StudentMainScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +37,13 @@ function MyStack() {
       <Stack.Screen name="Admin" component={AdminLogin} />
       <Stack.Screen name="Teacher" component={TeacherLogin} />
       <Stack.Screen name="Student" component={StudentLogin} />
+      <Stack.Screen name="AdminMainScreen" component={AdminMainScreen} options={{
+        headerShown: false
+      }}/>
+      <Stack.Screen name="TeacherMainScreen" component={TeacherMainScreen} options={{
+        headerShown: false
+      }}/>
+      <Stack.Screen name="StudentMainScreen" component={StudentMainScreen} />
     </Stack.Navigator>
     </NavigationContainer>
   );

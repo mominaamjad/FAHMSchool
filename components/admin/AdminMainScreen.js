@@ -15,8 +15,9 @@ import TimetableScreen from './TimetableScreen.js';
 const Drawer = createDrawerNavigator();
 
 const AdminMainScreen = () => {
+  
   return (
-    <NavigationContainer>
+    // <NavigationContainer>
       <Drawer.Navigator
         screenOptions={{
           drawerStyle: {
@@ -31,6 +32,7 @@ const AdminMainScreen = () => {
           },
 
           // headerTitle: "Welcome, Admin!",
+          
           headerShadowVisible: false,
           headerLeftLabelVisible: true,
           headerStyle: {
@@ -67,7 +69,6 @@ const AdminMainScreen = () => {
         {/* yahan pe iss ko logout karao  */}
         <Drawer.Screen name="Logout" component={AdminLogin} />
       </Drawer.Navigator>
-    </NavigationContainer>
 
     // <ScrollView>
     //     <Text>Admin Dashboard</Text>
