@@ -325,8 +325,8 @@ const RecordsScreen = () => {
                         <View style={styles.rowStyle}>
                             <Text style={styles.modalText}>Registration Number </Text>
                             <TextInput
-                                value=''
-                                style={styles.TextInput}
+                                // value=''
+                                style={styles.TextInputAdd}
                                 onChangeText={() => { }}
                             />
                         </View>
@@ -334,8 +334,8 @@ const RecordsScreen = () => {
                         <View style={styles.rowStyle}>
                             <Text style={styles.modalText}>Name </Text>
                             <TextInput
-                                value=''
-                                style={styles.TextInput}
+                                // value=''
+                                style={styles.TextInputAdd}
                                 onChangeText={() => { }}
                             />
                         </View>
@@ -343,8 +343,8 @@ const RecordsScreen = () => {
                         <View style={styles.rowStyle}>
                             <Text style={styles.modalText}>Father Name </Text>
                             <TextInput
-                                value=''
-                                style={styles.TextInput}
+                                // value=''
+                                style={styles.TextInputAdd}
                                 onChangeText={() => { }}
                             />
                         </View>
@@ -352,8 +352,8 @@ const RecordsScreen = () => {
                         <View style={styles.rowStyle}>
                             <Text style={styles.modalText}>Date of Birth </Text>
                             <TextInput
-                                value=''
-                                style={styles.TextInput}
+                                // value=''
+                                style={styles.TextInputAdd}
                                 onChangeText={() => { }}
                             />
                         </View>
@@ -361,8 +361,8 @@ const RecordsScreen = () => {
                         <View style={styles.rowStyle}>
                             <Text style={styles.modalText}>Gender </Text>
                             <TextInput
-                                value=''
-                                style={styles.TextInput}
+                                // value=''
+                                style={styles.TextInputAdd}
                                 onChangeText={() => { }}
                                 underlineColor='transparent'
                             />
@@ -371,8 +371,8 @@ const RecordsScreen = () => {
                         <View style={styles.rowStyle}>
                             <Text style={styles.modalText}>Caste </Text>
                             <TextInput
-                                value=''
-                                style={styles.TextInput}
+                                // value=''
+                                style={styles.TextInputAdd}
                                 onChangeText={() => { }}
                                 underlineColor='transparent'
                             />
@@ -381,8 +381,8 @@ const RecordsScreen = () => {
                         <View style={styles.rowStyle}>
                             <Text style={styles.modalText}>Occupation </Text>
                             <TextInput
-                                value=''
-                                style={styles.TextInput}
+                                // value=''
+                                style={styles.TextInputAdd}
                                 onChangeText={() => { }}
                                 underlineColor='transparent'
                             />
@@ -391,8 +391,8 @@ const RecordsScreen = () => {
                         <View style={styles.rowStyle}>
                             <Text style={styles.modalText}>Residence </Text>
                             <TextInput
-                                value=''
-                                style={styles.TextInput}
+                                // value=''
+                                style={styles.TextInputAdd}
                                 onChangeText={() => { }}
                                 underlineColor='transparent'
                             />
@@ -401,8 +401,8 @@ const RecordsScreen = () => {
                         <View style={styles.rowStyle}>
                             <Text style={styles.modalText}>Date of Admission </Text>
                             <TextInput
-                                value=''
-                                style={styles.TextInput}
+                                // value=''
+                                style={styles.TextInputAdd}
                                 onChangeText={() => { }}
                                 underlineColor='transparent'
                             />
@@ -597,6 +597,15 @@ const styles = StyleSheet.create({
         color: '#333333',
         fontFamily: 'Poppins-Regular'
     },
+
+    TextInputAdd: {
+        borderWidth: 1,
+        borderRadius: 20,
+        borderColor: '#8349EA',
+        width: 100,
+        marginBottom: 20,
+        height: 30
+    }, 
 
     modalView: {
         width: 350,
