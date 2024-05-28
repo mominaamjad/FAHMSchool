@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   FIREBASE_API_KEY,
   FIREBASE_APP_ID,
@@ -20,6 +21,7 @@ import {
   setDoc,
   updateDoc,
   where,
+  writeBatch,
 } from 'firebase/firestore';
 import Admin from '../models/admin';
 const firebaseConfig = {
@@ -130,7 +132,15 @@ export const fetchTeachers = async () => {
       label: Teacherdoc.data().teacherName,
       value: Teacherdoc.id,
     }));
-    return teachersList;
+    const assignedTeachers = (await fetchClasses())
+      .filter(cls => cls.teacher !== null)
+      .map(cls => cls.teacher);
+
+    const unassignedTeachers = teachersList.filter(
+      teacher => !assignedTeachers.includes(teacher.value),
+    );
+
+    return unassignedTeachers;
   } catch (error) {
     console.error('Error fetching teachers: ', error);
     throw error;
@@ -141,15 +151,38 @@ export const assignClassToTeacher = async classData => {
     const classDocRef = doc(db, 'classes', classData.classId);
 
     if (!classData.teacherId) {
+      const teachersSnapshot = await getDocs(collection(db, 'teachers'));
+      const batch = writeBatch(db);
+
+      teachersSnapshot.forEach(doc => {
+        if (doc.data().classRef === classData.classId) {
+          batch.update(doc.ref, {classRef: null});
+        }
+      });
+
+      await batch.commit();
+
       await updateDoc(classDocRef, {
         teacher: null,
         assigned: false,
       });
+      return 'Unassign class successfully';
     } else {
       const teacherDocRef = doc(db, 'teachers', classData.teacherId);
       const teacherDocSnap = await getDoc(teacherDocRef);
 
       if (teacherDocSnap.exists()) {
+        const teachersSnapshot = await getDocs(collection(db, 'teachers'));
+        const batch = writeBatch(db);
+
+        teachersSnapshot.forEach(doc => {
+          if (doc.data().classRef === classData.classId) {
+            batch.update(doc.ref, {classRef: null});
+          }
+        });
+
+        await batch.commit();
+
         await updateDoc(teacherDocRef, {
           classRef: classData.classId,
         });
@@ -162,6 +195,7 @@ export const assignClassToTeacher = async classData => {
         throw new Error("Teacher document doesn't exist");
       }
     }
+    return 'Class assigned successfully';
   } catch (error) {
     console.error('Error Assigning Class To Teacher: ', error);
     throw error;

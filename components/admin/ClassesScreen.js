@@ -37,6 +37,9 @@ const ClassesScreen = () => {
         const classesList = await fetchClasses();
         setClasses(classesList);
         setList(classesList);
+        list.forEach(classObj => {
+          console.log(classObj.assigned); // Output the value of the 'assigned' property
+        });
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
@@ -75,10 +78,10 @@ const ClassesScreen = () => {
     };
 
     try {
-      await assignClassToTeacher(classData);
+      const outputString = await assignClassToTeacher(classData);
       setClasses(newClasses);
       setList(newClasses);
-      Alert.alert('Class assigned successfully');
+      Alert.alert(outputString);
     } catch (error) {
       console.error('Error assigning class:', error);
       Alert.alert('Error assigning class');
