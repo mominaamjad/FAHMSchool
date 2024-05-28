@@ -2,12 +2,9 @@
 
 import React, {useEffect} from 'react';
 import {addTeacher, deleteTeacher} from './api/admin';
-import AdminMainScreen from './components/admin/AdminMainScreen';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import TeacherLogin from './components/teacher/TeacherLogin'
-import TeacherMainScreen from './components/teacher/TeacherMainScreen';
+import {createStackNavigator} from '@react-navigation/stack';
+import RecordsScreen from './components/admin/RecordsScreen';
 
 function App() {
   // const fetchData = async () => {
@@ -114,12 +111,16 @@ function App() {
 
   return (
     // this is the nav for teacher login to teacher dashboard. comment out for own use
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{headerShown:false}}>
-        <Stack.Screen name="Login" component={TeacherLogin} />
-        <Stack.Screen name="TeacherMainScreen" component={TeacherMainScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <RecordsScreen />
+    // <TimetableScreen />
+    // <NavigationContainer>
+    //   <Stack.Navigator
+    //     initialRouteName="Login"
+    //     screenOptions={{headerShown: false}}>
+    //     <Stack.Screen name="Login" component={MyStack} />
+    //     {/* <Stack.Screen name="TeacherMainScreen" component={TeacherMainScreen} /> */}
+    //   </Stack.Navigator>
+    // </NavigationContainer>
   );
 }
 
