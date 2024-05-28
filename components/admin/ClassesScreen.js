@@ -42,7 +42,6 @@ const ClassesScreen = () => {
         setClasses(classesList);
         setList(classesList);
         setIsLoading(false);
-        console.log(isLoading)
         list.forEach(classObj => {
           console.log(classObj.assigned); // Output the value of the 'assigned' property
         });
@@ -50,7 +49,6 @@ const ClassesScreen = () => {
         console.error('Error fetching data: ', error);
       }
     }
-    console.log(isLoading)
     fetchTeachersData();
   }, []);
 

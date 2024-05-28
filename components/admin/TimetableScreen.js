@@ -8,20 +8,24 @@ import {getTimetable, uploadTimetable} from '../../api/admin';
 const TimetableScreen = () => {
   const [value, setValue] = useState();
   const [open, setOpen] = useState(false);
+  const [isUploaded, setIsUploaded] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [timetableImg, setTimetableImg] = useState(null);
   useEffect(() => {
     if (value) {
       fetchTimetable();
     }
+    console.log(timetableImg)
   }, [value]);
 
   const fetchTimetable = async () => {
     try {
       const timetableData = await getTimetable(value);
       if (timetableData && timetableData.timetableImg) {
+        console.log("image ka link ", timetableImg)
         setTimetableImg(timetableData.timetableImg);
       } else {
+        console.log("image ka link ", timetableImg)
         setTimetableImg(null);
       }
     } catch (error) {
@@ -42,8 +46,12 @@ const TimetableScreen = () => {
       } else if (response.error) {
         console.log('Image picker error: ', response.error);
       } else {
+        console.log(response)
         let imageUri = response.uri || response.assets?.[0]?.uri;
         setSelectedImage(imageUri);
+        setTimetableImg(imageUri);
+        console.log("selected image ka link ", imageUri)
+        setIsUploaded(true)
       }
     });
   };
@@ -55,8 +63,10 @@ const TimetableScreen = () => {
     }
 
     try {
+      console.log("selected image ki value ", value, "and link ", selectedImage)
       await uploadTimetable({id: value, timetableImg: selectedImage});
       console.log('Timetable uploaded successfully');
+      setIsUploaded(false);
     } catch (error) {
       console.error('Error uploading timetable: ', error);
     }
@@ -83,17 +93,17 @@ const TimetableScreen = () => {
       />
 
       <View>
-        {timetableImg && (
+        {/* {timetableImg && ( */}
           <Image source={{uri: timetableImg}} style={styles.pic} />
-        )}
+        {/* )} */}
 
         <TouchableOpacity style={styles.buttonUpload} onPress={openImagePicker}>
-          <Text style={styles.uploadText}>Upload</Text>
+          <Text style={styles.uploadText}>{isUploaded ? 'Upload Again' : 'Upload'}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonUpload} onPress={handleUpload}>
+        {isUploaded ? (<TouchableOpacity style={styles.buttonUpload} onPress={handleUpload}>
           <Text style={styles.uploadText}>Done</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>) : (<></>)}
       </View>
     </View>
   );
