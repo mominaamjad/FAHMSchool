@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Modal,
   ScrollView,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {addStudent} from '../../api/admin';
+import {addStudent, fetchStudents, updateStudent} from '../../api/admin';
 import Card from '../layouts/Card';
 const RecordsScreen = () => {
   const [students, setStudents] = useState([]);
@@ -68,16 +68,18 @@ const RecordsScreen = () => {
   const [feeModalVisible, setFeeModalVisible] = useState(false);
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [newStudent, setNewStudent] = useState({
-    class: '',
-    regNo: '',
-    name: '',
-    fathername: '',
+    admissionClass: '',
+    currentClass: '',
+    studentName: '',
+    fatherName: '',
     dob: '',
     gender: '',
     caste: '',
     occupation: '',
     residence: '',
-    dateOfAdmission: '',
+    email: '',
+    password: '',
+    remarks: '',
   });
   const [edit, setEdit] = useState(false);
   const [value, setValue] = useState('allClasses');
@@ -91,7 +93,20 @@ const RecordsScreen = () => {
     {label: 'Class 5', value: 'class5'},
     {label: 'Class 6', value: 'class6'},
   ]);
+  useEffect(() => {
+    const loadStudents = async () => {
+      try {
+        const studentList = await fetchStudents();
+        setStudents(studentList);
+        setList(studentList);
+        console.log(list);
+      } catch (error) {
+        console.error('Error loading students: ', error);
+      }
+    };
 
+    loadStudents();
+  }, []);
   const searchItem = text => {
     if (text === '') {
       setList(students);
@@ -105,10 +120,18 @@ const RecordsScreen = () => {
     setSearch(text);
   };
 
-  const handleChangedStudent = (property, changedValue) => {
-    const newValue = [...students];
-    newValue[index][property] = changedValue;
-    setStudents(newValue);
+  const handleUpdateStudent = async (property, changedValue) => {
+    try {
+      const newValue = [...students];
+      newValue[index][property] = changedValue;
+      setStudents(newValue);
+
+      const updatedStudent = newValue[index];
+      await updateStudent(updatedStudent.regNo, updatedStudent);
+      console.log('Student updated successfully');
+    } catch (error) {
+      console.error('Error updating student: ', error);
+    }
   };
 
   const handleChangedFee = (property, changedValue) => {
@@ -128,20 +151,36 @@ const RecordsScreen = () => {
   };
   const handleAddStudent = async () => {
     try {
-      await addStudent(newStudent);
-      setStudents([...students, newStudent]);
+      const currentYear = new Date().getFullYear();
+      let newRegNo = `${currentYear}-0`;
+      if (students.length > 0) {
+        const lastRegNo = students[students.length - 1].id;
+        if (lastRegNo) {
+          const regNoParts = lastRegNo.split('-');
+          if (parseInt(regNoParts[0]) === currentYear) {
+            const increment = parseInt(regNoParts[1]) + 1;
+            newRegNo = `${currentYear}-${increment}`;
+          }
+        }
+      }
+
+      const studentWithRegNo = {...newStudent, regNo: newRegNo};
+      await addStudent(studentWithRegNo);
+      setStudents([...students, studentWithRegNo]);
       setAddModalVisible(false);
       setNewStudent({
-        class: '',
-        regNo: '',
-        name: '',
-        fathername: '',
+        admissionClass: '',
+        currentClass: '',
+        studentName: '',
+        fatherName: '',
         dob: '',
         gender: '',
         caste: '',
         occupation: '',
         residence: '',
-        dateOfAdmission: '',
+        email: '',
+        password: '',
+        remarks: '',
       });
     } catch (error) {
       console.error('Error adding student: ', error);
@@ -235,7 +274,7 @@ const RecordsScreen = () => {
                   value={students[index].name}
                   style={styles.TextInput}
                   onChangeText={text => {
-                    handleChangedStudent('name', text);
+                    handleUpdateStudent('name', text);
                   }}
                   editable={edit}
                   underlineColor="transparent"
@@ -248,7 +287,7 @@ const RecordsScreen = () => {
                   value={students[index].fathername}
                   style={styles.TextInput}
                   onChangeText={text => {
-                    handleChangedStudent('fathername', text);
+                    handleUpdateStudent('fathername', text);
                   }}
                   editable={edit}
                   underlineColor="transparent"
@@ -261,7 +300,7 @@ const RecordsScreen = () => {
                   value={students[index].dob}
                   style={styles.TextInput}
                   onChangeText={text => {
-                    handleChangedStudent('dob', text);
+                    handleUpdateStudent('dob', text);
                   }}
                   editable={edit}
                   underlineColor="transparent"
@@ -274,7 +313,7 @@ const RecordsScreen = () => {
                   value={students[index].gender}
                   style={styles.TextInput}
                   onChangeText={text => {
-                    handleChangedStudent('gender', text);
+                    handleUpdateStudent('gender', text);
                   }}
                   editable={edit}
                   underlineColor="transparent"
@@ -287,7 +326,7 @@ const RecordsScreen = () => {
                   value={students[index].caste}
                   style={styles.TextInput}
                   onChangeText={text => {
-                    handleChangedStudent('caste', text);
+                    handleUpdateStudent('caste', text);
                   }}
                   editable={edit}
                   underlineColor="transparent"
@@ -300,7 +339,7 @@ const RecordsScreen = () => {
                   value={students[index].occupation}
                   style={styles.TextInput}
                   onChangeText={text => {
-                    handleChangedStudent('occupation', text);
+                    handleUpdateStudent('occupation', text);
                   }}
                   editable={edit}
                   underlineColor="transparent"
@@ -313,7 +352,7 @@ const RecordsScreen = () => {
                   value={students[index].residence}
                   style={styles.TextInput}
                   onChangeText={text => {
-                    handleChangedStudent('residence', text);
+                    handleUpdateStudent('residence', text);
                   }}
                   editable={edit}
                   underlineColor="transparent"
@@ -326,7 +365,7 @@ const RecordsScreen = () => {
                   value={students[index].dateOfAdmission}
                   style={styles.TextInput}
                   onChangeText={text => {
-                    handleChangedStudent('dateOfAdmission', text);
+                    handleUpdateStudent('dateOfAdmission', text);
                   }}
                   editable={edit}
                   underlineColor="transparent"
@@ -346,7 +385,8 @@ const RecordsScreen = () => {
 
                 <TouchableOpacity
                   style={styles.cancelButton}
-                  onPress={() => {
+                  onPress={async () => {
+                    await handleUpdateStudent();
                     setModalVisible(false);
                     setEdit(false);
                   }}>
@@ -418,7 +458,9 @@ const RecordsScreen = () => {
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Name </Text>
-                <Text style={styles.modalText}>{students[index].name}</Text>
+                <Text style={styles.modalText}>
+                  {students[index].studentName}
+                </Text>
               </View>
 
               <View style={styles.rowStyle}>

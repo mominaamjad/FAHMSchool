@@ -235,20 +235,11 @@ export const deleteTeacher = async teacherEmail => {
 
 export const addStudent = async studentData => {
   try {
-    const studentRef = await addDoc(collection(db, 'students'), {
-      class: studentData.class,
-      regNo: studentData.regNo,
-      name: studentData.name,
-      fathername: studentData.fathername,
-      dob: studentData.dob,
-      gender: studentData.gender,
-      caste: studentData.caste,
-      occupation: studentData.occupation,
-      residence: studentData.residence,
-      dateOfAdmission: studentData.dateOfAdmission,
+    await setDoc(doc(db, 'students', studentData.regNo), {
+      ...studentData,
     });
-    console.log('Student added with ID: ', studentRef.id);
-    return studentRef.id;
+    console.log('Student added with ID: ', studentData.regNo);
+    return studentData.regNo;
   } catch (error) {
     console.error('Error adding student: ', error);
     throw error;
@@ -263,20 +254,19 @@ export const viewAllStudent = async () => {
   }
 };
 
-const fetchStudents = async () => {
+export const fetchStudents = async () => {
   try {
-    const studentList = [];
-    const querySnapshot = await firestore().collection('students').get();
-    querySnapshot.forEach(documentSnapshot => {
-      studentList.push({
-        ...documentSnapshot.data(),
-        id: documentSnapshot.id,
-      });
-    });
-    setStudents(studentList);
-    setList(studentList);
+    const studentCollection = collection(db, 'students');
+    const studentSnapshot = await getDocs(studentCollection);
+    const studentList = studentSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    console.log(studentList);
+    return studentList;
   } catch (error) {
     console.error('Error fetching students: ', error);
+    throw error;
   }
 };
 
@@ -288,14 +278,17 @@ export const viewSpecificStudent = async studentId => {
   }
 };
 
-export const editStudent = async studentData => {
+export const updateStudent = async (regNo, updatedData) => {
   try {
+    const studentRef = doc(db, 'students', regNo);
+    await updateDoc(studentRef, updatedData);
+    console.log('Student updated with ID: ', regNo);
+    return regNo;
   } catch (error) {
-    console.error('Error editing Student: ', error);
+    console.error('Error updating student: ', error);
     throw error;
   }
 };
-
 export const deleteStudent = async studentId => {
   try {
   } catch (error) {
