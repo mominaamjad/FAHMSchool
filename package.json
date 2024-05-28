@@ -23,7 +23,7 @@
     "@react-navigation/stack": "^6.3.29",
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
-    "firebase": "^10.12.1",
+    "firebase": "^10.12.2",
     "firebase-admin": "^12.1.1",
     "fs": "^0.0.1-security",
     "os": "^0.1.2",
