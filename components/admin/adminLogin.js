@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
         paddingLeft:10,
         paddingRight:10,
   },
+  
   errorText: {
     color: 'red',
     fontSize: 12,
