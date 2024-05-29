@@ -23,11 +23,11 @@ import Card from '../layouts/Card';
 const RecordsScreen = () => {
   const [students, setStudents] = useState([]);
   const [feeData, setFeeData] = useState({
-    amountDue: '',
-    amountPaid: '',
-    lateFees: '',
-    payableAmount: '',
-    paymentData: '',
+    amountDue: null,
+    amountPaid: null,
+    lateFees: null,
+    payableAmount: null,
+    paymentDate: null,
     remarks: '',
     status: '',
     studentRef: '',
@@ -93,6 +93,7 @@ const RecordsScreen = () => {
         const feeList = await fetchFees();
         console.log(feeList);
         setFeeData(feeList);
+        console.log('FEE DATA');
         console.log(feeData);
         setIsLoading(false);
       } catch (error) {
@@ -119,11 +120,11 @@ const RecordsScreen = () => {
       const addFees = {...feeData};
       await createSpecificFeeStatus(addFees);
       setFeeData({
-        amountDue: '',
-        amountPaid: '',
-        lateFees: '',
-        payableAmount: '',
-        paymentDate: '',
+        amountDue: null,
+        amountPaid: null,
+        lateFees: null,
+        payableAmount: null,
+        paymentDate: null,
         remarks: '',
         status: '',
         studentRef: '',
@@ -151,6 +152,7 @@ const RecordsScreen = () => {
       if (index !== null) {
         const updatedFeeData = {...feeData, [property]: changedValue};
         setFeeData(updatedFeeData);
+
         const studentId = students[index].id;
         await updateFees(studentId, updatedFeeData);
         console.log('Fees updated successfully');
@@ -158,7 +160,7 @@ const RecordsScreen = () => {
         console.error('No student selected to update fees');
       }
     } catch (error) {
-      console.error('Error updating Fees: ', error);
+      console.error('Error updating Fees:', error);
     }
   };
 

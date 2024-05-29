@@ -331,14 +331,30 @@ export const viewAllFeeStatus = async () => {
 export const updateFees = async (id, updatedData) => {
   try {
     const feesRef = doc(db, 'fees', id);
-    console.log(updatedData);
-    await updateDoc(feesRef, updatedData);
-    console.log('fee updated with ID: ', id);
+
+    const feeDoc = await getDoc(feesRef);
+
+    if (feeDoc.exists()) {
+      const cleanedData = cleanObject(updatedData);
+      await updateDoc(feesRef, cleanedData);
+      console.log('Fee updated with ID:', id);
+    } else {
+      const cleanedData = cleanObject(updatedData);
+      await setDoc(feesRef, cleanedData);
+      console.log('New fee document created with ID:', id);
+    }
+
     return id;
   } catch (error) {
-    console.error('Error updating fee: ', error);
+    console.error('Error updating fee:', error);
     throw error;
   }
+};
+
+const cleanObject = obj => {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, v]) => v !== undefined),
+  );
 };
 
 export const createSpecificFeeStatus = async feeData => {
