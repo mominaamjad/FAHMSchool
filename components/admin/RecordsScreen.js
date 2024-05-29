@@ -23,15 +23,14 @@ import {
   updateFees,
 } from '../../api/admin';
 import Card from '../layouts/Card';
-import { Checkbox, RadioButton } from 'react-native-paper';
 const RecordsScreen = () => {
   const [students, setStudents] = useState([]);
   const [feeData, setFeeData] = useState({
-    amountDue: '',
-    amountPaid: '',
-    lateFees: '',
-    payableAmount: '',
-    paymentData: '',
+    amountDue: null,
+    amountPaid: null,
+    lateFees: null,
+    payableAmount: null,
+    paymentDate: null,
     remarks: '',
     status: '',
     studentRef: '',
@@ -43,7 +42,6 @@ const RecordsScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [checked, setChecked] = useState();
-
 
   const [modalVisible, setModalVisible] = useState(false);
   const [feeModalVisible, setFeeModalVisible] = useState(false);
@@ -67,13 +65,16 @@ const RecordsScreen = () => {
   const [value, setValue] = useState('allClasses');
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
-    {label: 'All Classes', value: 'allClasses'},
-    {label: 'Class 1', value: 'class1'},
-    {label: 'Class 2', value: 'class2'},
-    {label: 'Class 3', value: 'class3'},
-    {label: 'Class 4', value: 'class4'},
-    {label: 'Class 5', value: 'class5'},
-    {label: 'Class 6', value: 'class6'},
+    {label: 'Nursery', value: '01'},
+    {label: 'Prep', value: '02'},
+    {label: 'Class 1', value: '03'},
+    {label: 'Class 2', value: '04'},
+    {label: 'Class 3', value: '05'},
+    {label: 'Class 4', value: '06'},
+    {label: 'Class 5', value: '07'},
+    {label: 'Class 6', value: '08'},
+    {label: 'Class 7', value: '09'},
+    {label: 'Class 8', value: '10'},
   ]);
 
   useEffect(() => {
@@ -100,6 +101,7 @@ const RecordsScreen = () => {
         const feeList = await fetchFees();
         console.log(feeList);
         setFeeData(feeList);
+        console.log('FEE DATA');
         console.log(feeData);
         setIsLoading(false);
       } catch (error) {
@@ -126,11 +128,11 @@ const RecordsScreen = () => {
       const addFees = {...feeData};
       await createSpecificFeeStatus(addFees);
       setFeeData({
-        amountDue: '',
-        amountPaid: '',
-        lateFees: '',
-        payableAmount: '',
-        paymentDate: '',
+        amountDue: null,
+        amountPaid: null,
+        lateFees: null,
+        payableAmount: null,
+        paymentDate: null,
         remarks: '',
         status: '',
         studentRef: '',
@@ -158,6 +160,7 @@ const RecordsScreen = () => {
       if (index !== null) {
         const updatedFeeData = {...feeData, [property]: changedValue};
         setFeeData(updatedFeeData);
+
         const studentId = students[index].id;
         await updateFees(studentId, updatedFeeData);
         console.log('Fees updated successfully');
@@ -165,7 +168,7 @@ const RecordsScreen = () => {
         console.error('No student selected to update fees');
       }
     } catch (error) {
-      console.error('Error updating Fees: ', error);
+      console.error('Error updating Fees:', error);
     }
   };
 
@@ -174,7 +177,9 @@ const RecordsScreen = () => {
       setList(students);
     } else {
       setList(() =>
-        students.filter(element => element.class.toLowerCase().includes(value)),
+        students.filter(element =>
+          element.currentClass.toLowerCase().includes(value),
+        ),
       );
     }
   };
@@ -182,16 +187,19 @@ const RecordsScreen = () => {
   const handleAddStudent = async () => {
     try {
       const currentYear = new Date().getFullYear();
-      let newRegNo = `${currentYear}-0`;
+      let newRegNo;
       if (students.length > 0) {
-        const lastRegNo = students[students.length - 1].id;
-        if (lastRegNo) {
-          const regNoParts = lastRegNo.split('-');
-          if (parseInt(regNoParts[0]) === currentYear) {
-            const increment = parseInt(regNoParts[1]) + 1;
-            newRegNo = `${currentYear}-${increment}`;
-          }
+        const lastRegNo = students[students.length - 1].regNo;
+        const regNoParts = lastRegNo.split('-');
+        if (parseInt(regNoParts[0]) === currentYear) {
+          const increment = parseInt(regNoParts[1]) + 1;
+          const paddedIncrement = String(increment).padStart(4, '0');
+          newRegNo = `${currentYear}-${paddedIncrement}`;
+        } else {
+          newRegNo = `${currentYear}-0001`;
         }
+      } else {
+        newRegNo = `${currentYear}-0001`;
       }
 
       const studentWithRegNo = {...newStudent, regNo: newRegNo};
@@ -216,25 +224,24 @@ const RecordsScreen = () => {
       console.error('Error adding student: ', error);
     }
   };
+
   return (
     <View>
-        <View style={styles.topBar}>
-      <View style={styles.searchBar}>
-        <TextInput
-          style={styles.search}
-          label="Search"
-          placeholder="Search..."
-          placeholderTextColor="#000000"
-          onChangeText={text =>
-            searchItem(text)
-          }
-          value={search}
-          onBlur={() => {
-            setSearch('');
-            setList(students);
-          }}
-        />
-        <Icon name="magnify" size={30} style={styles.searchIcon} />
+      <View style={styles.topBar}>
+        <View style={styles.searchBar}>
+          <TextInput
+            style={styles.search}
+            label="Search"
+            placeholder="Search..."
+            placeholderTextColor="#000000"
+            onChangeText={text => searchItem(text)}
+            value={search}
+            onBlur={() => {
+              setSearch('');
+              setList(students);
+            }}
+          />
+          <Icon name="magnify" size={30} style={styles.searchIcon} />
         </View>
 
         <DropDownPicker
@@ -250,9 +257,7 @@ const RecordsScreen = () => {
           onChangeValue={() => handleFilteredList()}
         />
       </View>
-      <View style={{ alignSelf: 'center' }}>
-
-
+      <View style={{alignSelf: 'center'}}>
         <TouchableOpacity
           style={styles.buttonAdd}
           onPress={() => {
@@ -266,7 +271,9 @@ const RecordsScreen = () => {
       </View>
 
 
+
       {isLoading ? <ActivityIndicator size="large" color='#9C70EA' /> :
+
         <ScrollView style={styles.scroll}>
           {list.map((element, index) => (
             <TouchableOpacity
@@ -282,7 +289,7 @@ const RecordsScreen = () => {
             </TouchableOpacity>
           ))}
         </ScrollView>
-      }
+      )}
 
       {index != null && (
         <Modal
@@ -503,7 +510,6 @@ const RecordsScreen = () => {
               })}
             </ScrollView> */}
 
-            
             <View style={styles.btnRow}>
               <TouchableOpacity
                 style={styles.buttonSubmit}
@@ -658,7 +664,7 @@ const RecordsScreen = () => {
 const styles = StyleSheet.create({
   scroll: {
     height: 520,
-    zIndex: -1
+    zIndex: -1,
   },
   rowStyle: {
     flexDirection: 'row',
@@ -704,7 +710,6 @@ const styles = StyleSheet.create({
   dropdownAndAdd: {
     flexDirection: 'row',
     marginVertical: 10,
-
   },
 
   centeredView: {
