@@ -45,7 +45,7 @@ const SubjectsScreen = ({ teacher }) => {
     <View>
       <ScrollView>
         {list.map((element, index) =>
-          <TouchableOpacity key={element} onPress={() => { }}>
+          <TouchableOpacity key={element} onPress={() => {}}>
             <Subject name={element}></Subject>
           </TouchableOpacity>
         )}

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 
 import React, {useEffect} from 'react';
-import {addTeacher, deleteTeacher} from './api/admin';
+import {addClass, addTeacher, deleteTeacher} from './api/admin';
 
 import {createStackNavigator} from '@react-navigation/stack';
 import RecordsScreen from './components/admin/RecordsScreen';
@@ -32,7 +32,18 @@ function App() {
       console.log('Error', 'Failed to delete teacher: ' + error.message);
     }
   };
-
+  const handleAddClass = async () => {
+    try {
+      await addClass({
+        className: 'Class 1',
+        subjects: [{name:'name',subjectId: 'id'}],
+       
+      });
+      console.log('Class added with ID: ');
+    } catch (error) {
+      console.error('Failed to add Class: ', error);
+    }
+  };
   const handleAddTeacher = async () => {
     try {
       await addTeacher({
