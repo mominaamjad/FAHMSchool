@@ -1,15 +1,18 @@
 import { useState } from "react";
-import { ScrollView,
-    View, 
+import {
+    ScrollView,
+    View,
     Text,
     StyleSheet,
     TouchableOpacity
 
- } from "react-native"
+} from "react-native"
 
- import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
- import ReportOne from "./ReportOne";
- import ReportTwo from "./ReportTwo";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ReportOne from "./ReportOne";
+import ReportTwo from "./ReportTwo";
+
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
 
 
 const AdminDashboard = () => {
@@ -17,31 +20,49 @@ const AdminDashboard = () => {
     const [selectedTab, setSelected] = useState(0)
 
 
-    return(
+    const createPDF = async () => {
+        try {
+            console.log("starting pdf generation")
+            let PDFOptions = {
+                html: '<h1>Generate PDF!</h1>',
+                fileName: 'file',
+                directory: Platform.OS === 'android' ? 'Downloads' : 'Documents',
+            };
+            let file = await RNHTMLtoPDF.convert(PDFOptions);
+            if (!file.filePath) return;
+            alert(file.filePath);
+            console.log("ending pdf generation")
+        } catch (error) {
+            console.log('Failed to generate pdf', error.message);
+        }
+    };
+
+
+    return (
         <ScrollView>
 
-            <View style = {styles.switchBox} >
+            <View style={styles.switchBox} >
 
-                
-                <TouchableOpacity style={selectedTab === 0 ? styles.switchOn : styles.switchOff} 
+
+                <TouchableOpacity style={selectedTab === 0 ? styles.switchOn : styles.switchOff}
                     onPress={() => {
-                    setSelected(0)
+                        setSelected(0)
                     }}>
 
-                    <Text style={selectedTab === 0 ? styles.currentText : styles.otherText} > 
+                    <Text style={selectedTab === 0 ? styles.currentText : styles.otherText} >
                         Report 1
                     </Text>
 
                 </TouchableOpacity>
 
-                
 
-                <TouchableOpacity style={selectedTab === 1 ? styles.switchOn : styles.switchOff} 
-                    onPress={() =>{
-                    setSelected(1)
+
+                <TouchableOpacity style={selectedTab === 1 ? styles.switchOn : styles.switchOff}
+                    onPress={() => {
+                        setSelected(1)
                     }}>
 
-                    <Text style={selectedTab === 1 ? styles.currentText : styles.otherText}> 
+                    <Text style={selectedTab === 1 ? styles.currentText : styles.otherText}>
                         Report 2
                     </Text>
 
@@ -52,7 +73,7 @@ const AdminDashboard = () => {
             <View>
                 <TouchableOpacity
                     style={styles.buttonDownload}
-                    onPress={() => { setAddModalVisible(true); }}>
+                    onPress={ createPDF }>
                     <View style={{ flexDirection: 'row' }}>
                         <Icon name="download" size={24} color='white' />
                         <Text style={styles.downloadText}> Download Report</Text>
@@ -61,25 +82,25 @@ const AdminDashboard = () => {
             </View>
 
             <ScrollView>
-                 {selectedTab == 0? <ReportOne></ReportOne> : <ReportTwo></ReportTwo> }
+                {selectedTab == 0 ? <ReportOne></ReportOne> : <ReportTwo></ReportTwo>}
             </ScrollView>
 
-            
 
-        
+
+
 
         </ScrollView>
-        
+
     );
 }
 
 const styles = StyleSheet.create({
 
-    switchBox:{
+    switchBox: {
         width: 250,
         height: 50,
-        display:'flex',
-        flexDirection:'row',
+        display: 'flex',
+        flexDirection: 'row',
 
         borderWidth: 0.3,
         borderRadius: 15,
@@ -87,7 +108,7 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
 
-    switchOn:{
+    switchOn: {
         width: 125,
         height: 50,
         backgroundColor: '#8349EA',
@@ -98,7 +119,7 @@ const styles = StyleSheet.create({
 
     },
 
-    switchOff:{
+    switchOff: {
         width: 125,
         height: 50,
         borderRadius: 15,

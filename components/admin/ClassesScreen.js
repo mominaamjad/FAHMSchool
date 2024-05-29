@@ -82,6 +82,8 @@ const ClassesScreen = () => {
       teacherId: value === 'unassign' ? null : value,
     };
 
+    setList(newClasses);
+
     try {
       const outputString = await assignClassToTeacher(classData);
       setClasses(newClasses);
@@ -111,7 +113,8 @@ const ClassesScreen = () => {
         <Icon name="magnify" size={30} style={styles.searchIcon} />
       </View>
 
-      {isLoading ? <ActivityIndicator size="large" color= '#8349EA' /> : <ScrollView>
+      {isLoading ? <ActivityIndicator size="large" color= '#8349EA' /> : 
+      <ScrollView style={styles.scroll}>
         {list.map((element, index) => (
           <TouchableOpacity
             key={element.id}
@@ -123,7 +126,7 @@ const ClassesScreen = () => {
               
             <Card
               name={element.className}
-              assigned={element.assigned ? 'Assigned' : 'Not Assigned'}
+              assigned={element.assigned}
               teacher={
                 element.teacher
                   ? `Assigned to ${
@@ -183,6 +186,9 @@ const ClassesScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  scroll: {
+    height: 600,
+  },
   searchBar: {
     flexDirection: 'row',
     margin: 10,

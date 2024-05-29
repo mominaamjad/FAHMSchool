@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import {Image, StyleSheet, Text, View} from 'react-native';
 
-const Card = ({name, regNo, assigned = false, paid = false, pic, cardType}) => {
+const Card = ({name, regNo, teacher, assigned = false, paid = false, pic, cardType}) => {
   return (
     <View style={styles.mainCard}>
       <View>
@@ -9,7 +9,7 @@ const Card = ({name, regNo, assigned = false, paid = false, pic, cardType}) => {
         {cardType == 'student' || cardType == 'fee' ? (
           <Text style={styles.reg}>{regNo}</Text>
         ) : (
-          <></>
+          <Text style={styles.reg}>{teacher}</Text>
         )}
       </View>
 
@@ -28,8 +28,8 @@ const Card = ({name, regNo, assigned = false, paid = false, pic, cardType}) => {
             style={styles.pfp}></Image>
         ) : (
           <Text
-            style={[styles.assignedText, {color: assigned ? 'green' : 'red'}]}>
-            {assigned ? 'Assigned' : 'Not Assigned'}
+            style={[styles.assignedText, {color: assigned === true ? 'green' : 'red'}]}>
+            {assigned === true ? 'Assigned' : 'Not Assigned'}
           </Text>
         )}
       </View>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   assignedText: {
     alignSelf: 'flex-end',
     fontFamily: 'Poppins-Regular',
-    paddingLeft: 150,
+    // paddingLeft: 150,
     paddingTop: 30,
   },
 
