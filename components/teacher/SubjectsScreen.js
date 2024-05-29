@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ScrollView,
   View,
@@ -8,63 +8,47 @@ import {
   Modal
 } from "react-native"
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { viewSubjects } from '../../api/teacher';
+
 import Subject from '../layouts/Subject';
 import Card from '../layouts/Card';
 import MarksScreen from './MarksScreen';
 
-const SubjectsScreen = () => {
+const SubjectsScreen = ({ teacher }) => {
 
-  const [subjects, setSubjects] = useState([
-    // example data for now
-    { subjectid: 1, name: 'Mobile App Development' },
-    { subjectid: 2, name: 'Discrete Structures' },
-    { subjectid: 3, name: 'Machine Learning' },
-    { subjectid: 4, name: 'Numerical Computing' },
-    { subjectid: 5, name: 'Web Development' },
-    { subjectid: 6, name: 'Software Engineering Concepts' },
-  ])
-
-  const [index, setIndex] = useState(null);
+  const [subjects, setSubjects] = useState([]);
   const [list, setList] = useState(subjects);
-  const [search, setSearch] = useState("")
 
-  const searchItem = (text) => {
-    if (text === "") {
-      setList(subjects)
+  // for getting subject listtt
+  const fetchSubjects = async () => {
+    try {
+      const subjectData = await viewSubjects(teacher);
+      console.log(subjectData);
+      setSubjects(subjectData);
+      setList(subjectData);
+    } catch (error) {
+      console.error('Error fetching subjects:', error);
     }
-    else {
-      setList(() => subjects.filter((element) => element.name.toLowerCase().includes(text.toLowerCase())))
-    }
-    setSearch(text)
+  };
+
+  useEffect(() => {
+    fetchSubjects();
+    return () => { };
+  }, []);
+
+   // to navigate to marks screen for each subject
+  const showMarks = ()=>{
+    
   }
 
   return (
     <View>
-      <View style={styles.searchBar}>
-        <TextInput style={styles.search}
-          label="Search" placeholder='Search...' placeholderTextColor="#000000"
-          onChangeText={(text) => { searchItem(text) }}
-          value={search}
-          onBlur={() => { setSearch(""); setList(subjects); }}
-        />
-        <Icon name="magnify" size={30} style={styles.searchIcon} />
-      </View>
-
       <ScrollView>
         {list.map((element, index) =>
-          <TouchableOpacity key={element.name} onPress={() => { }}>
-            <Subject name={element.name}></Subject>
+          <TouchableOpacity key={element} onPress={() => { }}>
+            <Subject name={element}></Subject>
           </TouchableOpacity>
         )}
-        {/* <TouchableOpacity onPress={() => { }}>
-                <Subject name="Mobile App Dev"></Subject>
-            </TouchableOpacity>
-            <TouchableOpacity>
-                <Subject name="Mobile App Dev"></Subject>
-            </TouchableOpacity>
-            <TouchableOpacity>
-                <Subject name="Mobile App Dev"></Subject>
-            </TouchableOpacity> */}
       </ScrollView>
     </View>
   )
