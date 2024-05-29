@@ -9,13 +9,20 @@ import {
 } from '@env';
 import {initializeApp} from 'firebase/app';
 import {
+  addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
   getFirestore,
+  query,
   setDoc,
+  updateDoc,
+  where,
+  writeBatch,
 } from 'firebase/firestore';
+
 import Student from '../models/student';
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
@@ -29,26 +36,51 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export const fetchStudentData = async (loginData) => {
+export const loginStudent = async (loginData) => {
   try {
 
-      console.log(loginData.email);
+      console.log(loginData.regNo);
       console.log(loginData.password);
 
-      const teacherQuery = query(
+      const studentQuery = query(
         collection(db, 'students'),
-        where('id', '==', loginData.email),
+        where('regNo', '==', loginData.regNo),
         where('password', '==', loginData.password)            
     );
 
-    const querySnapshot = await getDocs(collection(db, 'students'));
-    const dataList = querySnapshot.docs.map(doc => {
-      const data = doc.data();
-      return new Student(doc.id, data.firstName, data.lastName, data.email);
-    });
-    return dataList;
+    console.log(studentQuery);
+
+
+    const querySnapshot = await getDocs(studentQuery);
+   
+    console.log(querySnapshot.docs);
+
+    if (querySnapshot.empty) {
+      throw new Error('Invalid email or password');
+    }
+
+    const studentDoc = querySnapshot.docs[0];
+    const studentData = studentDoc.data();
+
+    return new Student(
+      studentData.regNo = regNo,
+      studentData.firstName = firstName,
+      studentData.lastName = lastName,
+      studentData.email = email,
+      studentData.dob = dob,
+      studentData.gender = gender,
+      studentData.fatherName = fatherName,
+      studentData.caste = caste,
+      studentData.occupation = occupation,
+      studentData.residence = residence,
+      studentData.remarks = remarks,
+      studentData.phoneNo = phoneNo,
+      studentData.admissionDate = admissionDate,
+      studentData.admissionClass = admissionClass,
+      
+    );
   } catch (error) {
-    console.error('Error fetching student data: ', error);
+    console.error('Error during login: ', error);
     throw error;
   }
 };
