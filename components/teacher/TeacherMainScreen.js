@@ -18,7 +18,7 @@ const TeacherMainScreen = ({ route }) => {
         <Drawer.Navigator screenOptions={{
             drawerStyle: {
                 paddingVertical: 80,
-                backgroundColor: "#8349EA",
+                backgroundColor: "#9C70EA",
                 width: 250
             },
             drawerLabelStyle: {
@@ -30,7 +30,7 @@ const TeacherMainScreen = ({ route }) => {
             headerLeftLabelVisible: true,
             headerTitle: `Welcome, ${teacher.teacherName}!`,
             headerStyle: {
-                backgroundColor: "#8349EA",
+                backgroundColor: "#9C70EA",
                 borderBottomLeftRadius: 20,
                 borderBottomRightRadius: 20,
                 height: 120,
@@ -42,7 +42,9 @@ const TeacherMainScreen = ({ route }) => {
             drawerActiveTintColor: "#BFA8E5",
         }}>
             <Drawer.Screen name="Manage Marks"
-                options={{ drawerLabel: 'Manage Marks' }}
+                options={{ 
+                    drawerLabel: 'Manage Marks', 
+                     }}
                 component={props => <SubjectsScreen {...props} teacher={teacher} />}
             />
             {/* yahan pe iss ko logout karao  */}

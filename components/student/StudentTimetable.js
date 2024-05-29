@@ -47,7 +47,7 @@ const StudentTimetable = () => {
 
   return (
     <View>
-      {isLoading ? <ActivityIndicator size="large" color='#8349EA' /> :
+      {isLoading ? <ActivityIndicator size="large" color='#9C70EA' /> :
         
           timetableImg ? ( timetableImg &&
             <Image source={{ uri: timetableImg }} style={styles.pic} />
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     margin: 20,
     alignSelf: 'center',
     borderWidth: 2,
-    borderColor: '#8349EA',
+    borderColor: '#9C70EA',
     borderRadius: 24,
     width: 300,
     height: 300,

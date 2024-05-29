@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     head: {
         zIndex: -1,
         height: 50,
-        backgroundColor: '#8349EA',
+        backgroundColor: '#9C70EA',
         justifyContent: 'space-between',
         marginHorizontal: 10,
         borderRadius: 20,
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     editIcon: {
         paddingTop: 13,
         paddingLeft: 20,
-        color: "#8349EA",
+        color: "#9C70EA",
         alignSelf: "flex-start"
     },
     TextInput: {
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
         width: 220,
         align: "center",
         backgroundColor: '#F4F4F4',
-        borderColor: '#8349EA'
+        borderColor: '#9C70EA'
     },
 
     dropdownText: {

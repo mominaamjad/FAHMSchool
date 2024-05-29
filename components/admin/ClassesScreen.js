@@ -113,7 +113,7 @@ const ClassesScreen = () => {
         <Icon name="magnify" size={30} style={styles.searchIcon} />
       </View>
 
-      {isLoading ? <ActivityIndicator size="large" color= '#8349EA' /> : 
+      {isLoading ? <ActivityIndicator size="large" color= '#9C70EA' /> : 
       <ScrollView style={styles.scroll}>
         {list.map((element, index) => (
           <TouchableOpacity
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
 
   searchIcon: {
     alignSelf: 'center',
-    backgroundColor: '#8349EA',
+    backgroundColor: '#9C70EA',
     padding: 5,
     borderRadius: 20,
   },
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     // alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#8349EA',
+    shadowColor: '#9C70EA',
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 4,
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 22,
     paddingVertical: 10,
     elevation: 2,
-    backgroundColor: '#8349EA',
+    backgroundColor: '#9C70EA',
     marginLeft: 10,
     marginRight: 10,
   },
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     // width: 200,
     marginBottom: 10,
     backgroundColor: '#F4F4F4',
-    borderColor: '#8349EA',
+    borderColor: '#9C70EA',
   },
 
   dropdownText: {

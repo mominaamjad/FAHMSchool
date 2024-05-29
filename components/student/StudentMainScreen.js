@@ -20,7 +20,7 @@ const StudentMainScreen = () =>{
         screenOptions={{
           drawerStyle: {
             paddingVertical: 80,
-            backgroundColor: '#8349EA',
+            backgroundColor: '#9C70EA',
             width: 250,
           },
           drawerLabelStyle: {
@@ -32,7 +32,7 @@ const StudentMainScreen = () =>{
           headerShadowVisible: false,
           headerLeftLabelVisible: true,
           headerStyle: {
-            backgroundColor: '#8349EA',
+            backgroundColor: '#9C70EA',
             borderBottomLeftRadius: 20,
             borderBottomRightRadius: 20,
             height: 120,

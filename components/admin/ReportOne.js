@@ -5,6 +5,7 @@ import {ScrollView, StyleSheet, Text} from 'react-native';
 import {DataTable} from 'react-native-paper';
 import {fetchStudents} from '../../api/admin';
 const ReportOne = () => {
+
   const [students, setStudents] = useState([]);
   const [ageGroups, setAgeGroups] = useState([]);
 
@@ -149,42 +150,43 @@ const ReportOne = () => {
 };
 
 const styles = StyleSheet.create({
-  row: {
-    height: 40,
-    backgroundColor: 'lavender',
-    borderRadius: 10,
-    width: 570,
-    alignSelf: 'center',
-    marginTop: 2,
-    justifyContent: 'center',
-  },
-  head: {
-    backgroundColor: '#8349EA',
-    borderRadius: 20,
-  },
+    row: {
+        height: 40,
+        backgroundColor: 'lavender',
+        borderRadius : 10,
+        width: 570,
+        alignSelf: 'center',
+        marginTop: 2,
+        justifyContent: 'center'
+    },
+    head:{
+        backgroundColor: "#9C70EA",
+        borderRadius : 20
+    },
 
-  table: {
-    paddingVertical: 40,
-    // width: 320,
-    alignSelf: 'center',
-  },
+    table:{
+        paddingVertical: 40,
+        // width: 320,
+        alignSelf: 'center'
 
-  tableTitle: {
-    fontSize: 14,
-    fontFamily: 'Poppins-Medium',
-    color: '#000000',
-    alignSelf: 'center',
-  },
+    },
 
-  regTitle: {
-    fontFamily: 'Poppins-SemiBold',
-    fontSize: 12,
-  },
+    tableTitle: {
+        fontSize: 14,
+        fontFamily: 'Poppins-Medium',
+        color: '#000000',
+        alignSelf: 'center'
+    },
 
-  data: {
-    color: '#000000',
-    fontFamily: 'Poppins-Regular',
-    fontSize: 12,
+    regTitle:{
+        fontFamily: 'Poppins-SemiBold',
+        fontSize: 12,
+    },
+
+    data:{
+        color: "#000000",
+        fontFamily: 'Poppins-Regular',
+        fontSize: 12,
   },
 });
 

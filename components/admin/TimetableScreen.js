@@ -106,7 +106,7 @@ const TimetableScreen = () => {
       />
 
       <View>
-      {isLoading ? <ActivityIndicator size="large" color= '#8349EA' /> : (
+      {isLoading ? <ActivityIndicator size="large" color= '#9C70EA' /> : (
         timetableImg && (
           <Image source={{uri: timetableImg}} style={styles.pic} />
         )
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 22,
     paddingVertical: 10,
     alignSelf: 'center',
-    backgroundColor: '#8349EA',
+    backgroundColor: '#9C70EA',
     marginLeft: 10,
     marginRight: 10,
     marginTop: 10,
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     width: 320,
     alignSelf: 'center',
     backgroundColor: '#F4F4F4',
-    borderColor: '#8349EA',
+    borderColor: '#9C70EA',
     marginTop: 20,
   },
 

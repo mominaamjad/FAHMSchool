@@ -5,7 +5,9 @@ import {addClass, addTeacher, deleteTeacher} from './api/admin';
 
 import {createStackNavigator} from '@react-navigation/stack';
 import RecordsScreen from './components/admin/RecordsScreen';
-const studentsData = require('./data/students.json');
+
+import MyStack from './components/MainScreen';
+import AdminMainScreen from './components/admin/AdminMainScreen';
 function App() {
   // const fetchData = async () => {
   //   try {

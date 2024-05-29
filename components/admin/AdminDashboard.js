@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     switchOn: {
         width: 125,
         height: 50,
-        backgroundColor: '#8349EA',
+        backgroundColor: '#9C70EA',
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center'
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
         borderRadius: 17,
         paddingHorizontal: 22,
         paddingVertical: 10,
-        backgroundColor: '#8349EA',
+        backgroundColor: '#9C70EA',
         marginTop: 20,
         marginRight: 12,
         marginBottom: 10,
