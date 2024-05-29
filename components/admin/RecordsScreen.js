@@ -11,56 +11,20 @@ import {
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {addStudent, fetchStudents, updateStudent} from '../../api/admin';
+import {addStudent, createSpecificFeeStatus, fetchStudents, updateFees, updateStudent} from '../../api/admin';
 import Card from '../layouts/Card';
 const RecordsScreen = () => {
   const [students, setStudents] = useState([]);
-  const [feeData, setFeeData] = useState([
-    {
-      class: 'class1',
-      regNo: 'fa21-bcs-011',
-      name: 'amna sohaib',
-      amountDue: 3456,
-      amountPaid: 3245,
-      payableAmount: 356,
-      paymentDate: '1/1/2024',
-      lateFees: false,
-      remarks: 'smth',
-    },
-    {
-      class: 'class2',
-      regNo: 'fa21-bcs-012',
-      name: 'amna sohaib',
-      amountDue: 3456,
-      amountPaid: 3245,
-      payableAmount: 356,
-      paymentDate: '1/1/2024',
-      lateFees: false,
-      remarks: 'smth',
-    },
-    {
-      class: 'class3',
-      regNo: 'fa21-bcs-013',
-      name: 'amna sohaib',
-      amountDue: 3456,
-      amountPaid: 3245,
-      payableAmount: 356,
-      paymentDate: '1/1/2024',
-      lateFees: false,
-      remarks: 'smth',
-    },
-    {
-      class: 'class4',
-      regNo: 'fa21-bcs-014',
-      name: 'amna sohaib',
-      amountDue: 3456,
-      amountPaid: 3245,
-      payableAmount: 356,
-      paymentDate: '1/1/2024',
-      lateFees: false,
-      remarks: 'smth',
-    },
-  ]);
+  const [feeData, setFeeData] = useState({
+    amountDue: '',
+    amountPaid: '',
+    lateFees: '',
+    payableAmount: '',
+    paymentData: '',
+    remarks: '',
+    status: '',
+    studentRef: '',
+  });
   const [list, setList] = useState(students);
   const [index, setIndex] = useState(null);
   const [search, setSearch] = useState('');
@@ -119,7 +83,28 @@ const RecordsScreen = () => {
     }
     setSearch(text);
   };
-
+  const handleAddFees = async () => {
+    try {
+      const addFees = {...feeData};
+      await createSpecificFeeStatus(addFees);
+      setFeeData({
+        admissionClass: '',
+        currentClass: '',
+        studentName: '',
+        fatherName: '',
+        dob: '',
+        gender: '',
+        caste: '',
+        occupation: '',
+        residence: '',
+        email: '',
+        password: '',
+        remarks: '',
+      });
+    } catch (error) {
+      console.error('Error adding fees: ', error);
+    }
+  };
   const handleUpdateStudent = async (property, changedValue) => {
     try {
       const newValue = [...students];
@@ -127,17 +112,24 @@ const RecordsScreen = () => {
       setStudents(newValue);
 
       const updatedStudent = newValue[index];
-      await updateStudent(updatedStudent.regNo, updatedStudent);
+      await updateFees(updatedStudent.id, updatedStudent);
       console.log('Student updated successfully');
     } catch (error) {
       console.error('Error updating student: ', error);
     }
   };
 
-  const handleChangedFee = (property, changedValue) => {
-    const newValue = [...feeData];
+  const handleChangedFee = async (property, changedValue) => {
+    try {const newValue = [...feeData];
     newValue[index][property] = changedValue;
     setFeeData(newValue);
+    
+    const updatesFees = newValue[index];
+    await updateStudent(updatesFees.id, updatesFees);
+    console.log('Fees updated successfully');
+  } catch (error) {
+    console.error('Error updating Fees: ', error);
+  }
   };
 
   const handleFilteredList = () => {

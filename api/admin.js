@@ -312,9 +312,25 @@ export const viewAllFeeStatus = async () => {
     throw error;
   }
 };
+export const updateFees = async (id, updatedData) => {
+  try {
+    const feesRef = doc(db, 'fees', id);
+    await updateDoc(feesRef, updatedData);
+    console.log('fee updated with ID: ', id);
+    return id;
+  } catch (error) {
+    console.error('Error updating fee: ', error);
+    throw error;
+  }
+};
 
 export const createSpecificFeeStatus = async feeData => {
   try {
+    await setDoc(doc(db, 'fees'), {
+      ...feeData,
+    });
+    console.log('Fee added with ID: ', feeData.regNo);
+    return feeData.regNo;
   } catch (error) {
     console.error('Error creating specific fee status: ', error);
     throw error;

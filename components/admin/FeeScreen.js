@@ -121,7 +121,7 @@ const FeeScreen = () => {
 
 
 
-  handleFilteredList = () => {
+  const handleFilteredList = () => {
     if (value == 'allClasses') {
       setList(students);
     } else {
