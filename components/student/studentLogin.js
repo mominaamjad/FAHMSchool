@@ -9,24 +9,45 @@ import {
 
 } from 'react-native';
 
-const Login = () => {
-    const [reg, setReg] = useState("")
+import { loginStudent } from '../../api/student';
+
+const Login = ( {navigation} ) => {
+    const [regNo, setReg] = useState("")
     const [password, setPassword] = useState("")
 
     const [regError, setRegError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [loginError, setLoginError] = useState('');
 
+    const handleLogin = async () => {
+        try {
+          const student = await loginStudent({
+            regNo: regNo,
+            password: password,
+          });
+          console.log(
+            'Login Successful',
+            `Welcome ${student.firstName} ${student.lastName}`,
+          );
+          navigation.navigate('StudentMainScreen')
+        } catch (error) {
+          console.log('Login Failed', error.message);
+          setLoginError('Login failed. Please try again!');
+        }
+      };
+
     const checkReg = () => {
-        if (reg.trim()===""){
+        if (regNo.trim()===""){
             setRegError('Registration no. is required');
             return false;
 
         }
 
-        const regRegex = /^\(\d{2}\)-\d{3}$/;
+        // const regRegex = /^\(\d{4}\)-\d{3}$/;
 
-        let isValid = regRegex.test(reg);
+        const regRegex = /^[a-zA-Z]{4}-\w{3}$/
+
+        let isValid = regRegex.test(regNo);
         if (!isValid) {
             setRegError('Invalid registration no. format');
             return false;
@@ -51,7 +72,9 @@ const Login = () => {
         }
       };
 
-    return (<View style={styles.alignment}>
+    return (
+    
+    <View style={styles.alignment}>
         <View style={styles.container}>
             <Image source={require('../assets/studentLogin.png')} style={styles.image} />
         </View>
@@ -78,7 +101,7 @@ const Login = () => {
         {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
 
         <TouchableOpacity style={styles.submitButton} 
-            onPress={() => {} }>
+           onPress={handleLogin}>
             <Text style={styles.submitText}>Log in</Text>
         </TouchableOpacity>
 
