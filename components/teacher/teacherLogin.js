@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ActivityIndicator
 } from 'react-native';
 
 import { loginTeacher } from '../../api/teacher';
@@ -20,20 +21,25 @@ const Login = ( {navigation} ) => {
   const [passwordError, setPasswordError] = useState('');
   const [loginError, setLoginError] = useState('');
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleLogin = async () => {
     try {
+      setIsLoading(true)
       const teacher = await loginTeacher({
         email: email, 
         password: password,
       });
       if (teacher!=undefined){
         console.log(`Login Successful for ${teacher}`);
+      setIsLoading(false)
         navigation.navigate('TeacherMainScreen', {teacher});
       }
 
     } catch (error) {
       console.log('Login Failed', error.message);
       setLoginError('Login failed. Please try again!');
+      setIsLoading(false)
     }
   };
 
@@ -92,7 +98,8 @@ const Login = ( {navigation} ) => {
       {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
 
       <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
-        <Text style={styles.submitText}>Login</Text>
+      {isLoading ? <ActivityIndicator size="large" color='#8349EA' /> :
+        <Text style={styles.submitText}>Login</Text> }
       </TouchableOpacity>
       {loginError ? <Text style={styles.errorText}>{loginError}</Text> : null}
     </View>

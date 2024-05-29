@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -7,18 +7,22 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ActivityIndicator
 } from 'react-native';
 import { loginAdmin } from '../../api/admin';
 
-const Login = ( {navigation} ) => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loginError, setLoginError] = useState('');
-  
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleLogin = async () => {
     try {
+      setIsLoading(true)
       const admin = await loginAdmin({
         email: email,
         password: password,
@@ -27,10 +31,12 @@ const Login = ( {navigation} ) => {
         'Login Successful',
         `Welcome ${admin.firstName} ${admin.lastName}`,
       );
+      setIsLoading(false)
       navigation.navigate('AdminMainScreen')
     } catch (error) {
-      console.log('Login Failed', error.message);
+      // console.log('Login Failed', error.message);
       setLoginError('Login failed. Please try again!');
+      setIsLoading(false)
     }
   };
 
@@ -89,9 +95,12 @@ const Login = ( {navigation} ) => {
       {passwordError ? (
         <Text style={styles.errorText}>{passwordError}</Text>
       ) : null}
-      <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
-        <Text style={styles.submitText}>Login</Text>
-      </TouchableOpacity>
+
+        <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
+      {isLoading ? <ActivityIndicator size="large" color='#8349EA' /> :
+          <Text style={styles.submitText}>Login</Text>}
+        </TouchableOpacity>
+
       {loginError ? <Text style={styles.errorText}>{loginError}</Text> : null}
     </View>
   );
@@ -124,7 +133,7 @@ const styles = StyleSheet.create({
     height: 45,
     margin: 8,
     padding: 10,
-    width: '80%', 
+    width: '80%',
     borderWidth: 0.3,
     borderRadius: 8,
     color: "#333333",
@@ -137,22 +146,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#7239d6',
     borderRadius: 18,
     alignItems: 'center',
-    width: 290, 
+    width: 290,
     height: 50,
-    margin:20,
+    margin: 20,
     elevation: 7,
     justifyContent: 'center'
   },
 
   submitText: {
-        fontFamily: 'Poppins-SemiBold',
-        fontSize: 15,
-        color:'#ffffff',
-        paddingTop: 7,
-        alignSelf: 'center',
-        paddingBottom:5,
-        paddingLeft:10,
-        paddingRight:10,
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 15,
+    color: '#ffffff',
+    paddingTop: 7,
+    alignSelf: 'center',
+    paddingBottom: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   
   errorText: {

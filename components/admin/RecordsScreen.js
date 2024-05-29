@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Modal,
   ScrollView,
@@ -8,10 +8,13 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ActivityIndicator,
+  ToastAndroid
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {addStudent, createSpecificFeeStatus, fetchStudents, updateFees, updateStudent} from '../../api/admin';
+import { addStudent, createSpecificFeeStatus, fetchStudents, updateFees, updateStudent } from '../../api/admin';
 import Card from '../layouts/Card';
 const RecordsScreen = () => {
   const [students, setStudents] = useState([]);
@@ -28,6 +31,9 @@ const RecordsScreen = () => {
   const [list, setList] = useState(students);
   const [index, setIndex] = useState(null);
   const [search, setSearch] = useState('');
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [feeModalVisible, setFeeModalVisible] = useState(false);
   const [addModalVisible, setAddModalVisible] = useState(false);
@@ -45,25 +51,31 @@ const RecordsScreen = () => {
     password: '',
     remarks: '',
   });
+
+
   const [edit, setEdit] = useState(false);
   const [value, setValue] = useState('allClasses');
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
-    {label: 'All Classes', value: 'allClasses'},
-    {label: 'Class 1', value: 'class1'},
-    {label: 'Class 2', value: 'class2'},
-    {label: 'Class 3', value: 'class3'},
-    {label: 'Class 4', value: 'class4'},
-    {label: 'Class 5', value: 'class5'},
-    {label: 'Class 6', value: 'class6'},
+    { label: 'All Classes', value: 'allClasses' },
+    { label: 'Class 1', value: 'class1' },
+    { label: 'Class 2', value: 'class2' },
+    { label: 'Class 3', value: 'class3' },
+    { label: 'Class 4', value: 'class4' },
+    { label: 'Class 5', value: 'class5' },
+    { label: 'Class 6', value: 'class6' },
   ]);
+
+
   useEffect(() => {
     const loadStudents = async () => {
       try {
+        setIsLoading(true)
         const studentList = await fetchStudents();
         setStudents(studentList);
         setList(studentList);
         console.log(list);
+        setIsLoading(false)
       } catch (error) {
         console.error('Error loading students: ', error);
       }
@@ -85,7 +97,7 @@ const RecordsScreen = () => {
   };
   const handleAddFees = async () => {
     try {
-      const addFees = {...feeData};
+      const addFees = { ...feeData };
       await createSpecificFeeStatus(addFees);
       setFeeData({
         admissionClass: '',
@@ -120,16 +132,17 @@ const RecordsScreen = () => {
   };
 
   const handleChangedFee = async (property, changedValue) => {
-    try {const newValue = [...feeData];
-    newValue[index][property] = changedValue;
-    setFeeData(newValue);
-    
-    const updatesFees = newValue[index];
-    await updateStudent(updatesFees.id, updatesFees);
-    console.log('Fees updated successfully');
-  } catch (error) {
-    console.error('Error updating Fees: ', error);
-  }
+    try {
+      const newValue = [...feeData];
+      newValue[index][property] = changedValue;
+      setFeeData(newValue);
+
+      const updatesFees = newValue[index];
+      await updateStudent(updatesFees.id, updatesFees);
+      console.log('Fees updated successfully');
+    } catch (error) {
+      console.error('Error updating Fees: ', error);
+    }
   };
 
   const handleFilteredList = () => {
@@ -156,7 +169,7 @@ const RecordsScreen = () => {
         }
       }
 
-      const studentWithRegNo = {...newStudent, regNo: newRegNo};
+      const studentWithRegNo = { ...newStudent, regNo: newRegNo };
       await addStudent(studentWithRegNo);
       setStudents([...students, studentWithRegNo]);
       setAddModalVisible(false);
@@ -209,34 +222,40 @@ const RecordsScreen = () => {
           setItems={setItems}
           onChangeValue={() => handleFilteredList()}
         />
+
+      </View>
+      <View style={{alignSelf: 'center'}}>
+        
+
+        <TouchableOpacity
+          style={styles.buttonAdd}
+          onPress={() => {
+            setAddModalVisible(true);
+          }}>
+          <View style={{ flexDirection: 'row' }}>
+            <Icon name="plus" size={30} color="white" />
+            <Text style={styles.textStyle}> Add Record</Text>
+          </View>
+        </TouchableOpacity>
       </View>
 
-      <TouchableOpacity
-        style={styles.buttonAdd}
-        onPress={() => {
-          setAddModalVisible(true);
-        }}>
-        <View style={{flexDirection: 'row'}}>
-          <Icon name="plus" size={30} color="white" />
-          <Text style={styles.textStyle}> Add Record</Text>
-        </View>
-      </TouchableOpacity>
 
-      <ScrollView style={{zIndex: -1}}>
-        {list.map((element, index) => (
-          <TouchableOpacity
-            key={element.regNo}
-            onPress={() => {
-              setModalVisible(true);
-              setIndex(index);
-            }}>
-            <Card
-              name={element.name}
-              regNo={element.regNo}
-              cardType="student"></Card>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      {isLoading ? <ActivityIndicator size="large" color='#8349EA' /> :
+        <ScrollView style={{ zIndex: -1 }}>
+          {list.map((element, index) => (
+            <TouchableOpacity
+              key={element.regNo}
+              onPress={() => {
+                setModalVisible(true);
+                setIndex(index);
+              }}>
+              <Card
+                name={element.name}
+                regNo={element.regNo}
+                cardType="student"></Card>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>}
 
       {index != null && (
         <Modal
@@ -403,24 +422,77 @@ const RecordsScreen = () => {
               <Text style={styles.modalHeading}>Add Student Record</Text>
             </View>
 
+          <ScrollView>
             {Object.keys(newStudent).map((key, index) => (
+
+              // if ({key} == 'dob') {
+
+              // }
               <View style={styles.rowStyle} key={index}>
                 <Text style={styles.modalText}>{key}</Text>
+             
                 <TextInput
                   value={newStudent[key]}
                   style={styles.TextInputAdd}
-                  onChangeText={text =>
-                    setNewStudent({...newStudent, [key]: text})
+                  onChangeText={text => {
+                    setNewStudent({ ...newStudent, [key]: text })
                   }
+                }
                 />
               </View>
             ))}
+            </ScrollView>
+
+            {/* <ScrollView>
+              {Object.keys(newStudent).map((key, index) => {
+
+                let component;
+                if ( key  === 'dob') {
+                  component = (<DateTimePicker
+                    testID="dateTimePicker"
+                    // value={date}
+                    mode="date"
+                    display="default"
+                    // onChange={onChange}
+                    minimumDate={new Date(2020, 0, 1)} // January 1, 2020
+                    maximumDate={new Date(2030, 11, 31)} // December 31, 2030
+                  />);
+                }
+                else {
+                  component =
+                    (<TextInput
+                      value={newStudent[key]}
+                      style={styles.TextInputAdd}
+                      onChangeText={text => {
+                        setNewStudent({ ...newStudent, [key]: text })
+                      }
+                      }
+                    />);
+                }
+                return(
+                <View style={styles.rowStyle} key={index}>
+                  <Text style={styles.modalText}>{key}</Text>
+                  {component}
+                </View>
+                )
+              })}
+            </ScrollView> */}
+
+            
             <View style={styles.btnRow}>
               <TouchableOpacity
                 style={styles.buttonSubmit}
                 onPress={handleAddStudent}>
                 <Text style={styles.submitText}>Add Record</Text>
               </TouchableOpacity>
+
+              <TouchableOpacity
+                  style={styles.cancelButton}
+                  onPress={async () => {
+                    setAddModalVisible(false);
+                  }}>
+                  <Text style={styles.cancelText}>Cancel</Text>
+                </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -590,6 +662,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
 
+  dropdownAndAdd: {
+    flexDirection: 'row',
+    marginVertical: 10,
+
+  },
+
   centeredView: {
     flex: 1,
     justifyContent: 'center',
@@ -606,11 +684,11 @@ const styles = StyleSheet.create({
 
   TextInputAdd: {
     borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: 10,
     borderColor: '#8349EA',
-    width: 100,
+    width: 120,
     marginBottom: 20,
-    height: 30,
+    height: 35,
   },
 
   modalView: {
@@ -635,8 +713,8 @@ const styles = StyleSheet.create({
   },
 
   buttonAdd: {
-    width: 150,
-    alignSelf: 'flex-end',
+    width: 300,
+    // alignSelf: 'flex-end',
     alignItems: 'center',
     borderRadius: 17,
     paddingHorizontal: 22,
@@ -692,9 +770,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'black',
   },
+
   modalText: {
     fontSize: 14,
-    marginBottom: 15,
+    marginTop: 5,
     textAlign: 'left',
     color: 'black',
     fontFamily: 'Poppins-Medium',
@@ -702,7 +781,7 @@ const styles = StyleSheet.create({
 
   dropdown: {
     marginLeft: 20,
-    width: 120,
+    width: 150,
     backgroundColor: '#F4F4F4',
     borderColor: '#8349EA',
   },
