@@ -10,6 +10,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+
+// import { TextInput, HelperText } from 'react-native-paper';
+
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
@@ -20,6 +23,7 @@ import {
   updateFees,
 } from '../../api/admin';
 import Card from '../layouts/Card';
+import { Checkbox, RadioButton } from 'react-native-paper';
 const RecordsScreen = () => {
   const [students, setStudents] = useState([]);
   const [feeData, setFeeData] = useState({
@@ -37,6 +41,9 @@ const RecordsScreen = () => {
   const [search, setSearch] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [checked, setChecked] = useState();
+
 
   const [modalVisible, setModalVisible] = useState(false);
   const [feeModalVisible, setFeeModalVisible] = useState(false);
@@ -107,7 +114,7 @@ const RecordsScreen = () => {
     if (text === '') {
       setList(students);
     } else {
-      setList(() =>
+      setList(
         students.filter(element =>
           element.name.toLowerCase().includes(text.toLowerCase()),
         ),
@@ -173,6 +180,7 @@ const RecordsScreen = () => {
       );
     }
   };
+
   const handleAddStudent = async () => {
     try {
       const currentYear = new Date().getFullYear();
@@ -212,15 +220,16 @@ const RecordsScreen = () => {
   };
   return (
     <View>
+        <View style={styles.topBar}>
       <View style={styles.searchBar}>
         <TextInput
           style={styles.search}
           label="Search"
           placeholder="Search..."
           placeholderTextColor="#000000"
-          onChangeText={text => {
-            searchItem(text);
-          }}
+          onChangeText={text =>
+            searchItem(text)
+          }
           value={search}
           onBlur={() => {
             setSearch('');
@@ -228,6 +237,7 @@ const RecordsScreen = () => {
           }}
         />
         <Icon name="magnify" size={30} style={styles.searchIcon} />
+        </View>
 
         <DropDownPicker
           textStyle={styles.dropdownText}
@@ -242,7 +252,9 @@ const RecordsScreen = () => {
           onChangeValue={() => handleFilteredList()}
         />
       </View>
-      <View style={{alignSelf: 'center'}}>
+      <View style={{ alignSelf: 'center' }}>
+
+
         <TouchableOpacity
           style={styles.buttonAdd}
           onPress={() => {
@@ -255,10 +267,9 @@ const RecordsScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {isLoading ? (
-        <ActivityIndicator size="large" color="#8349EA" />
-      ) : (
-        <ScrollView style={{zIndex: -1}}>
+
+      {isLoading ? <ActivityIndicator size="large" color='#8349EA' /> :
+        <ScrollView style={styles.scroll}>
           {list.map((element, index) => (
             <TouchableOpacity
               key={element.regNo}
@@ -273,7 +284,7 @@ const RecordsScreen = () => {
             </TouchableOpacity>
           ))}
         </ScrollView>
-      )}
+      }
 
       {index != null && (
         <Modal
@@ -494,10 +505,13 @@ const RecordsScreen = () => {
               })}
             </ScrollView> */}
 
+            
             <View style={styles.btnRow}>
               <TouchableOpacity
                 style={styles.buttonSubmit}
-                onPress={handleAddStudent}>
+                onPress={handleAddStudent}
+                // onPress={validateInput}
+              >
                 <Text style={styles.submitText}>Add Record</Text>
               </TouchableOpacity>
 
@@ -644,22 +658,33 @@ const RecordsScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  scroll: {
+    height: 520,
+    zIndex: -1
+  },
   rowStyle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  searchBar: {
+
+  topBar: {
     flexDirection: 'row',
     marginTop: 20,
+  },
+  searchBar: {
+    flexDirection: 'row',
+    // marginBottom: 20,
     margin: 10,
-    marginRight: 10,
+    // marginRight: 10,
     backgroundColor: 'lavender',
     width: 200,
+    padding: 3,
     height: 40,
     borderRadius: 30,
   },
   search: {
-    // height: 30,
+    // marginTop: 20,
+    height: 40,
     width: 160,
     color: '#000000',
     paddingLeft: 10,
@@ -681,6 +706,7 @@ const styles = StyleSheet.create({
   dropdownAndAdd: {
     flexDirection: 'row',
     marginVertical: 10,
+
   },
 
   centeredView: {
@@ -795,6 +821,7 @@ const styles = StyleSheet.create({
   },
 
   dropdown: {
+    marginTop: 6,
     marginLeft: 20,
     width: 150,
     backgroundColor: '#F4F4F4',
