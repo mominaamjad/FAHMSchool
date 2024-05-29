@@ -4,12 +4,8 @@ import {
     Text,
     StyleSheet
 } from "react-native"
-import { NavigationContainer } from "@react-navigation/native"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createDrawerNavigator } from "@react-navigation/drawer"
-import { useNavigation } from '@react-navigation/native';
 
-import MarksScreen from "./MarksScreen"
 import TeacherLogin from "./TeacherLogin.js"
 import SubjectsScreen from "./SubjectsScreen.js"
 
@@ -49,7 +45,6 @@ const TeacherMainScreen = ({ route }) => {
                 options={{ drawerLabel: 'Manage Marks' }}
                 component={props => <SubjectsScreen {...props} teacher={teacher} />}
             />
-            {/* <Drawer.Screen name="Table yahan nae aaye ga" component={MarksScreen} /> */}
             {/* yahan pe iss ko logout karao  */}
             <Drawer.Screen name="Logout" component={TeacherLogin} />
 
@@ -58,9 +53,3 @@ const TeacherMainScreen = ({ route }) => {
 }
 
 export default TeacherMainScreen
-
-// </NavigationContainer>
-
-        // <ScrollView>
-        //     <Text>Admin Dashboard</Text>
-        // </ScrollView>

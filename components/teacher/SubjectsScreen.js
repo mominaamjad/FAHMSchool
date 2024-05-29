@@ -2,22 +2,22 @@ import React, { useState, useEffect } from 'react';
 import {
   ScrollView,
   View,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
-  Modal
-} from "react-native"
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+} from "react-native";
+import { useNavigation } from '@react-navigation/native'; 
+import { createStackNavigator } from '@react-navigation/stack';
 import { viewSubjects } from '../../api/teacher';
 
 import Subject from '../layouts/Subject';
-import Card from '../layouts/Card';
-import MarksScreen from './MarksScreen';
+
+const Stack = createStackNavigator();
 
 const SubjectsScreen = ({ teacher }) => {
 
   const [subjects, setSubjects] = useState([]);
   const [list, setList] = useState(subjects);
+  const navigation = useNavigation();
 
   // for getting subject listtt
   const fetchSubjects = async () => {
@@ -34,19 +34,19 @@ const SubjectsScreen = ({ teacher }) => {
   useEffect(() => {
     fetchSubjects();
     return () => { };
-  }, []);
+  }, [teacher]);
 
    // to navigate to marks screen for each subject
-  const showMarks = ()=>{
-    
+  const showMarks = (subject)=>{
+    navigation.navigate('MarksScreen', { subject });
   }
 
   return (
     <View>
       <ScrollView>
         {list.map((element, index) =>
-          <TouchableOpacity key={element} onPress={() => {}}>
-            <Subject name={element}></Subject>
+          <TouchableOpacity key={element.subjectId} onPress={() => showMarks(element)}>
+            <Subject name={element.name}></Subject>
           </TouchableOpacity>
         )}
       </ScrollView>
@@ -79,4 +79,4 @@ styles = StyleSheet.create({
   },
 })
 
-export default SubjectsScreen
+export default SubjectsScreen;

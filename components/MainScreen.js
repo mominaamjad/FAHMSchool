@@ -20,6 +20,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TeacherMainScreen from './teacher/TeacherMainScreen';
 import StudentMainScreen from './student/StudentMainScreen';
+import MarksScreen from './teacher/MarksScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,21 @@ function MyStack() {
       }}/>
       <Stack.Screen name="TeacherMainScreen" component={TeacherMainScreen} options={{
         headerShown: false
+      }}/>
+      <Stack.Screen name="MarksScreen" component={MarksScreen} options={{
+        headerShadowVisible: false,
+        headerLeftLabelVisible: true,
+        headerTitle: `Marks`,
+        headerStyle: {
+            backgroundColor: "#8349EA",
+            borderBottomLeftRadius: 20,
+            borderBottomRightRadius: 20,
+            height: 120,
+        },
+        headerTitleStyle: {
+            fontFamily: 'Poppins-SemiBold',
+            fontSize: 22,
+        },
       }}/>
       <Stack.Screen name="StudentMainScreen" component={StudentMainScreen} />
     </Stack.Navigator>
