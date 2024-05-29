@@ -4,6 +4,6 @@
 
 import {AppRegistry} from 'react-native';
 import {name as appName} from './app.json';
-import MyStack from './components/MainScreen';
+import ReportTwo from './components/admin/ReportTwo';
 
-AppRegistry.registerComponent(appName, () => MyStack);
+AppRegistry.registerComponent(appName, () => ReportTwo);
