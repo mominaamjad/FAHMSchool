@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   Modal,
   ScrollView,
   StyleSheet,
@@ -8,13 +9,16 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  ActivityIndicator,
-  ToastAndroid
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { addStudent, createSpecificFeeStatus, fetchStudents, updateFees, updateStudent } from '../../api/admin';
+import {
+  addStudent,
+  createSpecificFeeStatus,
+  fetchFees,
+  fetchStudents,
+  updateFees,
+} from '../../api/admin';
 import Card from '../layouts/Card';
 const RecordsScreen = () => {
   const [students, setStudents] = useState([]);
@@ -52,36 +56,51 @@ const RecordsScreen = () => {
     remarks: '',
   });
 
-
   const [edit, setEdit] = useState(false);
   const [value, setValue] = useState('allClasses');
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
-    { label: 'All Classes', value: 'allClasses' },
-    { label: 'Class 1', value: 'class1' },
-    { label: 'Class 2', value: 'class2' },
-    { label: 'Class 3', value: 'class3' },
-    { label: 'Class 4', value: 'class4' },
-    { label: 'Class 5', value: 'class5' },
-    { label: 'Class 6', value: 'class6' },
+    {label: 'All Classes', value: 'allClasses'},
+    {label: 'Class 1', value: 'class1'},
+    {label: 'Class 2', value: 'class2'},
+    {label: 'Class 3', value: 'class3'},
+    {label: 'Class 4', value: 'class4'},
+    {label: 'Class 5', value: 'class5'},
+    {label: 'Class 6', value: 'class6'},
   ]);
-
 
   useEffect(() => {
     const loadStudents = async () => {
       try {
-        setIsLoading(true)
+        setIsLoading(true);
         const studentList = await fetchStudents();
         setStudents(studentList);
         setList(studentList);
         console.log(list);
-        setIsLoading(false)
+        setIsLoading(false);
       } catch (error) {
         console.error('Error loading students: ', error);
       }
     };
 
     loadStudents();
+  }, []);
+
+  useEffect(() => {
+    const loadFees = async () => {
+      try {
+        setIsLoading(true);
+        const feeList = await fetchFees();
+        console.log(feeList);
+        setFeeData(feeList);
+        console.log(feeData);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error loading students: ', error);
+      }
+    };
+
+    loadFees();
   }, []);
   const searchItem = text => {
     if (text === '') {
@@ -97,21 +116,17 @@ const RecordsScreen = () => {
   };
   const handleAddFees = async () => {
     try {
-      const addFees = { ...feeData };
+      const addFees = {...feeData};
       await createSpecificFeeStatus(addFees);
       setFeeData({
-        admissionClass: '',
-        currentClass: '',
-        studentName: '',
-        fatherName: '',
-        dob: '',
-        gender: '',
-        caste: '',
-        occupation: '',
-        residence: '',
-        email: '',
-        password: '',
+        amountDue: '',
+        amountPaid: '',
+        lateFees: '',
+        payableAmount: '',
+        paymentDate: '',
         remarks: '',
+        status: '',
+        studentRef: '',
       });
     } catch (error) {
       console.error('Error adding fees: ', error);
@@ -133,13 +148,15 @@ const RecordsScreen = () => {
 
   const handleChangedFee = async (property, changedValue) => {
     try {
-      const newValue = [...feeData];
-      newValue[index][property] = changedValue;
-      setFeeData(newValue);
-
-      const updatesFees = newValue[index];
-      await updateStudent(updatesFees.id, updatesFees);
-      console.log('Fees updated successfully');
+      if (index !== null) {
+        const updatedFeeData = {...feeData, [property]: changedValue};
+        setFeeData(updatedFeeData);
+        const studentId = students[index].id;
+        await updateFees(studentId, updatedFeeData);
+        console.log('Fees updated successfully');
+      } else {
+        console.error('No student selected to update fees');
+      }
     } catch (error) {
       console.error('Error updating Fees: ', error);
     }
@@ -169,7 +186,7 @@ const RecordsScreen = () => {
         }
       }
 
-      const studentWithRegNo = { ...newStudent, regNo: newRegNo };
+      const studentWithRegNo = {...newStudent, regNo: newRegNo};
       await addStudent(studentWithRegNo);
       setStudents([...students, studentWithRegNo]);
       setAddModalVisible(false);
@@ -222,26 +239,24 @@ const RecordsScreen = () => {
           setItems={setItems}
           onChangeValue={() => handleFilteredList()}
         />
-
       </View>
       <View style={{alignSelf: 'center'}}>
-        
-
         <TouchableOpacity
           style={styles.buttonAdd}
           onPress={() => {
             setAddModalVisible(true);
           }}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'row'}}>
             <Icon name="plus" size={30} color="white" />
             <Text style={styles.textStyle}> Add Record</Text>
           </View>
         </TouchableOpacity>
       </View>
 
-
-      {isLoading ? <ActivityIndicator size="large" color='#8349EA' /> :
-        <ScrollView style={{ zIndex: -1 }}>
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#8349EA" />
+      ) : (
+        <ScrollView style={{zIndex: -1}}>
           {list.map((element, index) => (
             <TouchableOpacity
               key={element.regNo}
@@ -255,7 +270,8 @@ const RecordsScreen = () => {
                 cardType="student"></Card>
             </TouchableOpacity>
           ))}
-        </ScrollView>}
+        </ScrollView>
+      )}
 
       {index != null && (
         <Modal
@@ -422,25 +438,23 @@ const RecordsScreen = () => {
               <Text style={styles.modalHeading}>Add Student Record</Text>
             </View>
 
-          <ScrollView>
-            {Object.keys(newStudent).map((key, index) => (
+            <ScrollView>
+              {Object.keys(newStudent).map((key, index) => (
+                // if ({key} == 'dob') {
 
-              // if ({key} == 'dob') {
+                // }
+                <View style={styles.rowStyle} key={index}>
+                  <Text style={styles.modalText}>{key}</Text>
 
-              // }
-              <View style={styles.rowStyle} key={index}>
-                <Text style={styles.modalText}>{key}</Text>
-             
-                <TextInput
-                  value={newStudent[key]}
-                  style={styles.TextInputAdd}
-                  onChangeText={text => {
-                    setNewStudent({ ...newStudent, [key]: text })
-                  }
-                }
-                />
-              </View>
-            ))}
+                  <TextInput
+                    value={newStudent[key]}
+                    style={styles.TextInputAdd}
+                    onChangeText={text => {
+                      setNewStudent({...newStudent, [key]: text});
+                    }}
+                  />
+                </View>
+              ))}
             </ScrollView>
 
             {/* <ScrollView>
@@ -478,7 +492,6 @@ const RecordsScreen = () => {
               })}
             </ScrollView> */}
 
-            
             <View style={styles.btnRow}>
               <TouchableOpacity
                 style={styles.buttonSubmit}
@@ -487,12 +500,12 @@ const RecordsScreen = () => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                  style={styles.cancelButton}
-                  onPress={async () => {
-                    setAddModalVisible(false);
-                  }}>
-                  <Text style={styles.cancelText}>Cancel</Text>
-                </TouchableOpacity>
+                style={styles.cancelButton}
+                onPress={async () => {
+                  setAddModalVisible(false);
+                }}>
+                <Text style={styles.cancelText}>Cancel</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -530,7 +543,7 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Due </Text>
                 <TextInput
-                  value={String(feeData[index].amountDue)}
+                  value={String(feeData.amountDue)}
                   style={styles.TextInput}
                   onChangeText={text => {
                     handleChangedFee('amountDue', text);
@@ -544,7 +557,7 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Paid </Text>
                 <TextInput
-                  value={String(feeData[index].amountPaid)}
+                  value={String(feeData.amountPaid)}
                   style={styles.TextInput}
                   onChangeText={text => {
                     handleChangedFee('amountPaid', text);
@@ -558,7 +571,7 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payable Amount </Text>
                 <TextInput
-                  value={String(feeData[index].payableAmount)}
+                  value={String(feeData.payableAmount)}
                   style={styles.TextInput}
                   onChangeText={text => {
                     handleChangedFee('payableAmount', parseInt(text));
@@ -572,7 +585,7 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payment Date </Text>
                 <TextInput
-                  value={feeData[index].paymentDate}
+                  value={feeData.paymentDate}
                   style={styles.TextInput}
                   onChangeText={text => {
                     handleChangedFee('paymentDate', text);
@@ -612,7 +625,8 @@ const RecordsScreen = () => {
               <View style={styles.btnRow}>
                 <TouchableOpacity
                   style={styles.buttonSubmit}
-                  onPress={() => {
+                  onPress={async () => {
+                    await handleChangedFee();
                     setFeeModalVisible(!feeModalVisible);
                     setEdit(false);
                   }}>
@@ -665,7 +679,6 @@ const styles = StyleSheet.create({
   dropdownAndAdd: {
     flexDirection: 'row',
     marginVertical: 10,
-
   },
 
   centeredView: {
