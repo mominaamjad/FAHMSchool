@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ActivityIndicator
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -29,14 +30,21 @@ const ClassesScreen = () => {
   const [search, setSearch] = useState(''); // to store search text
   const [selectedClassIndex, setSelectedClassIndex] = useState(null);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     async function fetchTeachersData() {
       try {
+        setIsLoading(true);
         const teachersList = await fetchTeachers();
         setTeachers(teachersList);
         const classesList = await fetchClasses();
         setClasses(classesList);
         setList(classesList);
+        setIsLoading(false);
+        list.forEach(classObj => {
+          console.log(classObj.assigned); // Output the value of the 'assigned' property
+        });
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
@@ -75,10 +83,10 @@ const ClassesScreen = () => {
     };
 
     try {
-      await assignClassToTeacher(classData);
+      const outputString = await assignClassToTeacher(classData);
       setClasses(newClasses);
       setList(newClasses);
-      Alert.alert('Class assigned successfully');
+      Alert.alert(outputString);
     } catch (error) {
       console.error('Error assigning class:', error);
       Alert.alert('Error assigning class');
@@ -103,7 +111,7 @@ const ClassesScreen = () => {
         <Icon name="magnify" size={30} style={styles.searchIcon} />
       </View>
 
-      <ScrollView>
+      {isLoading ? <ActivityIndicator size="large" color= '#8349EA' /> : <ScrollView>
         {list.map((element, index) => (
           <TouchableOpacity
             key={element.id}
@@ -112,6 +120,7 @@ const ClassesScreen = () => {
               setSelectedClassIndex(index);
               setValue(element.teacher ? element.teacher : null);
             }}>
+              
             <Card
               name={element.className}
               assigned={element.assigned ? 'Assigned' : 'Not Assigned'}
@@ -126,7 +135,8 @@ const ClassesScreen = () => {
             />
           </TouchableOpacity>
         ))}
-      </ScrollView>
+      </ScrollView>}
+      
 
       <Modal
         animationType="slide"

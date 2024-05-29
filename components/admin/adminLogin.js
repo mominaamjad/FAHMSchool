@@ -10,12 +10,13 @@ import {
 } from 'react-native';
 import { loginAdmin } from '../../api/admin';
 
-const Login = () => {
+const Login = ( {navigation} ) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loginError, setLoginError] = useState('');
+  
   const handleLogin = async () => {
     try {
       const admin = await loginAdmin({
@@ -26,6 +27,7 @@ const Login = () => {
         'Login Successful',
         `Welcome ${admin.firstName} ${admin.lastName}`,
       );
+      navigation.navigate('AdminMainScreen')
     } catch (error) {
       console.log('Login Failed', error.message);
       setLoginError('Login failed. Please try again!');

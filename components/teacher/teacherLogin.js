@@ -10,16 +10,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+
 import { loginTeacher } from '../../api/teacher';
 
-const Login = () => {
+const Login = ( {navigation} ) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loginError, setLoginError] = useState('');
-  const navigation = useNavigation();
 
   const handleLogin = async () => {
     try {

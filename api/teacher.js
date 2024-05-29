@@ -21,6 +21,7 @@ import {
     where,
 } from 'firebase/firestore';
 import Teacher from '../models/teacher';
+import Class from '../models/class';
 
 const firebaseConfig = {
     apiKey: FIREBASE_API_KEY,
@@ -42,7 +43,7 @@ export const loginTeacher = async (loginData) => {
         const teacherQuery = query(
             collection(db, 'teachers'),
             where('email', '==', loginData.email),
-            where('password', '==', loginData.password)            
+            where('password', '==', loginData.password)
         );
         console.log(teacherQuery);
         const querySnapshot = await getDocs(teacherQuery);
@@ -69,13 +70,42 @@ export const loginTeacher = async (loginData) => {
     }
 };
 
-// export const viewSubjects = ()=>{
-//     try {
-//     } catch (error) {
-//       console.error('Error viewing All Student: ', error);
-//       throw error;
-//     }
-// }
+export const viewSubjects = async (teacher) => {
+    try {
+        console.log(teacher.teacherName);
+        console.log(teacher.classRef);
+        
+        const classQuery = query(
+            collection(db, 'classes'),
+            where('__name__', '==', teacher.classRef),
+        );
+        // console.log(classQuery);
+        const querySnapshot = await getDocs(classQuery);
+        console.log(querySnapshot.docs);
+
+        if (querySnapshot.empty) {
+            throw new Error('Invalid reuqest (querySnapshot empty)');
+        }
+
+        const classDoc = querySnapshot.docs[0];
+        const classData = classDoc.data();
+        console.log("classData:",classData);
+
+        const assignedClass = new Class(
+            classData.assigned,
+            classData.className,
+            classData.subjects,
+            classData.teacherId,
+            classData.syllabus,
+        );
+        console.log("assignedClass",assignedClass.subjects);
+        return assignedClass.subjects;
+    } catch (error) {
+        console.error('Error retrieving class data', error.message);
+        throw error;
+    }
+};
+
 
 // export const viewFirstTermMarks = () =>{
 //     try {

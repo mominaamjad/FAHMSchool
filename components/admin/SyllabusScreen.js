@@ -1,13 +1,16 @@
 /* eslint-disable prettier/prettier */
-import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {uploadSyllabus, viewSpecificSyllabus} from '../../api/admin';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { uploadSyllabus, viewSpecificSyllabus } from '../../api/admin';
 const SyllabusScreen = () => {
   // for dropdown
   const [value, setValue] = useState();
   const [open, setOpen] = useState(false);
+
+  const [isUploaded, setIsUploaded] = useState(false);
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [syllabusImg, setSyllabusImg] = useState(null);
   useEffect(() => {
@@ -47,6 +50,7 @@ const SyllabusScreen = () => {
       } else {
         let imageUri = response.uri || response.assets?.[0]?.uri;
         setSelectedImage(imageUri);
+        setIsUploaded(true);
       }
     });
   };
@@ -58,8 +62,9 @@ const SyllabusScreen = () => {
     }
 
     try {
-      await uploadSyllabus({id: value, syllabus: selectedImage});
+      await uploadSyllabus({ id: value, syllabus: selectedImage });
       console.log('Timetable uploaded successfully');
+      setIsUploaded(false);
     } catch (error) {
       console.error('Error uploading timetable: ', error);
     }
@@ -73,12 +78,12 @@ const SyllabusScreen = () => {
         open={open}
         value={value}
         items={[
-          {label: 'Nursery', value: '01'},
-          {label: 'Prep', value: '02'},
-          {label: 'Class 1', value: '03'},
-          {label: 'Class 2', value: '04'},
-          {label: 'Class 3', value: '05'},
-          {label: 'Class 4', value: '06'},
+          { label: 'Nursery', value: '01' },
+          { label: 'Prep', value: '02' },
+          { label: 'Class 1', value: '03' },
+          { label: 'Class 2', value: '04' },
+          { label: 'Class 3', value: '05' },
+          { label: 'Class 4', value: '06' },
         ]}
         setOpen={setOpen}
         setValue={setValue}
@@ -86,16 +91,16 @@ const SyllabusScreen = () => {
 
       <View>
         {syllabusImg && (
-          <Image source={{uri: syllabusImg}} style={styles.pic} />
+          <Image source={{ uri: syllabusImg }} style={styles.pic} />
         )}
 
         <TouchableOpacity style={styles.buttonUpload} onPress={openImagePicker}>
-          <Text style={styles.uploadText}>Upload</Text>
+          <Text style={styles.uploadText}>{isUploaded ? 'Upload Again' : 'Upload'}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonUpload} onPress={handleUpload}>
+        {isUploaded ? (<TouchableOpacity style={styles.buttonUpload} onPress={handleUpload}>
           <Text style={styles.uploadText}>Done</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>) : (<></>)}
       </View>
     </View>
   );

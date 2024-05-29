@@ -1,21 +1,21 @@
-import {View, ScrollView, Text, Image, StyleSheet} from 'react-native'
+import { View,
+     ScrollView, 
+     Text, 
+     Image, 
+     StyleSheet 
+} from 'react-native'
 
-
-
-const Subject = ({name}) => {
-    return(
-        <View style = {styles.mainCard}>
-
+const Subject = ({ name }) => {
+    return (
+        <View style={styles.mainCard}>
             <View>
                 <Text style={styles.title}>{name}</Text>
-                
             </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-
     mainCard: {
         backgroundColor: "#FFFFFF",
         borderRadius: 15,
@@ -27,18 +27,13 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         elevation: 4,
         shadowColor: '#8349EA'
-
     },
-
-
-    title:{
-        color: "#000000",
+    title: {
+        color: "black",
         fontSize: 18,
         fontWeight: "600",
         fontFamily: 'Poppins-SemiBold',
     }
-
-
 })
 
 export default Subject

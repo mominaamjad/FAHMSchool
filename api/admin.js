@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   FIREBASE_API_KEY,
   FIREBASE_APP_ID,
@@ -20,6 +21,7 @@ import {
   setDoc,
   updateDoc,
   where,
+  writeBatch,
 } from 'firebase/firestore';
 import Admin from '../models/admin';
 const firebaseConfig = {
@@ -130,26 +132,58 @@ export const fetchTeachers = async () => {
       label: Teacherdoc.data().teacherName,
       value: Teacherdoc.id,
     }));
-    return teachersList;
+    const assignedTeachers = (await fetchClasses())
+      .filter(cls => cls.teacher !== null)
+      .map(cls => cls.teacher);
+
+    const unassignedTeachers = teachersList.filter(
+      teacher => !assignedTeachers.includes(teacher.value),
+    );
+
+    return unassignedTeachers;
   } catch (error) {
     console.error('Error fetching teachers: ', error);
     throw error;
   }
 };
+
 export const assignClassToTeacher = async classData => {
   try {
     const classDocRef = doc(db, 'classes', classData.classId);
 
     if (!classData.teacherId) {
+      const teachersSnapshot = await getDocs(collection(db, 'teachers'));
+      const batch = writeBatch(db);
+
+      teachersSnapshot.forEach(doc => {
+        if (doc.data().classRef === classData.classId) {
+          batch.update(doc.ref, {classRef: null});
+        }
+      });
+
+      await batch.commit();
+
       await updateDoc(classDocRef, {
         teacher: null,
         assigned: false,
       });
+      return 'Unassign class successfully';
     } else {
       const teacherDocRef = doc(db, 'teachers', classData.teacherId);
       const teacherDocSnap = await getDoc(teacherDocRef);
 
       if (teacherDocSnap.exists()) {
+        const teachersSnapshot = await getDocs(collection(db, 'teachers'));
+        const batch = writeBatch(db);
+
+        teachersSnapshot.forEach(doc => {
+          if (doc.data().classRef === classData.classId) {
+            batch.update(doc.ref, {classRef: null});
+          }
+        });
+
+        await batch.commit();
+
         await updateDoc(teacherDocRef, {
           classRef: classData.classId,
         });
@@ -162,11 +196,13 @@ export const assignClassToTeacher = async classData => {
         throw new Error("Teacher document doesn't exist");
       }
     }
+    return 'Class assigned successfully';
   } catch (error) {
     console.error('Error Assigning Class To Teacher: ', error);
     throw error;
   }
 };
+
 export const addTeacher = async teacherData => {
   try {
     const teacherRef = await addDoc(collection(db, 'teachers'), {
@@ -197,10 +233,15 @@ export const deleteTeacher = async teacherEmail => {
   }
 };
 
-export const createStudent = async studentData => {
+export const addStudent = async studentData => {
   try {
+    await setDoc(doc(db, 'students', studentData.regNo), {
+      ...studentData,
+    });
+    console.log('Student added with ID: ', studentData.regNo);
+    return studentData.regNo;
   } catch (error) {
-    console.error('Error creating Student: ', error);
+    console.error('Error adding student: ', error);
     throw error;
   }
 };
@@ -213,6 +254,22 @@ export const viewAllStudent = async () => {
   }
 };
 
+export const fetchStudents = async () => {
+  try {
+    const studentCollection = collection(db, 'students');
+    const studentSnapshot = await getDocs(studentCollection);
+    const studentList = studentSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    console.log(studentList);
+    return studentList;
+  } catch (error) {
+    console.error('Error fetching students: ', error);
+    throw error;
+  }
+};
+
 export const viewSpecificStudent = async studentId => {
   try {
   } catch (error) {
@@ -221,14 +278,17 @@ export const viewSpecificStudent = async studentId => {
   }
 };
 
-export const editStudent = async studentData => {
+export const updateStudent = async (regNo, updatedData) => {
   try {
+    const studentRef = doc(db, 'students', regNo);
+    await updateDoc(studentRef, updatedData);
+    console.log('Student updated with ID: ', regNo);
+    return regNo;
   } catch (error) {
-    console.error('Error editing Student: ', error);
+    console.error('Error updating student: ', error);
     throw error;
   }
 };
-
 export const deleteStudent = async studentId => {
   try {
   } catch (error) {
