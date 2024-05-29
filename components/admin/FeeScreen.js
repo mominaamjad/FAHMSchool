@@ -346,7 +346,7 @@ styles = StyleSheet.create({
 
   searchIcon: {
     alignSelf: 'center',
-    backgroundColor: '#8349EA',
+    backgroundColor: '#9C70EA',
     padding: 5,
     borderRadius: 20,
   },
@@ -364,7 +364,7 @@ styles = StyleSheet.create({
     borderRadius: 20,
     padding: 45,
     justifyContent: 'center',
-    shadowColor: '#8349EA',
+    shadowColor: '#9C70EA',
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 4,
@@ -379,7 +379,7 @@ styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#8349EA',
+    borderColor: '#9C70EA',
     margin: 2,
   },
 
@@ -395,7 +395,7 @@ styles = StyleSheet.create({
     paddingHorizontal: 22,
     paddingVertical: 10,
     elevation: 2,
-    backgroundColor: '#8349EA',
+    backgroundColor: '#9C70EA',
     marginLeft: 10,
     marginRight: 10,
   },
@@ -435,7 +435,7 @@ styles = StyleSheet.create({
     marginLeft: 20,
     width: 120,
     backgroundColor: '#F4F4F4',
-    borderColor: '#8349EA',
+    borderColor: '#9C70EA',
   },
 
   dropdownText: {

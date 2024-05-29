@@ -266,7 +266,7 @@ const RecordsScreen = () => {
       </View>
 
 
-      {isLoading ? <ActivityIndicator size="large" color='#8349EA' /> :
+      {isLoading ? <ActivityIndicator size="large" color='#9C70EA' /> :
         <ScrollView style={styles.scroll}>
           {list.map((element, index) => (
             <TouchableOpacity
@@ -691,12 +691,12 @@ const styles = StyleSheet.create({
   },
   editIcon: {
     paddingTop: 3,
-    color: '#8349EA',
+    color: '#9C70EA',
   },
 
   searchIcon: {
     alignSelf: 'center',
-    backgroundColor: '#8349EA',
+    backgroundColor: '#9C70EA',
     padding: 5,
     borderRadius: 20,
   },
@@ -724,7 +724,7 @@ const styles = StyleSheet.create({
   TextInputAdd: {
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: '#8349EA',
+    borderColor: '#9C70EA',
     width: 120,
     marginBottom: 20,
     height: 35,
@@ -736,7 +736,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 45,
     justifyContent: 'center',
-    shadowColor: '#8349EA',
+    shadowColor: '#9C70EA',
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 4,
@@ -748,7 +748,7 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
     paddingHorizontal: 30,
     borderRadius: 20,
-    backgroundColor: '#8349EA',
+    backgroundColor: '#9C70EA',
   },
 
   buttonAdd: {
@@ -758,7 +758,7 @@ const styles = StyleSheet.create({
     borderRadius: 17,
     paddingHorizontal: 22,
     paddingVertical: 10,
-    backgroundColor: '#8349EA',
+    backgroundColor: '#9C70EA',
     marginTop: 20,
     marginRight: 12,
     marginBottom: 10,
@@ -784,7 +784,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 22,
     paddingVertical: 10,
     elevation: 2,
-    backgroundColor: '#8349EA',
+    backgroundColor: '#9C70EA',
     marginLeft: 10,
     marginRight: 10,
   },
@@ -823,7 +823,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     width: 150,
     backgroundColor: '#F4F4F4',
-    borderColor: '#8349EA',
+    borderColor: '#9C70EA',
   },
 
   dropdownText: {

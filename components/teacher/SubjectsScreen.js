@@ -73,7 +73,7 @@ styles = StyleSheet.create({
   },
   searchIcon: {
     alignSelf: "center",
-    backgroundColor: "#8349EA",
+    backgroundColor: "#9C70EA",
     padding: 5,
     borderRadius: 20
   },

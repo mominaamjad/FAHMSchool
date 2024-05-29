@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     head:{
-        backgroundColor: "#8349EA",
+        backgroundColor: "#9C70EA",
         borderRadius : 20
     },
 
