@@ -24,6 +24,7 @@ import {
   writeBatch,
 } from 'firebase/firestore';
 import Admin from '../models/admin';
+const fs = require('fs');
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
   authDomain: FIREBASE_AUTH_DOMAIN,
@@ -245,7 +246,18 @@ export const addStudent = async studentData => {
     throw error;
   }
 };
+export const addStudentsFromFile = async filePath => {
+  try {
+    const data = fs.readFileSync(filePath, 'utf8');
+    const students = JSON.parse(data);
 
+    for (const student of students) {
+      await addStudent(student);
+    }
+  } catch (error) {
+    console.error('Error reading or parsing JSON file: ', error);
+  }
+};
 export const viewAllStudent = async () => {
   try {
   } catch (error) {
@@ -307,6 +319,9 @@ export const updateStudent = async (regNo, updatedData) => {
 };
 export const deleteStudent = async studentId => {
   try {
+    const docRef = doc(db, 'students', studentId);
+    await deleteDoc(docRef);
+    console.log(`Document with ID ${studentId} deleted successfully`);
   } catch (error) {
     console.error('Error deleting student: ', error);
     throw error;
