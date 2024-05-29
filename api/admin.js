@@ -270,6 +270,22 @@ export const fetchStudents = async () => {
   }
 };
 
+export const fetchFees = async () => {
+  try {
+    const studentCollection = collection(db, 'fees');
+    const studentSnapshot = await getDocs(studentCollection);
+    const studentList = studentSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    console.log(studentList);
+    return studentList;
+  } catch (error) {
+    console.error('Error fetching fees: ', error);
+    throw error;
+  }
+};
+
 export const viewSpecificStudent = async studentId => {
   try {
   } catch (error) {
@@ -315,6 +331,7 @@ export const viewAllFeeStatus = async () => {
 export const updateFees = async (id, updatedData) => {
   try {
     const feesRef = doc(db, 'fees', id);
+    console.log(updatedData);
     await updateDoc(feesRef, updatedData);
     console.log('fee updated with ID: ', id);
     return id;

@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import {addClass, addTeacher, deleteTeacher} from './api/admin';
 
 import {createStackNavigator} from '@react-navigation/stack';
@@ -36,8 +36,7 @@ function App() {
     try {
       await addClass({
         className: 'Class 1',
-        subjects: [{name:'name',subjectId: 'id'}],
-       
+        subjects: [{name: 'name', subjectId: 'id'}],
       });
       console.log('Class added with ID: ');
     } catch (error) {
@@ -122,7 +121,6 @@ function App() {
 
   return (
     // this is the nav for teacher login to teacher dashboard. comment out for own use
-    <RecordsScreen />
     // <TimetableScreen />
     // <NavigationContainer>
     //   <Stack.Navigator
@@ -132,6 +130,7 @@ function App() {
     //     {/* <Stack.Screen name="TeacherMainScreen" component={TeacherMainScreen} /> */}
     //   </Stack.Navigator>
     // </NavigationContainer>
+    <RecordsScreen />
   );
 }
 
