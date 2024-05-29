@@ -48,9 +48,13 @@ const Login = () => {
             <Image source={require('../assets/studentLogin.png')} style={styles.image} />
         </View>
         <Text style={styles.login}>Welcome!</Text>
-        <TextInput style={styles.input} placeholder='Enter your registration no.' placeholderTextColor={'#333333'} onChangeText={setReg}></TextInput>
-        <TextInput style={styles.input} placeholder='Enter your password' placeholderTextColor={'#333333'} onChangeText={setPassword} secureTextEntry></TextInput>
-        <TouchableOpacity style={styles.submitButton} onPress={() => {} } disabled={!checkReg()||!checkPassword()}><Text style={styles.submitText}>Log in</Text></TouchableOpacity>
+        <TextInput style={styles.input} placeholder='Registration no.' placeholderTextColor={'#333333'} onChangeText={setReg}></TextInput>
+        <TextInput style={styles.input} placeholder='Password' placeholderTextColor={'#333333'} onChangeText={setPassword} secureTextEntry></TextInput>
+        <TouchableOpacity style={styles.submitButton} 
+            onPress={() => {} } 
+            disabled={!checkReg()||!checkPassword()}>
+            <Text style={styles.submitText}>Log in</Text>
+        </TouchableOpacity>
         
     </View>
     )
