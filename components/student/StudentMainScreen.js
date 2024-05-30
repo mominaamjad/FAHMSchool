@@ -18,10 +18,10 @@ const StudentMainScreen = ({navigation , route}) =>{
 
   // {route}
   // {navigation, route}
-  const { regNo } = route.params;
+  // const { regNo } = route.params;
 
     return(
-    // <NavigationContainer>
+    <NavigationContainer>
       <Drawer.Navigator
         screenOptions={{
           drawerStyle: {
@@ -54,7 +54,7 @@ const StudentMainScreen = ({navigation , route}) =>{
         <Drawer.Screen
           name="Dashboard"
           component={StudentDashboard}
-          initialParams={regNo}
+          // initialParams={}
           options={
             {
               // drawerIcon: () =>{
@@ -63,16 +63,18 @@ const StudentMainScreen = ({navigation , route}) =>{
             }
           }
         />
-        <Drawer.Screen name="Marks Summary" component={MarksSummaryScreen} initialParams={regNo}
+        <Drawer.Screen name="Marks Summary" component={MarksSummaryScreen} 
+        // initialParams={regNo}
            />
-        <Drawer.Screen name="Fee" component={StudentFee} initialParams={regNo}
+        <Drawer.Screen name="Fee" component={StudentFee} 
+        // initialParams={regNo}
            />
         <Drawer.Screen name="Timetable" component={StudentTimetable} />
         <Drawer.Screen name="Syllabus" component={StudentSyllabus} />
         <Drawer.Screen name="Logout" component={MainScreen} options={{headerShown: false}}/>
 
         </Drawer.Navigator>
-    // </NavigationContainer>
+    </NavigationContainer>
     )
 }
 
