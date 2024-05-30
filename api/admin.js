@@ -372,11 +372,11 @@ const cleanObject = obj => {
 
 export const createSpecificFeeStatus = async feeData => {
   try {
-    await setDoc(doc(db, 'fees'), {
+    await setDoc(doc(db, 'fees', feeData.id), {
       ...feeData,
     });
-    console.log('Fee added with ID: ', feeData.regNo);
-    return feeData.regNo;
+    console.log('Fee added with ID: ', feeData.id);
+    return feeData.id;
   } catch (error) {
     console.error('Error creating specific fee status: ', error);
     throw error;
