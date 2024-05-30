@@ -51,7 +51,7 @@ const Main = ({route}) => {
         try {
           await editMarks(students, subject);
         } catch (error) {
-          console.error('Error fetching students:', error);
+          console.error('Error', error);
         }
       };
 

@@ -132,7 +132,7 @@ export const fetchClassStudents = async (subject, classRef) => {
         console.log(marksSnapshot.docs);
 
         if (marksSnapshot.empty) {
-            console.warn('No marks found for the specified subject.');
+            // console.warn('No marks found for the specified subject.');
         }
 
         const marksList = marksSnapshot.docs.map(markDoc => ({
@@ -146,6 +146,7 @@ export const fetchClassStudents = async (subject, classRef) => {
             const studentMarks = marksList.find(mark => mark.regNo === student.regNo);
             console.log(studentMarks)
             return {
+                // if there is no student ka marks record for this subject, just load zeros
                 ...student,
                 finals: studentMarks?.finals || "0",
                 firstTerm: studentMarks?.firstTerm || "0",
@@ -155,8 +156,8 @@ export const fetchClassStudents = async (subject, classRef) => {
         console.log("studentList:", studentListWithMarks);
         return studentListWithMarks;
     } catch (error) {
-        console.error('Error viewing All Student: ', error);
-        throw error;
+        // console.error('Error viewing All Student: ', error);
+        // throw error;
     }
 }
 
@@ -173,23 +174,35 @@ export const editMarks = async (students, subject) => {
 
             const marksSnapshot = await getDocs(marksQuery);
 
-            marksSnapshot.forEach(doc => {
-                const finals = parseInt(students[i].finals);
-                const firstTerm = parseInt(students[i].firstTerm);
-                const mids = parseInt(students[i].mids);
+            const finals = parseInt(students[i].finals, 10);
+            const firstTerm = parseInt(students[i].firstTerm, 10);
+            const mids = parseInt(students[i].mids, 10);
 
-                const result = ((firstTerm / subject.firstMid) * 25) + ((mids / subject.firstMid) * 25) + ((finals / subject.final) * 50);
+            const result = ((firstTerm / subject.firstMid) * 25) + ((mids / subject.firstMid) * 25) + ((finals / subject.final) * 50);
 
-                const newData = {
-                    finals: students[i].finals,
-                    firstTerm: students[i].firstTerm,
-                    mids: students[i].mids,
-                    result: isNaN(result) ? '0' : result,
-                    year: new Date().getFullYear().toString()
-                };
+            const newData = {
+                studentRef: students[i].regNo,
+                subjectRef: subject.subjectId,
+                finals: students[i].finals,
+                firstTerm: students[i].firstTerm,
+                mids: students[i].mids,
+                result: isNaN(result) ? '0' : result,
+                year: new Date().getFullYear().toString()
+            };
+            console.log(newData);
 
-                batch.update(doc.ref, newData);
-            });
+            if (marksSnapshot.empty) {
+                // Make new document for that subject
+                const newDocRef = doc(collection(db, 'marks'));
+                console.log(newData);
+                batch.set(newDocRef, newData);
+            } else {
+                // Update existing documents
+                marksSnapshot.forEach(doc => {
+                    console.log(newData);
+                    batch.update(doc.ref, newData);
+                });
+            }
         }
 
         await batch.commit();
@@ -199,6 +212,7 @@ export const editMarks = async (students, subject) => {
         throw error;
     }
 };
+
 
 
 // export const editMidMarks =()=>{
