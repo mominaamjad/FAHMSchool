@@ -346,17 +346,8 @@ export const viewAllFeeStatus = async () => {
 export const updateFees = async (id, updatedData) => {
   try {
     const feesRef = doc(db, 'fees', id);
-    const feeDoc = await getDoc(feesRef);
-    const cleanedData = cleanObject(updatedData);
-
-    if (feeDoc.exists()) {
-      await updateDoc(feesRef, cleanedData);
-      console.log('Fee updated with ID:', id);
-    } else {
-      await setDoc(feesRef, cleanedData);
-      console.log('New fee document created with ID:', id);
-    }
-
+    await updateDoc(feesRef, updatedData);
+    console.log('Fee updated with ID:', id);
     return id;
   } catch (error) {
     console.error('Error updating fee:', error);
@@ -364,19 +355,28 @@ export const updateFees = async (id, updatedData) => {
   }
 };
 
-const cleanObject = obj => {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([_, v]) => v !== undefined),
-  );
-};
+// const cleanObject = obj => {
+//   return Object.fromEntries(
+//     Object.entries(obj).filter(([_, v]) => v !== undefined),
+//   );
+// };
 
-export const createSpecificFeeStatus = async feeData => {
+export const createSpecificFeeStatus = async (feeData, studentId) => {
   try {
-    await setDoc(doc(db, 'fees'), {
-      ...feeData,
+    const feeId = doc(collection(db, 'fees')).id;
+    await setDoc(doc(db, 'fees', feeId), {
+      studentRef: studentId,
+      amountDue: feeData.amountDue,
+      amountPaid: feeData.amountPaid,
+      lateFees: feeData.amountPaid,
+      payableAmount: feeData.payableAmount,
+      paymentAmount: feeData.paymentDate,
+      remarks: feeData.remarks,
+      status: feeData.status,
     });
-    console.log('Fee added with ID: ', feeData.regNo);
-    return feeData.regNo;
+    console.log(feeData.amountDue);
+    console.log('Fee added with ID: ', feeId);
+    return feeId;
   } catch (error) {
     console.error('Error creating specific fee status: ', error);
     throw error;
