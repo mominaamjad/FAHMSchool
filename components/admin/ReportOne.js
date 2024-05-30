@@ -60,7 +60,8 @@ const ReportOne = () => {
 
   const calculateAge = dob => {
     //getting data in format dd-mm-yyyy
-    const [day, month, year] = dob.split('-').map(Number);
+
+    const [day, month, year] = (dob===null||dob===undefined||dob==="")?"01-01-2000".split('-').map(Number):dob.split('-').map(Number);
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1;

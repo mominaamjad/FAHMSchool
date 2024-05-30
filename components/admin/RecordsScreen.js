@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Modal,
@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 
-// import { TextInput, HelperText } from 'react-native-paper';
+import { RadioButton } from 'react-native-paper';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -66,16 +66,16 @@ const RecordsScreen = () => {
   const [value, setValue] = useState('allClasses');
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
-    {label: 'Nursery', value: '01'},
-    {label: 'Prep', value: '02'},
-    {label: 'Class 1', value: '03'},
-    {label: 'Class 2', value: '04'},
-    {label: 'Class 3', value: '05'},
-    {label: 'Class 4', value: '06'},
-    {label: 'Class 5', value: '07'},
-    {label: 'Class 6', value: '08'},
-    {label: 'Class 7', value: '09'},
-    {label: 'Class 8', value: '10'},
+    { label: 'Nursery', value: '01' },
+    { label: 'Prep', value: '02' },
+    { label: 'Class 1', value: '03' },
+    { label: 'Class 2', value: '04' },
+    { label: 'Class 3', value: '05' },
+    { label: 'Class 4', value: '06' },
+    { label: 'Class 5', value: '07' },
+    { label: 'Class 6', value: '08' },
+    { label: 'Class 7', value: '09' },
+    { label: 'Class 8', value: '10' },
   ]);
 
   useEffect(() => {
@@ -189,6 +189,7 @@ const RecordsScreen = () => {
   const handleAddStudent = async () => {
     try {
       const currentYear = new Date().getFullYear();
+      const currentDate = new Date().getDate();
       let newRegNo;
       console.log(students.length);
       if (students.length > 0) {
@@ -205,7 +206,7 @@ const RecordsScreen = () => {
         newRegNo = `${currentYear}-0001`;
       }
 
-      const studentWithRegNo = {...newStudent, regNo: newRegNo};
+      const studentWithRegNo = { ...newStudent, regNo: newRegNo };
       await addStudent(studentWithRegNo);
       setStudents([...students, studentWithRegNo]);
       setAddModalVisible(false);
@@ -222,6 +223,7 @@ const RecordsScreen = () => {
         email: '',
         password: '',
         remarks: '',
+        dateOfAdmission: currentDate
       });
     } catch (error) {
       console.error('Error adding student: ', error);
@@ -260,13 +262,13 @@ const RecordsScreen = () => {
           onChangeValue={() => handleFilteredList()}
         />
       </View>
-      <View style={{alignSelf: 'center'}}>
+      <View style={{ alignSelf: 'center', zIndex: -1  }}>
         <TouchableOpacity
           style={styles.buttonAdd}
           onPress={() => {
             setAddModalVisible(true);
           }}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row'}}>
             <Icon name="plus" size={30} color="white" />
             <Text style={styles.textStyle}> Add Record</Text>
           </View>
@@ -318,7 +320,7 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Name </Text>
                 <TextInput
-                  value={students[index].name}
+                  value={students[index].studentName}
                   style={styles.TextInput}
                   onChangeText={text => {
                     handleUpdateStudent('name', text);
@@ -331,7 +333,7 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Father Name </Text>
                 <TextInput
-                  value={students[index].fathername}
+                  value={students[index].fatherName}
                   style={styles.TextInput}
                   onChangeText={text => {
                     handleUpdateStudent('fathername', text);
@@ -427,9 +429,7 @@ const RecordsScreen = () => {
                     setEdit(false);
                     setFeeModalVisible(true);
                   }}>
-                  <Text style={styles.submitText}>
-                    Display Current Fee Status
-                  </Text>
+                  <Text style={styles.submitText}>Current Fee Status</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -441,17 +441,17 @@ const RecordsScreen = () => {
                   }}>
                   <Text style={styles.submitText}>Add Fee Status</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={styles.cancelButton}
-                  onPress={async () => {
-                    await handleUpdateStudent();
-                    setModalVisible(false);
-                    setEdit(false);
-                  }}>
-                  <Text style={styles.cancelText}>OK</Text>
-                </TouchableOpacity>
               </View>
+
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={async () => {
+                  await handleUpdateStudent();
+                  setModalVisible(false);
+                  setEdit(false);
+                }}>
+                <Text style={styles.cancelText}>OK</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>
@@ -470,7 +470,7 @@ const RecordsScreen = () => {
               <Text style={styles.modalHeading}>Add Student Record</Text>
             </View>
 
-            <ScrollView>
+            {/* <ScrollView>
               {Object.keys(newStudent).map((key, index) => (
                 <View style={styles.rowStyle} key={index}>
                   <Text style={styles.modalText}>{key}</Text>
@@ -484,13 +484,85 @@ const RecordsScreen = () => {
                   />
                 </View>
               ))}
+            </ScrollView> */}
+
+            <ScrollView>
+              {Object.keys(newStudent).map((key, index) => {
+
+                let component;
+                // if ( key  === 'dob') {
+                //   component = (<DateTimePicker
+                //     testID="dateTimePicker"
+                //     // value={date}
+                //     mode="date"
+                //     display="default"
+                //     // onChange={onChange}
+                //     minimumDate={new Date(2020, 0, 1)} // January 1, 2020
+                //     maximumDate={new Date(2030, 11, 31)} // December 31, 2030
+                //   />);
+                // }
+                if (key === 'gender') {
+                  component = (
+                    <View style={{flexDirection:'row'}}>
+                      <RadioButton
+                        value="male"
+                        status={checked === 'male' ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                          setChecked('male'); 
+                          setNewStudent({ ...newStudent, [key]: value })
+                        }}
+                      />
+                      <Text style={styles.modalText}>Male</Text>
+                      <RadioButton
+                        value="female"
+                        status={checked === 'female' ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                          setChecked('female'); 
+                          setNewStudent({ ...newStudent, [key]: value })
+                        }}
+                      />
+                      <Text style={styles.modalText}>Female</Text>
+                    </View>
+                  )
+                }
+                else if ( key === 'password' ) {
+                  component = (
+                    <TextInput
+                      value={newStudent[key]}
+                      style={styles.TextInputAdd}
+                      onChangeText={text => {
+                        setNewStudent({ ...newStudent, [key]: text })
+                      }
+                      }
+                      secureTextEntry
+                    />
+                  )
+                }
+                else {
+                  component =
+                    (<TextInput
+                      value={newStudent[key]}
+                      style={styles.TextInputAdd}
+                      onChangeText={text => {
+                        setNewStudent({ ...newStudent, [key]: text })
+                      }
+                      }
+                    />);
+                }
+                return (
+                  <View style={styles.rowStyle} key={index}>
+                    <Text style={styles.modalText}>{key}</Text>
+                    {component}
+                  </View>
+                )
+              })}
             </ScrollView>
 
             <View style={styles.btnRow}>
               <TouchableOpacity
                 style={styles.buttonSubmit}
                 onPress={handleAddStudent}
-                // onPress={validateInput}
+              // onPress={validateInput}
               >
                 <Text style={styles.submitText}>Add Record</Text>
               </TouchableOpacity>
@@ -786,7 +858,7 @@ const styles = StyleSheet.create({
   },
 
   TextInput: {
-    height: 36,
+    height: 40,
     fontSize: 14,
     color: '#333333',
     fontFamily: 'Poppins-Regular',
@@ -850,14 +922,21 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 
+  cancelButton: {
+    marginTop: 20,
+    alignSelf: 'center'
+  },
+
   buttonSubmit: {
     borderRadius: 17,
-    paddingHorizontal: 22,
+    // paddingHorizontal: 22,
     paddingVertical: 10,
     elevation: 2,
     backgroundColor: '#9C70EA',
     marginLeft: 10,
     marginRight: 10,
+    marginTop: 10,
+    width: 150,
   },
 
   cancelText: {
@@ -892,9 +971,10 @@ const styles = StyleSheet.create({
   dropdown: {
     marginTop: 6,
     marginLeft: 20,
-    width: 150,
+    width: 160,
     backgroundColor: '#F4F4F4',
     borderColor: '#9C70EA',
+    elevation: 2
   },
 
   dropdownText: {

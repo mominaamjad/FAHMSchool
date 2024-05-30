@@ -65,7 +65,7 @@ function MyStack() {
   );
 }
 
-const MainScreen = ({ navigation }) => {
+export const MainScreen = ({ navigation }) => {
 
   return (
     <View style={styles.main}>
