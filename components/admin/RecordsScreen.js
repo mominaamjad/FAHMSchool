@@ -46,6 +46,8 @@ const RecordsScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [feeModalVisible, setFeeModalVisible] = useState(false);
   const [addModalVisible, setAddModalVisible] = useState(false);
+  
+  const [addFeeModalVisible, setAddFeeModalVisible] = useState(false);
   const [newStudent, setNewStudent] = useState({
     admissionClass: '',
     currentClass: '',
@@ -422,6 +424,16 @@ const RecordsScreen = () => {
                     setEdit(false);
                     setFeeModalVisible(true);
                   }}>
+                  <Text style={styles.submitText}>Display Current Fee Status</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.buttonSubmit}
+                  onPress={() => {
+                    setModalVisible(false);
+                    setEdit(false);
+                    setAddFeeModalVisible(true);
+                  }}>
                   <Text style={styles.submitText}>Add Fee Status</Text>
                 </TouchableOpacity>
 
@@ -654,6 +666,111 @@ const RecordsScreen = () => {
           </View>
         </Modal>
       )}
+
+
+{index != null && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={addFeeModalVisible}
+          onRequestClose={() => {
+            setAddFeeModalVisible(!addFeeModalVisible);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View style={styles.rowStyle}>
+                <Text style={styles.modalHeading}>Fee Information</Text>
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={styles.modalText}>Registration Number </Text>
+                <TextInput
+                    // value={newStudent[key]}
+                    style={styles.TextInputAdd}
+                    onChangeText={()=>{}}
+                    />
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={styles.modalText}>Name </Text>
+                <TextInput
+                    // value={newStudent[key]}
+                    style={styles.TextInputAdd}
+                    onChangeText={()=>{}}
+                    />
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={styles.modalText}>Amount Due </Text>
+                <TextInput
+                    // value={newStudent[key]}
+                    style={styles.TextInputAdd}
+                    onChangeText={()=>{}}
+                    />
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={styles.modalText}>Amount Paid </Text>
+                <TextInput
+                    // value={newStudent[key]}
+                    style={styles.TextInputAdd}
+                    onChangeText={()=>{}}
+                    />
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={styles.modalText}>Payable Amount </Text>
+                <TextInput
+                    // value={newStudent[key]}
+                    style={styles.TextInputAdd}
+                    onChangeText={()=>{}}
+                    />
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={styles.modalText}>Payment Date </Text>
+                <TextInput
+                    // value={newStudent[key]}
+                    style={styles.TextInputAdd}
+                    onChangeText={()=>{}}
+                    />
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={feeData.modalText}>Late Fees </Text>
+                <TextInput
+                    // value={newStudent[key]}
+                    style={styles.TextInputAdd}
+                    onChangeText={()=>{}}
+                    />
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={feeData.modalText}>Remarks </Text>
+                <TextInput
+                    // value={newStudent[key]}
+                    style={styles.TextInputAdd}
+                    onChangeText={()=>{}}
+                    />
+              </View>
+
+              <View style={styles.btnRow}>
+                <TouchableOpacity
+                  style={styles.buttonSubmit}
+                  onPress={async () => {
+                    // await handleChangedFee();
+                    setAddFeeModalVisible(!addFeeModalVisible);
+                    // setEdit(false);
+                  }}>
+                  <Text style={styles.submitText}>Done</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      )}
+
+
     </View>
   );
 };
