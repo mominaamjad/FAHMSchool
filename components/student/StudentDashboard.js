@@ -13,15 +13,18 @@ import { useEffect, useState } from "react";
 
 const StudentDashboard = ({route}) => {
     const [marks, setMarks] = useState([]);
-    const {regNo} = route.params;
+    // const {regNo} = route.params;
+
     
   useEffect(() => {
     const fetchMarks = async () => {
       try {
-          const fetchedMarks = await currMarks(regNo);
+          const fetchedMarks = await currMarks('2024-002');
           setMarks(fetchedMarks);
+
           console.log(marks);
-          await getYears('2024-0001');
+        //   await getYears());
+        
       } catch (error) {
         console.error('Error fetching marks: ', error);
       }

@@ -19,18 +19,28 @@ const MarksSummaryScreen = ({route}) => {
     const [open, setOpen] = useState(false);
     const [years, setYears] = useState([])
     const [marks, setMarks] = useState([]);
-    const {regNo} = route.params;
+    // const {regNo} = route.params;
     
     useEffect(() => {
         const fetchYears = async () => {
         try {
-            const fetchedYears = await getYears(regNo);
-            const years = fetchedYears.map((year) => {
-                return {label: yearsMap[year], value: year}
-            })
-            setYears(years);
+            const fetchedYears = await getYears('2024-001');
             
-            //  set the drop down value            
+            console.log("screen k andar waley")
+            console.log(fetchedYears)
+
+            const years = fetchedYears.map((year) => ({
+                  label: yearsMap[year],
+                  value: year,
+            }))
+
+            setYears(years);
+        
+
+
+            console.log("screen k andar waley years")
+            console.log(years)
+
             setValue(years[years.length - 1].value)
                         
         } catch (error) {
@@ -47,7 +57,11 @@ const MarksSummaryScreen = ({route}) => {
             // const index = years.findIndex(item => item.value === valueToFind);
             // const selectedYear = 2024 - (years.length - index)
             // console.log(selectedYear);
-            const fetchedMarks = await getMarksByYear(regNo, value);
+            const fetchedMarks = await getMarksByYear('2024-001', value);
+
+            console.log("yeh marks screen waley")
+            console.log(fetchedMarks);
+
             setMarks(fetchedMarks);
             console.log(fetchedMarks);
               
