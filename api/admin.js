@@ -365,9 +365,16 @@ export const createSpecificFeeStatus = async (feeData, studentId) => {
   try {
     const feeId = doc(collection(db, 'fees')).id;
     await setDoc(doc(db, 'fees', feeId), {
-      ...feeData,
       studentRef: studentId,
+      amountDue: feeData.amountDue,
+      amountPaid: feeData.amountPaid,
+      lateFees: feeData.amountPaid,
+      payableAmount: feeData.payableAmount,
+      paymentAmount: feeData.paymentDate,
+      remarks: feeData.remarks,
+      status: feeData.status,
     });
+    console.log(feeData.amountDue);
     console.log('Fee added with ID: ', feeId);
     return feeId;
   } catch (error) {

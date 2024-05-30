@@ -25,6 +25,8 @@ import {
 import Card from '../layouts/Card';
 const RecordsScreen = () => {
   const [students, setStudents] = useState([]);
+  const [allFeeData, setAllFeeData] = useState([]);
+
   const [feeData, setFeeData] = useState({
     amountDue: null,
     amountPaid: null,
@@ -101,7 +103,7 @@ const RecordsScreen = () => {
       try {
         setIsLoading(true);
         const feeList = await fetchFees();
-        setFeeData(feeList);
+        setAllFeeData(feeList);
         setIsLoading(false);
       } catch (error) {
         console.error('Error loading students: ', error);
@@ -127,6 +129,8 @@ const RecordsScreen = () => {
       const addFees = {...feeData};
       const studentId = students[index].id;
       await createSpecificFeeStatus(addFees, studentId);
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
       setFeeData({
         amountDue: 0,
         amountPaid: 0,
@@ -135,6 +139,7 @@ const RecordsScreen = () => {
         paymentDate: '',
         remarks: '',
         status: '',
+        createdAt: `${currentMonth}-${currentYear}`,
         studentRef: studentId,
       });
     } catch (error) {
@@ -469,9 +474,6 @@ const RecordsScreen = () => {
 
             <ScrollView>
               {Object.keys(newStudent).map((key, index) => (
-                // if ({key} == 'dob') {
-
-                // }
                 <View style={styles.rowStyle} key={index}>
                   <Text style={styles.modalText}>{key}</Text>
 
@@ -485,41 +487,6 @@ const RecordsScreen = () => {
                 </View>
               ))}
             </ScrollView>
-
-            {/* <ScrollView>
-              {Object.keys(newStudent).map((key, index) => {
-
-                let component;
-                if ( key  === 'dob') {
-                  component = (<DateTimePicker
-                    testID="dateTimePicker"
-                    // value={date}
-                    mode="date"
-                    display="default"
-                    // onChange={onChange}
-                    minimumDate={new Date(2020, 0, 1)} // January 1, 2020
-                    maximumDate={new Date(2030, 11, 31)} // December 31, 2030
-                  />);
-                }
-                else {
-                  component =
-                    (<TextInput
-                      value={newStudent[key]}
-                      style={styles.TextInputAdd}
-                      onChangeText={text => {
-                        setNewStudent({ ...newStudent, [key]: text })
-                      }
-                      }
-                    />);
-                }
-                return(
-                <View style={styles.rowStyle} key={index}>
-                  <Text style={styles.modalText}>{key}</Text>
-                  {component}
-                </View>
-                )
-              })}
-            </ScrollView> */}
 
             <View style={styles.btnRow}>
               <TouchableOpacity
