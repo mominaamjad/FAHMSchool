@@ -25,6 +25,8 @@ import {
 import Card from '../layouts/Card';
 const RecordsScreen = () => {
   const [students, setStudents] = useState([]);
+  const [allFeeData, setAllFeeData] = useState([]);
+
   const [feeData, setFeeData] = useState({
     amountDue: null,
     amountPaid: null,
@@ -38,11 +40,8 @@ const RecordsScreen = () => {
   const [list, setList] = useState(students);
   const [index, setIndex] = useState(null);
   const [search, setSearch] = useState('');
-
   const [isLoading, setIsLoading] = useState(false);
-
   const [checked, setChecked] = useState();
-
   const [modalVisible, setModalVisible] = useState(false);
   const [feeModalVisible, setFeeModalVisible] = useState(false);
   const [addModalVisible, setAddModalVisible] = useState(false);
@@ -101,7 +100,7 @@ const RecordsScreen = () => {
       try {
         setIsLoading(true);
         const feeList = await fetchFees();
-        setFeeData(feeList);
+        setAllFeeData(feeList);
         setIsLoading(false);
       } catch (error) {
         console.error('Error loading students: ', error);
@@ -124,17 +123,21 @@ const RecordsScreen = () => {
   };
   const handleAddFees = async () => {
     try {
-      const addFees = { ...feeData };
-      await createSpecificFeeStatus(addFees);
+      const addFees = {...feeData};
+      const studentId = students[index].id;
+      await createSpecificFeeStatus(addFees, studentId);
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
       setFeeData({
-        amountDue: null,
-        amountPaid: null,
-        lateFees: null,
-        payableAmount: null,
-        paymentDate: null,
+        amountDue: 0,
+        amountPaid: 0,
+        lateFees: 0,
+        payableAmount: 0,
+        paymentDate: '',
         remarks: '',
         status: '',
-        studentRef: '',
+        createdAt: `${currentMonth}-${currentYear}`,
+        studentRef: studentId,
       });
     } catch (error) {
       console.error('Error adding fees: ', error);
@@ -157,10 +160,11 @@ const RecordsScreen = () => {
   const handleChangedFee = async (property, changedValue) => {
     try {
       if (index !== null) {
-        const updatedFeeData = { ...feeData, [property]: changedValue };
-        // setFeeData(updatedFeeData);
-        const studentId = students[index].id;
-        await updateFees(studentId, updatedFeeData);
+        const updatedFeeData = {...allFeeData};
+        updatedFeeData[index][property] = changedValue;
+        const studentId = allFeeData[index];
+        console.log('FIne tiil niw');
+        await updateFees(studentId.id, updatedFeeData);
         console.log('Fees updated successfully');
       } else {
         console.error('No student selected to update fees');
@@ -193,7 +197,7 @@ const RecordsScreen = () => {
         const regNoParts = lastRegNo.split('-');
         if (parseInt(regNoParts[0]) === currentYear) {
           const increment = parseInt(regNoParts[1]) + 1;
-          const paddedIncrement = String(increment).padStart(4, '0');
+          const paddedIncrement = String(increment).padStart(3, '0');
           newRegNo = `${currentYear}-${paddedIncrement}`;
         } else {
           newRegNo = `${currentYear}-0001`;
@@ -271,10 +275,9 @@ const RecordsScreen = () => {
         </TouchableOpacity>
       </View>
 
-
-
-      {isLoading ? <ActivityIndicator size="large" color='#9C70EA' /> :
-
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#9C70EA" />
+      ) : (
         <ScrollView style={styles.scroll}>
           {list.map((element, index) => (
             <TouchableOpacity
@@ -290,7 +293,7 @@ const RecordsScreen = () => {
             </TouchableOpacity>
           ))}
         </ScrollView>
-      }
+      )}
 
       {index != null && (
         <Modal
@@ -469,9 +472,6 @@ const RecordsScreen = () => {
 
             {/* <ScrollView>
               {Object.keys(newStudent).map((key, index) => (
-                // if ({key} == 'dob') {
-
-                // }
                 <View style={styles.rowStyle} key={index}>
                   <Text style={styles.modalText}>{key}</Text>
 
@@ -611,11 +611,8 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Due </Text>
                 <TextInput
-                  value={String(feeData.amountDue)}
+                  value={String(allFeeData[index].amountDue)}
                   style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('amountDue', text);
-                  }}
                   editable={edit}
                   underlineColor="transparent"
                   keyboardType="numeric"
@@ -625,7 +622,7 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Paid </Text>
                 <TextInput
-                  value={String(feeData.amountPaid)}
+                  value={String(allFeeData.amountPaid)}
                   style={styles.TextInput}
                   onChangeText={text => {
                     handleChangedFee('amountPaid', text);
@@ -639,11 +636,11 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payable Amount </Text>
                 <TextInput
-                  value={String(feeData.payableAmount)}
+                  value={String(allFeeData.payableAmount)}
                   style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('payableAmount', parseInt(text));
-                  }}
+                  // onChangeText={text => {
+                  //   handleChangedFee('payableAmount', parseInt(text));
+                  // }}
                   editable={edit}
                   underlineColor="transparent"
                   keyboardType="numeric"
@@ -667,11 +664,11 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={feeData.modalText}>Late Fees </Text>
                 <TextInput
-                  value={String(students[index].lateFees)}
+                  value={String(allFeeData[index].lateFees)}
                   style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('lateFees', text);
-                  }}
+                  // onChangeText={text => {
+                  //   handleChangedFee('lateFees', text);
+                  // }}
                   editable={edit}
                   underlineColor="transparent"
                 />
@@ -680,11 +677,11 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={feeData.modalText}>Remarks </Text>
                 <TextInput
-                  value={students[index].remarks}
+                  value={allFeeData[index].remarks}
                   style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('remarks', text);
-                  }}
+                  // onChangeText={text => {
+                  //   handleChangedFee('remarks', text);
+                  // }}
                   editable={edit}
                   underlineColor="transparent"
                 />
@@ -694,9 +691,8 @@ const RecordsScreen = () => {
                 <TouchableOpacity
                   style={styles.buttonSubmit}
                   onPress={async () => {
-                    await handleChangedFee();
-                    setFeeModalVisible(!feeModalVisible);
-                    setEdit(false);
+                    await handleAddFees();
+                    setAddFeeModalVisible(false);
                   }}>
                   <Text style={styles.submitText}>Done</Text>
                 </TouchableOpacity>
@@ -705,7 +701,6 @@ const RecordsScreen = () => {
           </View>
         </Modal>
       )}
-
 
       {index != null && (
         <Modal
@@ -722,74 +717,66 @@ const RecordsScreen = () => {
               </View>
 
               <View style={styles.rowStyle}>
-                <Text style={styles.modalText}>Registration Number </Text>
-                <TextInput
-                  // value={newStudent[key]}
-                  style={styles.TextInputAdd}
-                  onChangeText={() => { }}
-                />
-              </View>
-
-              <View style={styles.rowStyle}>
-                <Text style={styles.modalText}>Name </Text>
-                <TextInput
-                  // value={newStudent[key]}
-                  style={styles.TextInputAdd}
-                  onChangeText={() => { }}
-                />
-              </View>
-
-              <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Due </Text>
                 <TextInput
-                  // value={newStudent[key]}
+                  value={feeData.amountDue}
                   style={styles.TextInputAdd}
-                  onChangeText={() => { }}
+                  onChangeText={text =>
+                    setFeeData({...feeData, amountDue: text})
+                  }
                 />
               </View>
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Paid </Text>
                 <TextInput
-                  // value={newStudent[key]}
+                  value={feeData.amountPaid}
                   style={styles.TextInputAdd}
-                  onChangeText={() => { }}
+                  onChangeText={text =>
+                    setFeeData({...feeData, amountPaid: text})
+                  }
                 />
               </View>
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payable Amount </Text>
                 <TextInput
-                  // value={newStudent[key]}
+                  value={feeData.payableAmount}
                   style={styles.TextInputAdd}
-                  onChangeText={() => { }}
+                  onChangeText={text =>
+                    setFeeData({...feeData, payableAmount: text})
+                  }
                 />
               </View>
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payment Date </Text>
                 <TextInput
-                  // value={newStudent[key]}
+                  value={feeData.paymentDate}
                   style={styles.TextInputAdd}
-                  onChangeText={() => { }}
+                  onChangeText={text =>
+                    setFeeData({...feeData, paymentDate: text})
+                  }
                 />
               </View>
 
               <View style={styles.rowStyle}>
                 <Text style={feeData.modalText}>Late Fees </Text>
                 <TextInput
-                  // value={newStudent[key]}
+                  value={feeData.lateFees}
                   style={styles.TextInputAdd}
-                  onChangeText={() => { }}
+                  onChangeText={text =>
+                    setFeeData({...feeData, lateFees: text})
+                  }
                 />
               </View>
 
               <View style={styles.rowStyle}>
                 <Text style={feeData.modalText}>Remarks </Text>
                 <TextInput
-                  // value={newStudent[key]}
+                  value={feeData.remarks}
                   style={styles.TextInputAdd}
-                  onChangeText={() => { }}
+                  onChangeText={text => setFeeData({...feeData, remarks: text})}
                 />
               </View>
 
@@ -797,7 +784,7 @@ const RecordsScreen = () => {
                 <TouchableOpacity
                   style={styles.buttonSubmit}
                   onPress={async () => {
-                    // await handleChangedFee();
+                    await handleAddFees();
                     setAddFeeModalVisible(!addFeeModalVisible);
                     // setEdit(false);
                   }}>
@@ -808,8 +795,6 @@ const RecordsScreen = () => {
           </View>
         </Modal>
       )}
-
-
     </View>
   );
 };
@@ -834,7 +819,7 @@ const styles = StyleSheet.create({
     margin: 10,
     // marginRight: 10,
     backgroundColor: 'lavender',
-    width: 200,
+    width: 210,
     padding: 3,
     height: 40,
     borderRadius: 30,
