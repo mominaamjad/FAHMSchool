@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Modal,
@@ -190,7 +190,7 @@ const RecordsScreen = () => {
         const regNoParts = lastRegNo.split('-');
         if (parseInt(regNoParts[0]) === currentYear) {
           const increment = parseInt(regNoParts[1]) + 1;
-          const paddedIncrement = String(increment).padStart(4, '0');
+          const paddedIncrement = String(increment).padStart(3, '0');
           newRegNo = `${currentYear}-${paddedIncrement}`;
         } else {
           newRegNo = `${currentYear}-0001`;
