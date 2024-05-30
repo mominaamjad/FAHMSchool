@@ -171,9 +171,7 @@ const FeeScreen = () => {
               name={element.studentName}
               regNo={element.regNo}
               paid={() => {
-                if (allFeeData.find(element.id)) {
-                  allFeeData.status;
-                }
+                allFeeData.find(element.id) ? allFeeData.status : 'none';
               }}
               cardType="fee"></Card>
           </TouchableOpacity>
@@ -203,98 +201,53 @@ const FeeScreen = () => {
               </View>
 
               <View style={styles.rowStyle}>
-                <Text style={styles.modalText}>Name </Text>
-                <TextInput
-                  value={students[index].name}
-                  style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedStudent('name', text);
-                  }}
-                  editable={edit}
-                  underlineColor="transparent"
-                />
+                <Text style={styles.modalText}>Names </Text>
+                <Text style={styles.modalText}>
+                  {students[index].studentName}
+                </Text>
               </View>
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Due </Text>
-                <TextInput
-                  value={String(students[index].amountDue)}
-                  style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedStudent('amountDue', text);
-                  }}
-                  editable={edit}
-                  underlineColor="transparent"
-                  keyboardType="numeric"
-                />
+
+                <Text style={styles.modalText}>
+                  {students[index].amountDue}
+                </Text>
               </View>
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Paid </Text>
-                <TextInput
-                  value={String(students[index].amountPaid)}
-                  style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedStudent('amountPaid', text);
-                  }}
-                  editable={edit}
-                  underlineColor="transparent"
-                  keyboardType="numeric"
-                />
+
+                <Text style={styles.modalText}>
+                  {students[index].amountPaid}
+                </Text>
               </View>
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payable Amount </Text>
-                <TextInput
-                  value={String(students[index].payableAmount)}
-                  style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedStudent('payableAmount', parseInt(text));
-                  }}
-                  editable={edit}
-                  underlineColor="transparent"
-                  keyboardType="numeric"
-                />
+
+                <Text style={styles.modalText}>
+                  {students[index].payableAmount}
+                </Text>
               </View>
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payment Date </Text>
-                <TextInput
-                  value={students[index].paymentDate}
-                  style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedStudent('paymentDate', text);
-                  }}
-                  editable={edit}
-                  underlineColor="transparent"
-                  keyboardType="numeric"
-                />
+                <Text style={styles.modalText}>
+                  {students[index].paymentDate}
+                </Text>
               </View>
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Late Fees </Text>
-                <TextInput
-                  value={String(students[index].lateFees)}
-                  style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedStudent('lateFees', text);
-                  }}
-                  editable={edit}
-                  underlineColor="transparent"
-                />
+
+                <Text style={styles.modalText}>{students[index].lateFees}</Text>
               </View>
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Remarks </Text>
-                <TextInput
-                  value={students[index].remarks}
-                  style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedStudent('remarks', text);
-                  }}
-                  editable={edit}
-                  underlineColor="transparent"
-                />
+
+                <Text style={styles.modalText}>{students[index].remarks}</Text>
               </View>
 
               <View style={styles.btnRow}>
@@ -344,7 +297,7 @@ const FeeScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Due </Text>
                 <TextInput
-                  value={String(feeData.amountDue)}
+                  value={String(allFeeData.amountDue)}
                   style={styles.TextInput}
                   onChangeText={text => {
                     handleChangedFee('amountDue', text);
@@ -358,7 +311,7 @@ const FeeScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Paid </Text>
                 <TextInput
-                  value={String(feeData.amountPaid)}
+                  value={String(allFeeData.amountPaid)}
                   style={styles.TextInput}
                   onChangeText={text => {
                     handleChangedFee('amountPaid', text);
@@ -372,7 +325,7 @@ const FeeScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payable Amount </Text>
                 <TextInput
-                  value={String(feeData.payableAmount)}
+                  value={String(allFeeData.payableAmount)}
                   style={styles.TextInput}
                   onChangeText={text => {
                     handleChangedFee('payableAmount', parseInt(text));
@@ -385,33 +338,16 @@ const FeeScreen = () => {
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payment Date </Text>
-                <TextInput
-                  value={feeData.paymentDate}
-                  style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('paymentDate', text);
-                  }}
-                  editable={edit}
-                  underlineColor="transparent"
-                  keyboardType="numeric"
-                />
+                <Text>{allFeeData.paymentDate}</Text>
               </View>
 
               <View style={styles.rowStyle}>
-                <Text style={feeData.modalText}>Late Fees </Text>
-                <TextInput
-                  value={String(students[index].lateFees)}
-                  style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('lateFees', text);
-                  }}
-                  editable={edit}
-                  underlineColor="transparent"
-                />
+                <Text style={allFeeData.modalText}>Late Fees </Text>
+                <Text>{String(students[index].lateFees)}</Text>
               </View>
 
               <View style={styles.rowStyle}>
-                <Text style={feeData.modalText}>Remarks </Text>
+                <Text style={allFeeData.modalText}>Remarks </Text>
                 <TextInput
                   value={students[index].remarks}
                   style={styles.TextInput}
