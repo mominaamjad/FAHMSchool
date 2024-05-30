@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { uploadSyllabus, viewSpecificSyllabus } from '../../api/admin';
@@ -10,6 +10,8 @@ const SyllabusScreen = () => {
   const [open, setOpen] = useState(false);
 
   const [isUploaded, setIsUploaded] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [syllabusImg, setSyllabusImg] = useState(null);
@@ -21,6 +23,7 @@ const SyllabusScreen = () => {
 
   const fetchSyllabus = async () => {
     try {
+      setIsLoading(true)
       const syllabusData = await viewSpecificSyllabus(value);
       console.log(syllabusData);
       if (syllabusData.syllabus) {
@@ -28,6 +31,7 @@ const SyllabusScreen = () => {
       } else {
         setSyllabusImg(null);
       }
+      setIsLoading(false)
     } catch (error) {
       console.error('Error fetching syllabus: ', error);
     }
@@ -48,9 +52,12 @@ const SyllabusScreen = () => {
       } else if (response.error) {
         console.log('Image picker error: ', response.error);
       } else {
+        setIsLoading(true)
         let imageUri = response.uri || response.assets?.[0]?.uri;
         setSelectedImage(imageUri);
+        setSyllabusImg(imageUri)
         setIsUploaded(true);
+        setIsLoading(false)
       }
     });
   };
@@ -64,10 +71,10 @@ const SyllabusScreen = () => {
     try {
       await uploadSyllabus({ id: value, syllabus: selectedImage });
       console.log('Timetable uploaded successfully');
-      setIsUploaded(false);
     } catch (error) {
       console.error('Error uploading timetable: ', error);
     }
+    setIsUploaded(false);
   };
   return (
     <View>
@@ -90,9 +97,10 @@ const SyllabusScreen = () => {
       />
 
       <View>
-        {syllabusImg && (
+      {isLoading ? <ActivityIndicator size="large" color='#9C70EA' /> :
+        syllabusImg && (
           <Image source={{ uri: syllabusImg }} style={styles.pic} />
-        )}
+        ) }
 
         <TouchableOpacity style={styles.buttonUpload} onPress={openImagePicker}>
           <Text style={styles.uploadText}>{isUploaded ? 'Upload Again' : 'Upload'}</Text>

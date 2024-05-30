@@ -4,8 +4,8 @@ import {
     View,
     Text,
     StyleSheet,
-    TouchableOpacity
-
+    TouchableOpacity,
+    ActivityIndicator
 } from "react-native"
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -144,8 +144,8 @@ const styles = StyleSheet.create({
     },
 
     buttonDownload: {
-        width: 150,
-        alignSelf: 'flex-end',
+        width: 220,
+        alignSelf: 'center',
         alignItems: 'center',
         borderRadius: 17,
         paddingHorizontal: 22,

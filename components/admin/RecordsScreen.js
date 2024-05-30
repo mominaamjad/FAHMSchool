@@ -286,7 +286,7 @@ const RecordsScreen = () => {
             </TouchableOpacity>
           ))}
         </ScrollView>
-      )}
+      }
 
       {index != null && (
         <Modal

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/react-in-jsx-scope */
 import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, Text} from 'react-native';
+import {ScrollView, StyleSheet, Text, ActivityIndicator} from 'react-native';
 import {DataTable} from 'react-native-paper';
 import {fetchStudents} from '../../api/admin';
 const ReportOne = () => {
@@ -9,9 +9,12 @@ const ReportOne = () => {
   const [students, setStudents] = useState([]);
   const [ageGroups, setAgeGroups] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const student = await fetchStudents();
         const groupedData = student.reduce((acc, std) => {
           const {dob, gender} = std;
@@ -26,9 +29,11 @@ const ReportOne = () => {
             acc[age].girls++;
           }
           return acc;
+          
         }, {});
         console.log(groupedData);
-
+        
+        setIsLoading(false);
         setAgeGroups(Object.entries(groupedData));
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -41,8 +46,10 @@ const ReportOne = () => {
   useEffect(() => {
     const getStudents = async () => {
       try {
+        setIsLoading(true);
         const studentData = await fetchStudents();
         setStudents(studentData);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching students: ', error);
       }
@@ -69,6 +76,8 @@ const ReportOne = () => {
   };
   return (
     <ScrollView>
+      {isLoading ? <ActivityIndicator size="large" color='#9C70EA' /> : 
+        (
       <ScrollView horizontal={true}>
         <DataTable style={styles.table}>
           <DataTable.Header style={styles.head}>
@@ -109,9 +118,10 @@ const ReportOne = () => {
             </DataTable.Row>
           ))}
         </DataTable>
-      </ScrollView>
+      </ScrollView>)  }
 
-      <ScrollView>
+      {isLoading ? <ActivityIndicator size="large" color='#9C70EA' style={{marginVertical: 80}}/> :
+       (<ScrollView>
         <DataTable style={styles.table}>
           <DataTable.Header style={styles.head}>
             <DataTable.Title>
@@ -144,7 +154,7 @@ const ReportOne = () => {
             </DataTable.Row>
           ))}
         </DataTable>
-      </ScrollView>
+      </ScrollView>) }
     </ScrollView>
   );
 };

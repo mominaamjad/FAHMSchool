@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Alert,
   Modal,
@@ -21,19 +21,21 @@ const FeeScreen = () => {
   // for pop-up
   const [modalVisible, setModalVisible] = useState(false);
 
+  const [feeModalVisible, setFeeModalVisible] = useState(false);
+
   const [edit, setEdit] = useState(false);
 
   // for dropdown
   const [value, setValue] = useState('allClasses');
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
-    {label: 'All Classes', value: 'allClasses'},
-    {label: 'Class 1', value: 'class1'},
-    {label: 'Class 2', value: 'class2'},
-    {label: 'Class 3', value: 'class3'},
-    {label: 'Class 4', value: 'class4'},
-    {label: 'Class 5', value: 'class5'},
-    {label: 'Class 6', value: 'class6'},
+    { label: 'All Classes', value: 'allClasses' },
+    { label: 'Class 1', value: 'class1' },
+    { label: 'Class 2', value: 'class2' },
+    { label: 'Class 3', value: 'class3' },
+    { label: 'Class 4', value: 'class4' },
+    { label: 'Class 5', value: 'class5' },
+    { label: 'Class 6', value: 'class6' },
   ]);
 
   // students list to be displayed
@@ -136,38 +138,53 @@ const FeeScreen = () => {
     <View>
       {/* change the function to find fee instead of students  */}
 
-      <View style={styles.searchBar}>
-        <TextInput
-          style={styles.search}
-          label="Search"
-          placeholder="Search..."
-          placeholderTextColor="#000000"
-          onChangeText={text => {
-            searchItem(text);
-          }}
-          value={search}
-          onBlur={() => {
-            setSearch('');
-            setList(students);
-          }}
-        />
-        <Icon name="magnify" size={30} style={styles.searchIcon} />
+      <View style={styles.topBar}>
+        <View style={styles.searchBar}>
+          <TextInput
+            style={styles.search}
+            label="Search"
+            placeholder="Search..."
+            placeholderTextColor="#000000"
+            onChangeText={text => {
+              searchItem(text);
+            }}
+            value={search}
+            onBlur={() => {
+              setSearch('');
+              setList(students);
+            }}
+          />
+          <Icon name="magnify" size={30} style={styles.searchIcon} />
 
-        <DropDownPicker
-          textStyle={styles.dropdownText}
-          style={styles.dropdown}
-          dropDownContainerStyle={styles.dropdown}
-          open={open}
-          value={value}
-          items={items}
-          setOpen={setOpen}
-          setValue={setValue}
-          setItems={setItems}
-          onChangeValue={() => handleFilteredList()}
-        />
+          <DropDownPicker
+            textStyle={styles.dropdownText}
+            style={styles.dropdown}
+            dropDownContainerStyle={styles.dropdown}
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+            onChangeValue={() => handleFilteredList()}
+          />
+        </View>
       </View>
 
-      <ScrollView style={{zIndex: -1}}>
+      <View style={{ alignSelf: 'center' }}>
+        <TouchableOpacity
+          style={styles.buttonAdd}
+          onPress={() => {
+            setFeeModalVisible(true);
+          }}>
+          <View style={{ flexDirection: 'row' }}>
+            <Icon name="plus" size={30} color="white" />
+            <Text style={styles.textStyle}> Add Record</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView style={{ zIndex: -1, height: 500 }}>
         {list.map((element, index) => (
           <TouchableOpacity
             key={element.regNo}
@@ -315,6 +332,134 @@ const FeeScreen = () => {
           </View>
         </Modal>
       )}
+
+{index != null && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={feeModalVisible}
+          onRequestClose={() => {
+            setFeeModalVisible(!feeModalVisible);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View style={styles.rowStyle}>
+                <Text style={styles.modalHeading}>Fee Information</Text>
+                <TouchableOpacity onPress={() => setEdit(true)}>
+                  <Icon name="pencil" size={20} style={styles.editIcon} />
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={styles.modalText}>Registration Number </Text>
+                <Text style={styles.modalText}>{students[index].regNo}</Text>
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={styles.modalText}>Name </Text>
+                <Text style={styles.modalText}>
+                  {students[index].studentName}
+                </Text>
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={styles.modalText}>Amount Due </Text>
+                <TextInput
+                  value={String(feeData.amountDue)}
+                  style={styles.TextInput}
+                  onChangeText={text => {
+                    handleChangedFee('amountDue', text);
+                  }}
+                  editable={edit}
+                  underlineColor="transparent"
+                  keyboardType="numeric"
+                />
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={styles.modalText}>Amount Paid </Text>
+                <TextInput
+                  value={String(feeData.amountPaid)}
+                  style={styles.TextInput}
+                  onChangeText={text => {
+                    handleChangedFee('amountPaid', text);
+                  }}
+                  editable={edit}
+                  underlineColor="transparent"
+                  keyboardType="numeric"
+                />
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={styles.modalText}>Payable Amount </Text>
+                <TextInput
+                  value={String(feeData.payableAmount)}
+                  style={styles.TextInput}
+                  onChangeText={text => {
+                    handleChangedFee('payableAmount', parseInt(text));
+                  }}
+                  editable={edit}
+                  underlineColor="transparent"
+                  keyboardType="numeric"
+                />
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={styles.modalText}>Payment Date </Text>
+                <TextInput
+                  value={feeData.paymentDate}
+                  style={styles.TextInput}
+                  onChangeText={text => {
+                    handleChangedFee('paymentDate', text);
+                  }}
+                  editable={edit}
+                  underlineColor="transparent"
+                  keyboardType="numeric"
+                />
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={feeData.modalText}>Late Fees </Text>
+                <TextInput
+                  value={String(students[index].lateFees)}
+                  style={styles.TextInput}
+                  onChangeText={text => {
+                    handleChangedFee('lateFees', text);
+                  }}
+                  editable={edit}
+                  underlineColor="transparent"
+                />
+              </View>
+
+              <View style={styles.rowStyle}>
+                <Text style={feeData.modalText}>Remarks </Text>
+                <TextInput
+                  value={students[index].remarks}
+                  style={styles.TextInput}
+                  onChangeText={text => {
+                    handleChangedFee('remarks', text);
+                  }}
+                  editable={edit}
+                  underlineColor="transparent"
+                />
+              </View>
+
+              <View style={styles.btnRow}>
+                <TouchableOpacity
+                  style={styles.buttonSubmit}
+                  onPress={async () => {
+                    await handleChangedFee();
+                    setFeeModalVisible(!feeModalVisible);
+                    setEdit(false);
+                  }}>
+                  <Text style={styles.submitText}>Done</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      )}
+
     </View>
   );
 };
@@ -335,7 +480,12 @@ styles = StyleSheet.create({
     height: 40,
     borderRadius: 30,
   },
-  
+
+  topBar: {
+    flexDirection: 'row',
+    marginTop: 20,
+  },
+
   search: {
     // height: 30,
     width: 160,
@@ -399,6 +549,27 @@ styles = StyleSheet.create({
     backgroundColor: '#9C70EA',
     marginLeft: 10,
     marginRight: 10,
+  },
+
+  buttonAdd: {
+    width: 300,
+    // alignSelf: 'flex-end',
+    alignItems: 'center',
+    borderRadius: 17,
+    paddingHorizontal: 22,
+    paddingVertical: 10,
+    backgroundColor: '#9C70EA',
+    marginTop: 20,
+    marginRight: 12,
+    marginBottom: 10,
+    zIndex: -1,
+  },
+
+  textStyle: {
+    color: 'white',
+    fontFamily: 'Poppins-SemiBold',
+    textAlign: 'center',
+    marginTop: 5,
   },
 
   cancelText: {
