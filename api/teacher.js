@@ -19,6 +19,7 @@ import {
     query,
     setDoc,
     where,
+    writeBatch
 } from 'firebase/firestore';
 import Teacher from '../models/teacher';
 import Class from '../models/class';
@@ -45,9 +46,7 @@ export const loginTeacher = async (loginData) => {
             where('email', '==', loginData.email),
             where('password', '==', loginData.password)
         );
-        console.log(teacherQuery);
         const querySnapshot = await getDocs(teacherQuery);
-        console.log(querySnapshot.docs);
 
         if (querySnapshot.empty) {
             throw new Error('Invalid email or password if wala eror');
@@ -74,14 +73,12 @@ export const viewSubjects = async (teacher) => {
     try {
         console.log(teacher.teacherName);
         console.log(teacher.classRef);
-        
+
         const classQuery = query(
             collection(db, 'classes'),
             where('__name__', '==', teacher.classRef),
         );
-        // console.log(classQuery);
         const querySnapshot = await getDocs(classQuery);
-        console.log(querySnapshot.docs);
 
         if (querySnapshot.empty) {
             throw new Error('Invalid reuqest (querySnapshot empty)');
@@ -89,7 +86,6 @@ export const viewSubjects = async (teacher) => {
 
         const classDoc = querySnapshot.docs[0];
         const classData = classDoc.data();
-        console.log("classData:",classData);
 
         const assignedClass = new Class(
             classData.assigned,
@@ -98,7 +94,7 @@ export const viewSubjects = async (teacher) => {
             classData.teacherId,
             classData.syllabus,
         );
-        console.log("assignedClass",assignedClass.subjects);
+        console.log("assignedClass", assignedClass.subjects);
         return assignedClass.subjects;
     } catch (error) {
         console.error('Error retrieving class data', error.message);
@@ -106,38 +102,104 @@ export const viewSubjects = async (teacher) => {
     }
 };
 
+export const fetchClassStudents = async (subject, classRef) => {
+    try {
+        console.log("class:", classRef);
 
-// export const viewFirstTermMarks = () =>{
-//     try {
-//     } catch (error) {
-//       console.error('Error viewing All Student: ', error);
-//       throw error;
-//     }
-// }
+        const studentQuery = query(
+            collection(db, 'students'),
+            where('currentClass', '==', classRef),
+        );
+        // console.log(classQuery);
+        const studentSnapshot = await getDocs(studentQuery);
+        console.log("studentSnapshot",studentSnapshot);
 
-// export const viewMidMarks =()=>{
-//     try {
-//     } catch (error) {
-//       console.error('Error viewing All Student: ', error);
-//       throw error;
-//     }
-// }
+        if (studentSnapshot.empty) {
+            // throw new Error('Invalid reuqest (querySnapshot empty)');
+        }
 
-// export const viewFinalMarks =()=>{
-//     try {
-//     } catch (error) {
-//       console.error('Error viewing All Student: ', error);
-//       throw error;
-//     }
-// }
+        const studentList = studentSnapshot.docs.map(studentDoc => ({
+            name: studentDoc.data().studentName,
+            regNo: studentDoc.data().regNo,
+        }));
 
-// export const editFirstTermMarks = () =>{
-//     try {
-//     } catch (error) {
-//       console.error('Error viewing All Student: ', error);
-//       throw error;
-//     }
-// }
+        const marksQuery = query(
+            collection(db, 'marks'),
+            where('subjectRef', '==', subject.subjectId),
+        );
+
+        const marksSnapshot = await getDocs(marksQuery);
+        console.log(marksSnapshot.docs);
+
+        if (marksSnapshot.empty) {
+            console.warn('No marks found for the specified subject.');
+        }
+
+        const marksList = marksSnapshot.docs.map(markDoc => ({
+            regNo: markDoc.data().studentRef,
+            finals: markDoc.data().finals,
+            firstTerm: markDoc.data().firstTerm,
+            mids: markDoc.data().mids,
+        }));
+
+        const studentListWithMarks = studentList.map(student => {
+            const studentMarks = marksList.find(mark => mark.regNo === student.regNo);
+            console.log(studentMarks)
+            return {
+                ...student,
+                finals: studentMarks.finals ? studentMarks.finals : "0",
+                firstTerm: studentMarks.firstTerm ? studentMarks.firstTerm : "0",
+                mids: studentMarks.mids ? studentMarks.mids : "0",
+            };
+        });
+        console.log("studentList:", studentListWithMarks);
+        return studentListWithMarks;
+    } catch (error) {
+        console.error('Error viewing All Student: ', error);
+        throw error;
+    }
+}
+
+export const editMarks = async (students, subject) => {
+    try {
+        const batch = writeBatch(db);
+        
+        for (let i = 0; i < students.length; i++) {
+            const marksQuery = query(
+                collection(db, 'marks'),
+                where('studentRef', '==', students[i].regNo),
+                where('subjectRef', '==', subject.subjectId)
+            );
+
+            const marksSnapshot = await getDocs(marksQuery);
+
+            marksSnapshot.forEach(doc => {
+                const finals = parseInt(students[i].finals);
+                const firstTerm = parseInt(students[i].firstTerm);
+                const mids = parseInt(students[i].mids);
+
+                const result = ((firstTerm / subject.firstMid) * 25) + ((mids / subject.firstMid) * 25) + ((finals / subject.final) * 50);
+
+                const newData = {
+                    finals: students[i].finals,
+                    firstTerm: students[i].firstTerm,
+                    mids: students[i].mids,
+                    result: isNaN(result) ? '0' : result,
+                    year: new Date().getFullYear().toString()
+                };
+
+                batch.update(doc.ref, newData);
+            });
+        }
+
+        await batch.commit();
+        console.log('Marks updated successfully');
+    } catch (error) {
+        console.error('Error updating marks: ', error);
+        throw error;
+    }
+};
+
 
 // export const editMidMarks =()=>{
 //     try {

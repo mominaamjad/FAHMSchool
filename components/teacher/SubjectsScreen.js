@@ -37,15 +37,15 @@ const SubjectsScreen = ({ teacher }) => {
   }, [teacher]);
 
    // to navigate to marks screen for each subject
-  const showMarks = (subject)=>{
-    navigation.navigate('MarksScreen', { subject });
-  }
+   const showMarks = (subject, classRef) => {
+    navigation.navigate('MarksScreen', { subject, classRef });
+  };
 
   return (
     <View>
       <ScrollView>
         {list.map((element, index) =>
-          <TouchableOpacity key={element.subjectId} onPress={() => showMarks(element)}>
+          <TouchableOpacity key={element.subjectId} onPress={() => showMarks(element,teacher.classRef)}>
             <Subject name={element.name}></Subject>
           </TouchableOpacity>
         )}

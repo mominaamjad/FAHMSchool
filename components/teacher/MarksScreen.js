@@ -1,61 +1,100 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import { TextInput, DataTable } from "react-native-paper";
 
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { editMarks, fetchClassStudents } from '../../api/teacher';
 
+// what we want in this screen is for example i click on english
+// this markss screen opens
+// it show me a list of students which are in this class
+// how willl i get the students.
+// 1:
+// i have subject id, i can go to marks and retrieve all records with that subject id and current yeaar
+// pre-condition: when adding a student record, genrerate the marks document for each subject
+// 2:
+// from the class ref of teacher, i matvch all students having that class ref in current class
+// load all those students and when teacher saves marks, the marks document is generated for all of them with that subjectID
+// and curretn year
 
-const Main = () => {
+// second better
+
+const Main = ({route}) => {
+    const { subject , classRef } = route.params;
+
     const [edit, setEdit] = useState(false);
-
+    const [students, setStudent] = useState([]);
     const [value, setValue] = useState('first');
     const [open, setOpen] = useState(false);
     const [items, setItems] = useState([
         { label: 'First', value: 'first' },
-        { label: 'Mids', value: 'mids' },
-        { label: 'Finals', value: 'finals' }
+        { label: 'Mids', value: 'mid' },
+        { label: 'Finals', value: 'final' }
     ]);
 
-    const [students, setStudent] = React.useState([
-        { name: 'std1', first: 20, mids: 30, finals: 40 },
-        { name: 'std1', first: 20, mids: 30, finals: 40 },
-        { name: 'std1', first: 20, mids: 30, finals: 40 },
-        { name: 'std1', first: 20, mids: 30, finals: 40 },
-    ]);
+    const fetchStudents = async () => {
+        try {
+          const studentData = await fetchClassStudents(subject, classRef);
+          setStudent(studentData);
+        } catch (error) {
+          console.error('Error fetching students:', error);
+        }
+      };
+
+      useEffect(() => {
+        fetchStudents();
+        return () => { };
+      }, [subject]);
+
+      const updateMarks = async () => {
+        try {
+          await editMarks(students, subject);
+        } catch (error) {
+          console.error('Error fetching students:', error);
+        }
+      };
+
+      useEffect(() => {
+        if (!edit) {
+            console.log("console ke ander wala students:",students);
+          updateMarks();
+        }
+        return () => {};
+      }, [edit]);
 
     handleMidMarks = (value, index) => {
         const newStudent = [...students];
-        const numericValue = parseInt(value, 10);
-        newStudent[index].mids = isNaN(numericValue) ? '' : numericValue;
+        const marks=value>subject.firstMid?"0":value;
+        const numericValue = parseInt(marks, 10);
+        newStudent[index].mids = isNaN(numericValue) ? '0' : numericValue;
         setStudent(newStudent);
     }
 
     handleFinalMarks = (value, index) => {
         const newStudent = [...students];
-        const numericValue = parseInt(value, 10);
-        newStudent[index].finals = isNaN(numericValue) ? '' : numericValue;
+        const marks=value>subject.final?"0":value;
+        const numericValue = parseInt(marks, 10);
+        newStudent[index].finals = isNaN(numericValue) ? '0' : numericValue;
         setStudent(newStudent);
     }
 
     handleFirstMarks = (value, index) => {
         const newStudent = [...students];
-        const numericValue = parseInt(value, 10);
-        newStudent[index].first = isNaN(numericValue) ? '' : numericValue;
+        const marks=value>subject.firstMid?"0":value;
+        const numericValue = parseInt(marks, 10);
+        newStudent[index].firstTerm = isNaN(numericValue) ? '0' : numericValue;
         setStudent(newStudent);
     }
 
     return (
         <View style={styles.main}>
-
             <View style={styles.topBar}>
-
                 {(edit) ? (
                     <Icon name="check" size={25} style={styles.editIcon} onPress={() => setEdit(false)} />
                 ) : (
                     <Icon name="pencil" size={25} style={styles.editIcon} onPress={() => setEdit(true)} />
                 )}
-
                 <DropDownPicker
                     open={open}
                     value={value}
@@ -67,23 +106,19 @@ const Main = () => {
                     dropDownContainerStyle={styles.dropdown}
                     textStyle={styles.dropdownText}
                 />
-
             </View>
-
-
             <View style={styles.container}>
                 <DataTable>
                     <DataTable.Header style={styles.head}>
-                        <Text style={styles.tableTitle}>Name</Text>
+                        <Text style={styles.tableTitle}>Registration No</Text>
                         <Text style={styles.tableTitle}>Marks</Text>
                     </DataTable.Header>
 
                     <ScrollView style={styles.listBackground}>
                         {students.map((element, index) => {
-                            // Define the TextInput component based on the condition
                             let inputComponent;
 
-                            if (value === 'mids') {
+                            if (value === 'mid') {
                                 inputComponent = (
                                     <TextInput
                                         value={String(element.mids)}
@@ -94,7 +129,7 @@ const Main = () => {
                                         style={styles.TextInput}
                                     />
                                 );
-                            } else if (value === 'finals') {
+                            } else if (value === 'final') {
                                 inputComponent = (
                                     <TextInput
                                         value={String(element.finals)}
@@ -108,7 +143,7 @@ const Main = () => {
                             } else {
                                 inputComponent = (
                                     <TextInput
-                                        value={String(element.first)}
+                                        value={String(element.firstTerm)}
                                         editable={edit}
                                         onChangeText={(text) => handleFirstMarks(text, index)}
                                         underlineColor="transparent"
@@ -120,11 +155,11 @@ const Main = () => {
 
                             return (
                                 <DataTable.Row key={index} style={styles.row}>
-                                    <DataTable.Cell> <Text style = {styles.names}> {element.name}</Text></DataTable.Cell>
+                                    <DataTable.Cell> <Text style = {styles.names}> {element.regNo}</Text></DataTable.Cell>
                                     <DataTable.Cell>{inputComponent}</DataTable.Cell>
-                                    <TouchableOpacity>
+                                    {/* <TouchableOpacity>
                                         <Icon name="delete" size={20} onPress = { ()=>{} } style = {styles.deleteIcon}/>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
                                 </DataTable.Row>
                             );
                         })}
