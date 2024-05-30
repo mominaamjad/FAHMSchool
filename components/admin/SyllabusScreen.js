@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 22,
     paddingVertical: 10,
     elevation: 2,
-    backgroundColor: '#8349EA',
+    backgroundColor: '#9C70EA',
     marginLeft: 10,
     marginRight: 10,
     marginVertical: 60,
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     width: 320,
     alignSelf: 'center',
     backgroundColor: '#F4F4F4',
-    borderColor: '#8349EA',
+    borderColor: '#9C70EA',
     marginTop: 20,
   },
 

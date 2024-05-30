@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         width: 320,
         alignSelf: 'center',
         backgroundColor: '#F4F4F4',
-        borderColor: '#8349EA',
+        borderColor: '#9C70EA',
         marginTop: 20,
       },
     
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
       }, 
 
     head:{
-        backgroundColor: "#8349EA",
+        backgroundColor: "#9C70EA",
         borderRadius : 20
     },
 

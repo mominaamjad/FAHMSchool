@@ -51,7 +51,7 @@ const StudentDashboard = () => {
 
 const styles = StyleSheet.create({
     head:{
-        backgroundColor: "#8349EA",
+        backgroundColor: "#9C70EA",
         borderRadius : 20
     },
 

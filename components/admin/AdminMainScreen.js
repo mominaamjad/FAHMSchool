@@ -22,7 +22,7 @@ const AdminMainScreen = () => {
         screenOptions={{
           drawerStyle: {
             paddingVertical: 80,
-            backgroundColor: '#8349EA',
+            backgroundColor: '#b08feb',
             width: 250,
           },
           drawerLabelStyle: {
@@ -36,7 +36,7 @@ const AdminMainScreen = () => {
           headerShadowVisible: false,
           headerLeftLabelVisible: true,
           headerStyle: {
-            backgroundColor: '#8349EA',
+            backgroundColor: '#9C70EA',
             borderBottomLeftRadius: 20,
             borderBottomRightRadius: 20,
             height: 120,
@@ -69,6 +69,7 @@ const AdminMainScreen = () => {
         {/* yahan pe iss ko logout karao  */}
         <Drawer.Screen name="Logout" component={AdminLogin} />
       </Drawer.Navigator>
+      // </NavigationContainer>
 
     // <ScrollView>
     //     <Text>Admin Dashboard</Text>

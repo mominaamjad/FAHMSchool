@@ -97,7 +97,7 @@ const Login = ({ navigation }) => {
       ) : null}
 
         <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
-      {isLoading ? <ActivityIndicator size="large" color='#8349EA' /> :
+      {isLoading ? <ActivityIndicator size="large" color='lavender' /> :
           <Text style={styles.submitText}>Login</Text>}
         </TouchableOpacity>
 
