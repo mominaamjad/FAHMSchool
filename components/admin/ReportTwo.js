@@ -1,20 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { View, ScrollView, StyleSheet, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { DataTable } from 'react-native-paper';
-import { fetchStudents } from '../../api/admin';
+import { fetchResults, fetchStudents } from '../../api/admin';
 
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ReportTwo = () => {
+    const [result, setResult] = useState([]);
 
+    const [isLoading, setIsLoading] = useState(false);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setIsLoading(true)
+                const data = await fetchResults();
+                setResult(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+            setIsLoading(false)
+        };
+        fetchData();
+    }, []);
 
     const createPDF = async () => {
         try {
             console.log("starting pdf generation")
             let PDFOptions = {
-                html: 'htmlContent',
-                fileName: 'file',
+                html: htmlContent,
+                fileName: 'report2',
                 directory: Platform.OS === 'android' ? 'Downloads' : 'Documents',
             };
             let file = await RNHTMLtoPDF.convert(PDFOptions);
@@ -26,6 +43,53 @@ const ReportTwo = () => {
         }
     };
 
+    let htmlContent = `
+  <html>
+  <head>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Result List</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Reg No</th>
+          <th>Student Name</th>
+          <th>Father Name</th>
+        </tr>
+      </thead>
+      <tbody>
+`;
+
+    result.forEach(student => {
+        htmlContent += `
+    <tr>
+      <td>${student.studentRef}</td>
+      <td>${student.subjectRef}</td>
+      <td>${student.result}</td>
+    </tr>
+  `;
+    });
+
+    htmlContent += `
+      </tbody>
+    </table>
+  </body>
+  </html>
+`;
 
     return (
         <View>
@@ -38,55 +102,40 @@ const ReportTwo = () => {
                 </View>
             </TouchableOpacity>
 
-            <ScrollView horizontal={true} >
+            <ScrollView>
+                {isLoading ? <ActivityIndicator size="large" color='#9C70EA' /> :
+                    (
+                        <ScrollView horizontal={true}>
+                            <DataTable style={styles.table}>
+                                <DataTable.Header style={styles.head}>
+                                    <DataTable.Title>
+                                        <Text style={styles.tableTitle}>Reg#</Text>
+                                    </DataTable.Title>
+                                    <DataTable.Title>
+                                        <Text style={styles.tableTitle}>Subject</Text>
+                                    </DataTable.Title>
+                                    <DataTable.Title>
+                                        <Text style={styles.tableTitle}>Result</Text>
+                                    </DataTable.Title>
+                                </DataTable.Header>
 
-                <DataTable style={styles.table}>
-                    <DataTable.Header style={styles.head}>
-                        <DataTable.Title><Text style={styles.tableTitle}>Reg#</Text></DataTable.Title>
-                        <DataTable.Title><Text style={styles.tableTitle}>Name</Text></DataTable.Title>
-                        <DataTable.Title><Text style={styles.tableTitle}>Class</Text></DataTable.Title>
-                        <DataTable.Title><Text style={styles.tableTitle}>First</Text></DataTable.Title>
-                        <DataTable.Title><Text style={styles.tableTitle}>Mids</Text></DataTable.Title>
-                        <DataTable.Title><Text style={styles.tableTitle}>Finals</Text></DataTable.Title>
-
-
-                    </DataTable.Header>
-
-                    <DataTable.Row style={styles.row}>
-                        <DataTable.Cell> <Text style={styles.regTitle}>21-024</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.data}>Haneen Ehsan</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.data}>Class 2</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.data}>19</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.data}>21</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.data}>46</Text></DataTable.Cell>
-                    </DataTable.Row>
-
-                    <DataTable.Row style={styles.row}>
-                        <DataTable.Cell> <Text style={styles.regTitle}>21-024</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.data}>Haneen Ehsan</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.data}>Class 2</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.data}>19</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.data}>21</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.data}>46</Text></DataTable.Cell>
-                    </DataTable.Row>
-
-                    <DataTable.Row style={styles.row}>
-                        <DataTable.Cell> <Text style={styles.regTitle}>21-024</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.data}>Haneen Ehsan</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.data}>Class 2</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.data}>19</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.data}>21</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style={styles.data}>46</Text></DataTable.Cell>
-                    </DataTable.Row>
-
-
-
-
-
-                </DataTable>
-
+                                {result.map((element, index) => (
+                                    <DataTable.Row style={styles.row} key={index}>
+                                        <DataTable.Cell>
+                                            <Text style={styles.regTitle}>{element.studentRef}</Text>
+                                        </DataTable.Cell>
+                                        <DataTable.Cell>
+                                            <Text style={styles.data}>{element.subjectRef}</Text>
+                                        </DataTable.Cell>
+                                        <DataTable.Cell>
+                                            <Text style={styles.data}>{element.result}</Text>
+                                        </DataTable.Cell>
+                                    </DataTable.Row>
+                                ))}
+                            </DataTable>
+                        </ScrollView>)}
             </ScrollView>
-        </View>
+        </View >
     )
 }
 
@@ -117,13 +166,13 @@ const styles = StyleSheet.create({
         marginRight: 12,
         marginBottom: 10,
     },
-    
+
     downloadText: {
-      color: 'white',
-      fontSize: 12,
-      fontFamily: 'Poppins-Medium',
-      alignSelf: 'center',
-      marginTop: 5
+        color: 'white',
+        fontSize: 12,
+        fontFamily: 'Poppins-Medium',
+        alignSelf: 'center',
+        marginTop: 5
     },
 
     table: {
@@ -143,6 +192,7 @@ const styles = StyleSheet.create({
     regTitle: {
         fontFamily: 'Poppins-SemiBold',
         fontSize: 12,
+        color: "#000000",
     },
 
     data: {
