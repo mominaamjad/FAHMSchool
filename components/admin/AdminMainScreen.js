@@ -11,6 +11,7 @@ import FeeScreen from './FeeScreen.js';
 import RecordsScreen from './RecordsScreen.js';
 import SyllabusScreen from './SyllabusScreen.js';
 import TimetableScreen from './TimetableScreen.js';
+import { MainScreen } from '../MainScreen.js';
 
 const Drawer = createDrawerNavigator();
 
@@ -67,9 +68,9 @@ const AdminMainScreen = () => {
         <Drawer.Screen name="Timetable" component={TimetableScreen} />
 
         {/* yahan pe iss ko logout karao  */}
-        <Drawer.Screen name="Logout" component={AdminLogin} />
+        <Drawer.Screen name="Logout" component={MainScreen} options={{headerShown: false}}/>
       </Drawer.Navigator>
-      // </NavigationContainer>
+       /* </NavigationContainer> */
 
     // <ScrollView>
     //     <Text>Admin Dashboard</Text>

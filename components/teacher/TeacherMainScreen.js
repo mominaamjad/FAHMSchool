@@ -8,6 +8,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer"
 
 import TeacherLogin from "./TeacherLogin.js"
 import SubjectsScreen from "./SubjectsScreen.js"
+import { MainScreen } from "../MainScreen.js"
 
 const Drawer = createDrawerNavigator();
 
@@ -47,8 +48,7 @@ const TeacherMainScreen = ({ route }) => {
                      }}
                 component={props => <SubjectsScreen {...props} teacher={teacher} />}
             />
-            {/* yahan pe iss ko logout karao  */}
-            <Drawer.Screen name="Logout" component={TeacherLogin} />
+            <Drawer.Screen name="Logout" component={MainScreen} options={{headerShown: false}}/>
 
         </Drawer.Navigator>
     );

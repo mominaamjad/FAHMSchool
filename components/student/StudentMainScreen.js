@@ -10,6 +10,7 @@ import StudentFee from './StudentFee';
 import StudentTimetable from './StudentTimetable'
 import StudentSyllabus from './StudentSyllabus'
 import StudentLogin from './StudentLogin'
+import { MainScreen } from '../MainScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -60,7 +61,7 @@ const StudentMainScreen = () =>{
         <Drawer.Screen name="Fee" component={StudentFee} />
         <Drawer.Screen name="Timetable" component={StudentTimetable} />
         <Drawer.Screen name="Syllabus" component={StudentSyllabus} />
-        <Drawer.Screen name="Logout" component={StudentLogin} />
+        <Drawer.Screen name="Logout" component={MainScreen} options={{headerShown: false}}/>
 
         </Drawer.Navigator>
     </NavigationContainer>
