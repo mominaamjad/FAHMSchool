@@ -31,9 +31,9 @@ const Login = ( {navigation} ) => {
             `Welcome ${student.regNo.studentName} ${student.regNo.fatherName}`,
           );
 
-          // student ka object bhejo saath
-          // waht the hell!!!
-          navigation.navigate('StudentMainScreen', {regNo})  
+          console.log(student.regNo.regNo)
+
+          navigation.navigate('StudentMainScreen', student.regNo.regNo)  
         
         } catch (error) {
           console.log('Login Failed', error.message);
@@ -48,7 +48,7 @@ const Login = ( {navigation} ) => {
 
         }
 
-        const regRegex = /^\d{4}-\d{4}$/;
+        const regRegex = /^\d{4}-\d{3}$/;
 
         // const regRegex = /^[0-9]{4}-\[0-9]{3}$/
 

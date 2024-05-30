@@ -21,7 +21,7 @@ const StudentMainScreen = ({navigation , route}) =>{
   const { regNo } = route.params;
 
     return(
-    <NavigationContainer>
+    // <NavigationContainer>
       <Drawer.Navigator
         screenOptions={{
           drawerStyle: {
@@ -72,7 +72,7 @@ const StudentMainScreen = ({navigation , route}) =>{
         <Drawer.Screen name="Logout" component={MainScreen} options={{headerShown: false}}/>
 
         </Drawer.Navigator>
-    </NavigationContainer>
+    // </NavigationContainer>
     )
 }
 
