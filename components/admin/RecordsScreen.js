@@ -40,11 +40,8 @@ const RecordsScreen = () => {
   const [list, setList] = useState(students);
   const [index, setIndex] = useState(null);
   const [search, setSearch] = useState('');
-
   const [isLoading, setIsLoading] = useState(false);
-
   const [checked, setChecked] = useState();
-
   const [modalVisible, setModalVisible] = useState(false);
   const [feeModalVisible, setFeeModalVisible] = useState(false);
   const [addModalVisible, setAddModalVisible] = useState(false);
@@ -163,9 +160,10 @@ const RecordsScreen = () => {
   const handleChangedFee = async (property, changedValue) => {
     try {
       if (index !== null) {
-        const updatedFeeData = {...feeData};
+        const updatedFeeData = {...allFeeData};
         updatedFeeData[index][property] = changedValue;
-        const studentId = students[index];
+        const studentId = allFeeData[index];
+        console.log('FIne tiil niw');
         await updateFees(studentId.id, updatedFeeData);
         console.log('Fees updated successfully');
       } else {
@@ -541,11 +539,8 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Due </Text>
                 <TextInput
-                  value={String(feeData.amountDue)}
+                  value={String(allFeeData[index].amountDue)}
                   style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('amountDue', text);
-                  }}
                   editable={edit}
                   underlineColor="transparent"
                   keyboardType="numeric"
@@ -555,7 +550,7 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Paid </Text>
                 <TextInput
-                  value={String(feeData.amountPaid)}
+                  value={String(allFeeData.amountPaid)}
                   style={styles.TextInput}
                   onChangeText={text => {
                     handleChangedFee('amountPaid', text);
@@ -569,11 +564,11 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payable Amount </Text>
                 <TextInput
-                  value={String(feeData.payableAmount)}
+                  value={String(allFeeData.payableAmount)}
                   style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('payableAmount', parseInt(text));
-                  }}
+                  // onChangeText={text => {
+                  //   handleChangedFee('payableAmount', parseInt(text));
+                  // }}
                   editable={edit}
                   underlineColor="transparent"
                   keyboardType="numeric"
@@ -597,11 +592,11 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={feeData.modalText}>Late Fees </Text>
                 <TextInput
-                  value={String(students[index].lateFees)}
+                  value={String(allFeeData[index].lateFees)}
                   style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('lateFees', text);
-                  }}
+                  // onChangeText={text => {
+                  //   handleChangedFee('lateFees', text);
+                  // }}
                   editable={edit}
                   underlineColor="transparent"
                 />
@@ -610,11 +605,11 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={feeData.modalText}>Remarks </Text>
                 <TextInput
-                  value={students[index].remarks}
+                  value={allFeeData[index].remarks}
                   style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('remarks', text);
-                  }}
+                  // onChangeText={text => {
+                  //   handleChangedFee('remarks', text);
+                  // }}
                   editable={edit}
                   underlineColor="transparent"
                 />
@@ -752,7 +747,7 @@ const styles = StyleSheet.create({
     margin: 10,
     // marginRight: 10,
     backgroundColor: 'lavender',
-    width: 200,
+    width: 210,
     padding: 3,
     height: 40,
     borderRadius: 30,
