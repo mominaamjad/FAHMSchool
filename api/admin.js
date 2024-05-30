@@ -284,14 +284,14 @@ export const fetchStudents = async () => {
 
 export const fetchFees = async () => {
   try {
-    const studentCollection = collection(db, 'fees');
-    const studentSnapshot = await getDocs(studentCollection);
-    const studentList = studentSnapshot.docs.map(doc => ({
+    const feeCollection = collection(db, 'fees');
+    const feeSnapshot = await getDocs(feeCollection);
+    const feeList = feeSnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
     }));
-    console.log(studentList);
-    return studentList;
+    console.log(feeList);
+    return feeList;
   } catch (error) {
     console.error('Error fetching fees: ', error);
     throw error;
@@ -346,15 +346,13 @@ export const viewAllFeeStatus = async () => {
 export const updateFees = async (id, updatedData) => {
   try {
     const feesRef = doc(db, 'fees', id);
-
     const feeDoc = await getDoc(feesRef);
+    const cleanedData = cleanObject(updatedData);
 
     if (feeDoc.exists()) {
-      const cleanedData = cleanObject(updatedData);
       await updateDoc(feesRef, cleanedData);
       console.log('Fee updated with ID:', id);
     } else {
-      const cleanedData = cleanObject(updatedData);
       await setDoc(feesRef, cleanedData);
       console.log('New fee document created with ID:', id);
     }

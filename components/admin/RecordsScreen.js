@@ -99,10 +99,7 @@ const RecordsScreen = () => {
       try {
         setIsLoading(true);
         const feeList = await fetchFees();
-        console.log(feeList);
         setFeeData(feeList);
-        console.log('FEE DATA');
-        console.log(feeData);
         setIsLoading(false);
       } catch (error) {
         console.error('Error loading students: ', error);
@@ -159,8 +156,7 @@ const RecordsScreen = () => {
     try {
       if (index !== null) {
         const updatedFeeData = {...feeData, [property]: changedValue};
-        setFeeData(updatedFeeData);
-
+        // setFeeData(updatedFeeData);
         const studentId = students[index].id;
         await updateFees(studentId, updatedFeeData);
         console.log('Fees updated successfully');
@@ -188,6 +184,7 @@ const RecordsScreen = () => {
     try {
       const currentYear = new Date().getFullYear();
       let newRegNo;
+      console.log(students.length);
       if (students.length > 0) {
         const lastRegNo = students[students.length - 1].regNo;
         const regNoParts = lastRegNo.split('-');
