@@ -11,6 +11,7 @@ import {
 
 import { loginStudent } from '../../api/student';
 
+
 const Login = ( {navigation} ) => {
     const [regNo, setReg] = useState("")
     const [password, setPassword] = useState("")
@@ -27,9 +28,13 @@ const Login = ( {navigation} ) => {
           });
           console.log(
             'Login Successful',
-            `Welcome ${student.firstName} ${student.lastName}`,
+            `Welcome ${student.regNo.studentName} ${student.regNo.fatherName}`,
           );
-          navigation.navigate('StudentMainScreen')
+
+          // student ka object bhejo saath
+          // waht the hell!!!
+          navigation.navigate('StudentMainScreen', {regNo})  
+        
         } catch (error) {
           console.log('Login Failed', error.message);
           setLoginError('Login failed. Please try again!');
@@ -43,11 +48,11 @@ const Login = ( {navigation} ) => {
 
         }
 
-        // const regRegex = /^\(\d{4}\)-\d{3}$/;
+        const regRegex = /^\d{4}-\d{4}$/;
 
-        const regRegex = /^[a-zA-Z]{4}-\w{3}$/
+        // const regRegex = /^[0-9]{4}-\[0-9]{3}$/
 
-        let isValid = regRegex.test(regNo);
+        let isValid = regRegex.test(regNo.trim());
         if (!isValid) {
             setRegError('Invalid registration no. format');
             return false;

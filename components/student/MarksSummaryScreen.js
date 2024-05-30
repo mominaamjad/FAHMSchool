@@ -9,20 +9,55 @@ import React, {useEffect, useState} from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { TextInput, DataTable } from "react-native-paper";
 
+import { getMarksByYear, getYears, yearsMap } from "../../api/student";
+
  
 
-const MarksSummaryScreen = () => {
+const MarksSummaryScreen = ({route}) => {
 
-    const [value, setValue] = useState();
+    const [value, setValue] = useState('');
     const [open, setOpen] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [timetableImg, setTimetableImg] = useState(null);
+    const [years, setYears] = useState([])
+    const [marks, setMarks] = useState([]);
+    const {regNo} = route.params;
+    
     useEffect(() => {
-        if (value) {
-            fetchTimetable();
+        const fetchYears = async () => {
+        try {
+            const fetchedYears = await getYears(regNo);
+            const years = fetchedYears.map((year) => {
+                return {label: yearsMap[year], value: year}
+            })
+            setYears(years);
+            
+            //  set the drop down value            
+            setValue(years[years.length - 1].value)
+                        
+        } catch (error) {
+            console.error('Error fetching years: ', error);
         }
-    }, [value]);
-
+        };
+        fetchYears();
+    }, []);
+   
+    useEffect(() => {
+        const fetchMarks = async () => {
+          try {
+            console.log(value);
+            // const index = years.findIndex(item => item.value === valueToFind);
+            // const selectedYear = 2024 - (years.length - index)
+            // console.log(selectedYear);
+            const fetchedMarks = await getMarksByYear(regNo, value);
+            setMarks(fetchedMarks);
+            console.log(fetchedMarks);
+              
+          } catch (error) {
+            console.error('Error fetching marks: ', error);
+          }
+        };
+        fetchMarks();
+      }, [value]);
+    
     return(
 
         <View style={styles.container}>
@@ -32,11 +67,15 @@ const MarksSummaryScreen = () => {
             dropDownContainerStyle={styles.dropdown}
             open={open}
             value={value}
-            items={[
-            {label: 'Class 7', value: 'class7'},
-            {label: 'Class 6', value: 'class6'},
-            {label: 'Class 5', value: 'class5'},
-            ]}
+
+            // items={years.map(element, index) =>{
+            //     {label: }
+            // }}
+
+            items={
+                years
+                // display it like it
+            }
             setOpen={setOpen}
             setValue={setValue}
       />
@@ -50,7 +89,17 @@ const MarksSummaryScreen = () => {
                         
                     </DataTable.Header>
 
-                    <DataTable.Row style= {styles.row}>
+                    {marks.map((element, index) => (
+                        <DataTable.Row style={styles.row} key={index}>
+                            <DataTable.Cell style={{ flex: 4 }}>
+                            <Text style={styles.subjTitle}>{element.subjectName}</Text>
+                            </DataTable.Cell>
+                            <DataTable.Cell><Text style={styles.data}>{element.firstTerm}</Text></DataTable.Cell>
+                            <DataTable.Cell><Text style={styles.data}>{element.mids}</Text></DataTable.Cell>
+                            <DataTable.Cell><Text style={styles.data}>{element.finals}</Text></DataTable.Cell>
+                        </DataTable.Row>
+                    ))}
+                    {/* <DataTable.Row style= {styles.row}>
                         <DataTable.Cell style = {{flex: 5}}> <Text style = {styles.subjTitle}>Mobile Application Dev</Text></DataTable.Cell>
                         <DataTable.Cell><Text style = {styles.data}>18</Text></DataTable.Cell>
                         <DataTable.Cell><Text style = {styles.data}>20</Text></DataTable.Cell>
@@ -67,7 +116,7 @@ const MarksSummaryScreen = () => {
                         <DataTable.Cell><Text style = {styles.data}>18</Text></DataTable.Cell>
                         <DataTable.Cell><Text style = {styles.data}>20</Text></DataTable.Cell>
                         <DataTable.Cell><Text style = {styles.data}>45</Text></DataTable.Cell>
-                    </DataTable.Row>
+                    </DataTable.Row> */}
 
                     
                 </DataTable>
@@ -75,6 +124,7 @@ const MarksSummaryScreen = () => {
         
     );
 }
+
 
 const styles = StyleSheet.create({
 
@@ -120,7 +170,8 @@ const styles = StyleSheet.create({
 
     subjTitle:{
         fontFamily: 'Poppins-SemiBold',
-        fontSize: 12
+        fontSize: 12,
+        color: 'black'
     },
 
     data:{

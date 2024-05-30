@@ -1,19 +1,39 @@
 import { ScrollView,
     View, 
     Text,
-    StyleSheet
-
+    StyleSheet,
+    
  } from "react-native"
 
  import { TextInput, DataTable } from "react-native-paper";
 
+ import { currMarks, getYears } from "../../api/student";
+import { useEffect, useState } from "react";
 
-const StudentDashboard = () => {
 
+const StudentDashboard = ({route}) => {
+    const [marks, setMarks] = useState([]);
+    const {regNo} = route.params;
+    
+  useEffect(() => {
+    const fetchMarks = async () => {
+      try {
+          const fetchedMarks = await currMarks(regNo);
+          setMarks(fetchedMarks);
+          console.log(marks);
+          await getYears('2024-0001');
+      } catch (error) {
+        console.error('Error fetching marks: ', error);
+      }
+    };
+    fetchMarks();
+  }, []);
 
     return(
 
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
+
+
                 <DataTable style = {styles.table}>
                     <DataTable.Header style={styles.head}>
                         <DataTable.Title style = {{flex: 4}}> <Text style = {styles.tableTitle}> Subject </Text></DataTable.Title>
@@ -23,28 +43,19 @@ const StudentDashboard = () => {
                         
                     </DataTable.Header>
 
-                    <DataTable.Row style= {styles.row}>
-                        <DataTable.Cell style = {{flex: 4}}> <Text style = {styles.subjTitle}>Mobile Application Dev</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style = {styles.data}>18</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style = {styles.data}>20</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style = {styles.data}>45</Text></DataTable.Cell>
-                    </DataTable.Row> 
-                    <DataTable.Row style= {styles.row}>
-                        <DataTable.Cell style = {{flex: 4}}> <Text style = {styles.subjTitle}>Mobile Application Dev</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style = {styles.data}>18</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style = {styles.data}>20</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style = {styles.data}>45</Text></DataTable.Cell>
-                    </DataTable.Row>
-                    <DataTable.Row style= {styles.row}>
-                        <DataTable.Cell style = {{flex: 4}}> <Text style = {styles.subjTitle}>Mobile Application Dev</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style = {styles.data}>18</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style = {styles.data}>20</Text></DataTable.Cell>
-                        <DataTable.Cell><Text style = {styles.data}>45</Text></DataTable.Cell>
-                    </DataTable.Row>
 
-                    
+                    {marks.map((element, index) => (
+                        <DataTable.Row style={styles.row} key={index}>
+                            <DataTable.Cell style={{ flex: 4 }}>
+                            <Text style={styles.subjTitle}>{element.subjectName}</Text>
+                            </DataTable.Cell>
+                            <DataTable.Cell><Text style={styles.data}>{element.firstTerm}</Text></DataTable.Cell>
+                            <DataTable.Cell><Text style={styles.data}>{element.mids}</Text></DataTable.Cell>
+                            <DataTable.Cell><Text style={styles.data}>{element.finals}</Text></DataTable.Cell>
+                        </DataTable.Row>
+                    ))}      
                 </DataTable>
-            </View>
+            </ScrollView>
         
     );
 }
@@ -82,7 +93,8 @@ const styles = StyleSheet.create({
 
     subjTitle:{
         fontFamily: 'Poppins-SemiBold',
-        fontSize: 12
+        fontSize: 12,
+        color: 'black'
     },
 
     data:{

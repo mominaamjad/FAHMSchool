@@ -13,7 +13,12 @@ import StudentLogin from './StudentLogin'
 
 const Drawer = createDrawerNavigator();
 
-const StudentMainScreen = () =>{
+const StudentMainScreen = ({navigation , route}) =>{
+
+  // {route}
+  // {navigation, route}
+  const { regNo } = route.params;
+
     return(
     <NavigationContainer>
       <Drawer.Navigator
@@ -48,6 +53,7 @@ const StudentMainScreen = () =>{
         <Drawer.Screen
           name="Dashboard"
           component={StudentDashboard}
+          initialParams={regNo}
           options={
             {
               // drawerIcon: () =>{
@@ -56,8 +62,10 @@ const StudentMainScreen = () =>{
             }
           }
         />
-        <Drawer.Screen name="Marks Summary" component={MarksSummaryScreen} />
-        <Drawer.Screen name="Fee" component={StudentFee} />
+        <Drawer.Screen name="Marks Summary" component={MarksSummaryScreen} initialParams={regNo}
+           />
+        <Drawer.Screen name="Fee" component={StudentFee} initialParams={regNo}
+           />
         <Drawer.Screen name="Timetable" component={StudentTimetable} />
         <Drawer.Screen name="Syllabus" component={StudentSyllabus} />
         <Drawer.Screen name="Logout" component={StudentLogin} />

@@ -27,22 +27,22 @@ const StudentTimetable = () => {
     console.log(timetableImg)
   });
 
-  const fetchTimetable = async () => {
-    try {
-      // setIsLoading(true)
-      const timetableData = await getTimetable('2024');
-      if (timetableData && timetableData.timetableImg) {
-        setTimetableImg(timetableData.timetableImg);
-        console.log('found table')
-      } else {
-        setTimetableImg(null);
-        console.log('no table') 
-      }
-      setIsLoading(false)
-    } catch (error) {
-      console.error('Error fetching timetable: ', error);
-    }
-  };
+  // const fetchTimetable = async () => {
+  //   try {
+  //     // setIsLoading(true)
+  //     const timetableData = await getTimetable('2024');
+  //     if (timetableData && timetableData.timetableImg) {
+  //       setTimetableImg(timetableData.timetableImg);
+  //       console.log('found table')
+  //     } else {
+  //       setTimetableImg(null);
+  //       console.log('no table') 
+  //     }
+  //     setIsLoading(false)
+  //   } catch (error) {
+  //     console.error('Error fetching timetable: ', error);
+  //   }
+  // };
 
 
   return (

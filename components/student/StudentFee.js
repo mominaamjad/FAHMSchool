@@ -15,11 +15,12 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 import Card from "../layouts/Card";
 
-const StudentFee = () => {
+const StudentFee = ({route}) => {
 
     // for pop-up 
     const [modalVisible, setModalVisible] = useState(false);
-
+    const {regNo} = route.params;
+    
     // students list to be displayed
     const [students, setStudents] = useState([
         {
