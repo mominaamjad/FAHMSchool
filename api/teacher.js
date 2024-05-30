@@ -147,9 +147,9 @@ export const fetchClassStudents = async (subject, classRef) => {
             console.log(studentMarks)
             return {
                 ...student,
-                finals: studentMarks.finals ? studentMarks.finals : "0",
-                firstTerm: studentMarks.firstTerm ? studentMarks.firstTerm : "0",
-                mids: studentMarks.mids ? studentMarks.mids : "0",
+                finals: studentMarks?.finals || "0",
+                firstTerm: studentMarks?.firstTerm || "0",
+                mids: studentMarks?.mids || "0",
             };
         });
         console.log("studentList:", studentListWithMarks);
