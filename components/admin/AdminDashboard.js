@@ -70,16 +70,6 @@ const AdminDashboard = () => {
 
             </View>
 
-            <View>
-                <TouchableOpacity
-                    style={styles.buttonDownload}
-                    onPress={ createPDF }>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Icon name="download" size={24} color='white' />
-                        <Text style={styles.downloadText}> Download Report</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
 
             <ScrollView>
                 {selectedTab == 0 ? <ReportOne></ReportOne> : <ReportTwo></ReportTwo>}
