@@ -24,7 +24,7 @@ const ReportOne = () => {
             console.log("starting pdf generation")
             let PDFOptions = {
                 html: htmlContent,
-                fileName: 'file',
+                fileName: 'report1',
                 directory: Platform.OS === 'android' ? 'Downloads' : 'Documents',
             };
             let file = await RNHTMLtoPDF.convert(PDFOptions);
