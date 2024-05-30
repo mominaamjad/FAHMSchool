@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, View, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
 import { TextInput, DataTable } from "react-native-paper";
 
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -33,13 +33,18 @@ const Main = ({route}) => {
         { label: 'Finals', value: 'final' }
     ]);
 
+
+    const [isLoading, setIsLoading] = useState(false);
+
     const fetchStudents = async () => {
+        setIsLoading(true);
         try {
           const studentData = await fetchClassStudents(subject, classRef);
           setStudent(studentData);
         } catch (error) {
-          console.error('Error fetching students:', error);
+            console.error('Error fetching students:', error);
         }
+        setIsLoading(false);
       };
 
       useEffect(() => {
@@ -49,7 +54,9 @@ const Main = ({route}) => {
 
       const updateMarks = async () => {
         try {
+            setIsLoading(true);
           await editMarks(students, subject);
+          setIsLoading(false);
         } catch (error) {
           console.error('Error', error);
         }
@@ -107,12 +114,15 @@ const Main = ({route}) => {
                     textStyle={styles.dropdownText}
                 />
             </View>
+
             <View style={styles.container}>
                 <DataTable>
                     <DataTable.Header style={styles.head}>
                         <Text style={styles.tableTitle}>Registration No</Text>
                         <Text style={styles.tableTitle}>Marks</Text>
                     </DataTable.Header>
+
+                    {isLoading ? <ActivityIndicator size="large" color='#9C70EA' /> :
 
                     <ScrollView style={styles.listBackground}>
                         {students.map((element, index) => {
@@ -163,7 +173,7 @@ const Main = ({route}) => {
                                 </DataTable.Row>
                             );
                         })}
-                    </ScrollView>
+                    </ScrollView> }
                 </DataTable>
             </View>
         </View>
