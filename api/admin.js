@@ -361,13 +361,15 @@ export const updateFees = async (id, updatedData) => {
 //   );
 // };
 
-export const createSpecificFeeStatus = async feeData => {
+export const createSpecificFeeStatus = async (feeData, studentId) => {
   try {
-    await setDoc(doc(db, 'fees', feeData.id), {
+    const feeId = doc(collection(db, 'fees')).id;
+    await setDoc(doc(db, 'fees', feeId), {
       ...feeData,
+      studentRef: studentId,
     });
-    console.log('Fee added with ID: ', feeData.id);
-    return feeData.id;
+    console.log('Fee added with ID: ', feeId);
+    return feeId;
   } catch (error) {
     console.error('Error creating specific fee status: ', error);
     throw error;
