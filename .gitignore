@@ -57,7 +57,7 @@ yarn-error.log
 *.jsbundle
 
 # Ignore google-services.json
-google-services.json
+/google-services.json
 
 
 # Ruby / CocoaPods
