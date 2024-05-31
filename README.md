@@ -1,27 +1,32 @@
 # FAHM School System
 
 ## Overview
+
 The FAHM School System is designed to streamline and manage the various functions of a school, including administration, teacher, and student activities. The system encompasses functionalities for managing classes, subjects, student registrations, fee statuses, examination marks, and more.
 
 ## Actors Involved
+
 1. **Student**
 2. **Teacher**
 3. **Admin**
 
 ## Classes & Subjects Information
+
 Classes range from Nursery to Class 8th. Each class has specific subjects as follows:
 
-| Class      | Subjects                                                                                        |
-|------------|-------------------------------------------------------------------------------------------------|
-| Nursery    | English, Urdu, Math, Nazra-e-Quran                                                              |
-| Prep       | English, Urdu, Math, Nazra-e-Quran, General Knowledge                                           |
-| Class 1    | English, Urdu, Math, General Knowledge, Islamyat                                                |
-| Class 2-3  | English, Urdu, Math, General Knowledge, Islamyat, Computer (Part 1, Part 2)                     |
-| Class 4-5  | English, Urdu, Math, General Knowledge, Social Study, Islamyat, Computer (Part 1, Part 2)       |
-| Class 6-8  | English, Urdu, Math, General Knowledge, Social Study, Islamyat, Computer (Part 1, Part 2), Quran|
+| Class     | Subjects                                                                                         |
+| --------- | ------------------------------------------------------------------------------------------------ |
+| Nursery   | English, Urdu, Math, Nazra-e-Quran                                                               |
+| Prep      | English, Urdu, Math, Nazra-e-Quran, General Knowledge                                            |
+| Class 1   | English, Urdu, Math, General Knowledge, Islamyat                                                 |
+| Class 2-3 | English, Urdu, Math, General Knowledge, Islamyat, Computer (Part 1, Part 2)                      |
+| Class 4-5 | English, Urdu, Math, General Knowledge, Social Study, Islamyat, Computer (Part 1, Part 2)        |
+| Class 6-8 | English, Urdu, Math, General Knowledge, Social Study, Islamyat, Computer (Part 1, Part 2), Quran |
 
 ## Marks Distribution
+
 - **First and Midterm Examinations**:
+
   - Each subject: 50 marks
   - Computer Science Part 1: 35 marks
   - Computer Science Part 2: 15 marks
@@ -32,6 +37,7 @@ Classes range from Nursery to Class 8th. Each class has specific subjects as fol
   - Computer Science Part 2: 30 marks
 
 ## Admin Portal Functionality
+
 - Single account for admin (Email and Password)
 - **Class Management**:
   - Assign or remove a class to/from a teacher
@@ -52,6 +58,7 @@ Classes range from Nursery to Class 8th. Each class has specific subjects as fol
   - Download reports in PDF format
 
 ## Teacher’s Portal Functionality
+
 - Each teacher has individual login credentials (Email and Password)
 - Assigned to a specific class by admin
 - **Marks Management**:
@@ -59,6 +66,7 @@ Classes range from Nursery to Class 8th. Each class has specific subjects as fol
   - CRUD operations limited to their assigned class
 
 ## Student’s Portal Functionality
+
 - Individual login credentials (Registration No and Password)
 - **Marks Viewing**:
   - View marks for all subjects in First, Midterm, and Final examinations
@@ -70,17 +78,21 @@ Classes range from Nursery to Class 8th. Each class has specific subjects as fol
   - View class syllabus
 
 ## Technologies Used
+
 1. **React Native CLI**
 2. **Firebase**
 3. **Third-party packages**
 
 ## Getting Started
+
 ### Prerequisites
+
 - Node.js
 - React Native CLI
 - Firebase account
 
 ### Installation
+
 1. Clone the repository:
    ```sh
    git clone https://github.com/mominaamjad/FAHMSchool.git
@@ -91,6 +103,7 @@ Classes range from Nursery to Class 8th. Each class has specific subjects as fol
    npm install
    ```
 3. Set up Firebase:
+
    - Create a Firebase project and configure it with app.
    - Download the `google-services.json` file and place it in `android/app/`.
 
@@ -100,6 +113,7 @@ Classes range from Nursery to Class 8th. Each class has specific subjects as fol
    ```
 
 ## Contribution Guidelines
+
 1. Fork the repository.
 2. Create a new branch (`feature/your-feature`).
 3. Commit your changes.
@@ -107,4 +121,5 @@ Classes range from Nursery to Class 8th. Each class has specific subjects as fol
 5. Open a pull request.
 
 ## License
-This project is licensed under the MIT License.
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
