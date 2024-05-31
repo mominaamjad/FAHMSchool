@@ -83,7 +83,7 @@ Classes range from Nursery to Class 8th. Each class has specific subjects as fol
 ### Installation
 1. Clone the repository:
    ```sh
-   git clone [<repository-url>](https://github.com/mominaamjad/FAHMSchool.git)
+   git clone https://github.com/mominaamjad/FAHMSchool.git
    ```
 2. Install dependencies:
    ```sh
