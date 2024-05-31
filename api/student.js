@@ -35,6 +35,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+// const db = firebase.firestore();
 
 export const loginStudent = async (loginData) => {
   try {
@@ -48,12 +49,7 @@ export const loginStudent = async (loginData) => {
         where('password', '==', loginData.password)            
     );
 
-    console.log(studentQuery);
-
-
     const querySnapshot = await getDocs(studentQuery);
-   
-    console.log(querySnapshot.docs);
 
     if (querySnapshot.empty) {
       throw new Error('Invalid email or password');
@@ -62,23 +58,28 @@ export const loginStudent = async (loginData) => {
     const studentDoc = querySnapshot.docs[0];
     const studentData = studentDoc.data();
 
-    return new Student(
-      studentData.regNo = regNo,
-      studentData.firstName = firstName,
-      studentData.lastName = lastName,
-      studentData.email = email,
-      studentData.dob = dob,
-      studentData.gender = gender,
-      studentData.fatherName = fatherName,
-      studentData.caste = caste,
-      studentData.occupation = occupation,
-      studentData.residence = residence,
-      studentData.remarks = remarks,
-      studentData.phoneNo = phoneNo,
-      studentData.admissionDate = admissionDate,
-      studentData.admissionClass = admissionClass,
-      
+   //this wass causing main error because data waasnt being constructed properly 
+     // Use the spread operator to extract all data from the document
+  // const student = new Student({
+  //   ...studentData,
+  // });
+    const newStudent= new Student(
+      studentData.regNo,
+      studentData.studentName,
+      studentData.email,
+      studentData.dob,
+      studentData.gender,
+      studentData.fatherName,
+      studentData.caste,
+      studentData.occupation,
+      studentData.residence,
+      studentData.remarks,
+      studentData.phoneNo,
+      studentData.admissionDate,
+      studentData.admissionClass,
+    studentData.currentClass
     );
+    return newStudent;
   } catch (error) {
     console.error('Error during login: ', error);
     throw error;
@@ -142,3 +143,148 @@ export const viewSyllabus = async classId => {
     throw error;
   }
 };
+
+
+export const currMarks = async regNo => {
+
+  try {
+    // Get the student's document reference
+    const studentRef = doc(db, 'students', regNo);
+    const studentDoc = await getDoc(studentRef);
+
+    if (!studentDoc.exists()) {
+      console.error('No such student!');
+      return;
+    }
+
+    // Get the current class from the student's document
+    const currentClass = studentDoc.data().currentClass;
+    console.log(currentClass);
+    // Get the class document based on the current class
+    const classDoc = await getDoc(doc(db, 'classes', currentClass));
+
+    if (!classDoc.exists()) {
+      console.error('No such class!');
+      return;
+    }
+
+    // Get all subjects from the class document
+    const subjectsArray = classDoc.data().subjects;
+
+    // Fetch all marks documents
+    const marksSnapshot = await getDocs(collection(db, 'marks'));
+    const marksArray = [];
+
+    marksSnapshot.forEach((doc) => {
+      const markData = doc.data();
+      // Check if the mark's student reference matches the regNo
+      if (markData.studentRef === regNo) {
+        // Check if the mark's subject reference matches any subject in the subjectsArray
+    const subjectMatch = subjectsArray.find(subject => subject.subjectId === markData.subjectRef);
+    if (subjectMatch) {
+      // Include subject.name along with other mark details
+      marksArray.push({ ...markData, subjectName: subjectMatch.name });
+    }
+      }
+    });
+    console.log("marksArray in api: ",marksArray);
+    // setMarks(marksArray);
+    return marksArray
+  } catch (error) {
+    console.error('Error fetching marks: ', error);
+  }
+}
+
+export const getYears = async (regNo) => {
+
+  try {
+    // Get the student's document reference
+    const studentRef = doc(db, 'students', regNo);
+    const studentDoc = await getDoc(studentRef);
+
+    if (!studentDoc.exists()) {
+      console.error('No such student!');
+      return;
+    }
+
+    // Get the current class from the student's document
+    const currentClass = Number(studentDoc.data().currentClass);
+    const admissionClass = Number(studentDoc.data().admissionClass);
+    
+    const yearsArr = []
+    for (let i = admissionClass; i < currentClass; i++) {
+      if(i >= 10){
+        yearsArr.push(`${i}`)
+      }
+      else{
+        yearsArr.push(`0${i}`)
+      }
+    }
+    console.log(yearsArr);    
+    return yearsArr
+  } catch (error) {
+    console.error('Error fetching marks: ', error);
+  }
+}
+
+export const yearsMap = {
+  '01' : 'Nursery',
+  '02' : 'Prep',
+  '03' : 'Class 1',
+  '04' : 'Class 2',
+  '05' : 'Class 3',
+  '06' : 'Class 4',
+  '07' : 'Class 5',
+  '08' : 'Class 6',
+  '09' : 'Class 7',
+}
+
+export const getMarksByYear = async (regNo, year) => {
+
+  try {
+    // Get the student's document reference
+    const studentRef = doc(db, 'students', regNo);
+    const studentDoc = await getDoc(studentRef);
+
+    if (!studentDoc.exists()) {
+      console.error('No such student!');
+      return;
+    }
+
+    // Get the current class from the student's document
+    // const currentClass = studentDoc.data().currentClass;
+
+    // Get the class document based on the current class
+    
+    const classDoc = await getDoc(doc(db, 'classes', year));
+
+    if (!classDoc.exists()) {
+      console.error('No such class!');
+      return;
+    }
+
+    // Get all subjects from the class document
+    const subjectsArray = classDoc.data().subjects;
+
+    // Fetch all marks documents
+    const marksSnapshot = await getDocs(collection(db, 'marks'));
+    const marksArray = [];
+
+    marksSnapshot.forEach((doc) => {
+      const markData = doc.data();
+      // Check if the mark's student reference matches the regNo
+      if (markData.studentRef === regNo) {
+        // Check if the mark's subject reference matches any subject in the subjectsArray
+    const subjectMatch = subjectsArray.find(subject => subject.subjectId === markData.subjectRef);
+    if (subjectMatch) {
+      // Include subject.name along with other mark details
+      marksArray.push({ ...markData, subjectName: subjectMatch.name });
+    }
+      }
+    });
+    console.log(marksArray);
+    return marksArray
+  } catch (error) {
+    console.error('Error fetching marks: ', error);
+  }
+}

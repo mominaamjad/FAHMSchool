@@ -9,37 +9,103 @@ import React, {useEffect, useState} from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { TextInput, DataTable } from "react-native-paper";
 
+import { getMarksByYear, getYears, yearsMap } from "../../api/student";
+
  
 
-const MarksSummaryScreen = () => {
+const MarksSummaryScreen = ({route}) => {
 
-    const [value, setValue] = useState();
+    const [value, setValue] = useState(null);
     const [open, setOpen] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [timetableImg, setTimetableImg] = useState(null);
-    useEffect(() => {
-        if (value) {
-            fetchTimetable();
-        }
-    }, [value]);
+    const [years, setYears] = useState([])
+    const [marks, setMarks] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
+    // const {regNo} = route.params;
+
+    
+    
+    useEffect(() => {
+        const fetchYears = async () => {
+
+            setIsLoading(true);
+            // console.log(regNo)
+        try {
+            const fetchedYears = await getYears('2024-001');
+            
+            console.log("screen k andar waley")
+            console.log(fetchedYears)
+
+            const years = fetchedYears.map((year) => ({
+                  label: yearsMap[year],
+                  value: year,
+            }))
+
+            setYears(years);
+
+            setIsLoading(false);
+        
+
+
+            console.log("screen k andar waley years")
+            console.log(years)
+
+            setValue(years[years.length - 1].value)
+                        
+        } catch (error) {
+            console.error('Error fetching years: ', error);
+        }
+        };
+        fetchYears();
+    }, []);
+     
+   
+    useEffect(() => {
+        const fetchMarks = async () => {
+
+        if(value){
+            try {
+              console.log(value);
+              // const index = years.findIndex(item => item.value === valueToFind);
+              // const selectedYear = 2024 - (years.length - index)
+              // console.log(selectedYear);
+              const fetchedMarks = await getMarksByYear('2024-001', value);
+  
+              console.log("yeh marks screen waley")
+              console.log(fetchedMarks);
+  
+              setMarks(fetchedMarks);
+              // console.log(fetchedMarks);
+                
+            } catch (error) {
+              console.error('Error fetching marks: ', error);
+            }
+        }
+        };
+        fetchMarks();
+      }, [value]);
+    
     return(
 
         <View style={styles.container}>
             <DropDownPicker
-            textStyle={styles.dropdownText}
-            style={styles.dropdown}
-            dropDownContainerStyle={styles.dropdown}
-            open={open}
-            value={value}
-            items={[
-            {label: 'Class 7', value: 'class7'},
-            {label: 'Class 6', value: 'class6'},
-            {label: 'Class 5', value: 'class5'},
-            ]}
-            setOpen={setOpen}
-            setValue={setValue}
-      />
+                textStyle={styles.dropdownText}
+                style={styles.dropdown}
+                dropDownContainerStyle={styles.dropdown}
+                open={open}
+                value={value}
+
+                // items={years.map(element, index) =>{
+                //     {label: }
+                // }}
+
+                items={
+                    years
+                    // display it like it
+                }
+                setOpen={setOpen}
+                setValue={setValue}
+            />
 
                 <DataTable style = {styles.table}>
                     <DataTable.Header style={styles.head}>
@@ -50,7 +116,19 @@ const MarksSummaryScreen = () => {
                         
                     </DataTable.Header>
 
-                    <DataTable.Row style= {styles.row}>
+                    {isLoading ? <></> : marks.map((element, index) => (
+                        <DataTable.Row style={styles.row} key={index}>
+                            <DataTable.Cell style={{ flex: 4 }}>
+                            <Text style={styles.subjTitle}>{element.subjectName}</Text>
+                            </DataTable.Cell>
+                            <DataTable.Cell><Text style={styles.data}>{element.firstTerm}</Text></DataTable.Cell>
+                            <DataTable.Cell><Text style={styles.data}>{element.mids}</Text></DataTable.Cell>
+                            <DataTable.Cell><Text style={styles.data}>{element.finals}</Text></DataTable.Cell>
+                        </DataTable.Row>
+                    ))}
+                    
+
+                    {/* <DataTable.Row style= {styles.row}>
                         <DataTable.Cell style = {{flex: 5}}> <Text style = {styles.subjTitle}>Mobile Application Dev</Text></DataTable.Cell>
                         <DataTable.Cell><Text style = {styles.data}>18</Text></DataTable.Cell>
                         <DataTable.Cell><Text style = {styles.data}>20</Text></DataTable.Cell>
@@ -67,7 +145,7 @@ const MarksSummaryScreen = () => {
                         <DataTable.Cell><Text style = {styles.data}>18</Text></DataTable.Cell>
                         <DataTable.Cell><Text style = {styles.data}>20</Text></DataTable.Cell>
                         <DataTable.Cell><Text style = {styles.data}>45</Text></DataTable.Cell>
-                    </DataTable.Row>
+                    </DataTable.Row> */}
 
                     
                 </DataTable>
@@ -75,6 +153,7 @@ const MarksSummaryScreen = () => {
         
     );
 }
+
 
 const styles = StyleSheet.create({
 
@@ -120,7 +199,8 @@ const styles = StyleSheet.create({
 
     subjTitle:{
         fontFamily: 'Poppins-SemiBold',
-        fontSize: 12
+        fontSize: 12,
+        color: 'black'
     },
 
     data:{

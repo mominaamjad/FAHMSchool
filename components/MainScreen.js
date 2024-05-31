@@ -22,6 +22,7 @@ import TeacherMainScreen from './teacher/TeacherMainScreen';
 import StudentMainScreen from './student/StudentMainScreen';
 import MarksScreen from './teacher/MarksScreen';
 
+
 const Stack = createNativeStackNavigator();
 
 function MyStack() {
@@ -44,6 +45,11 @@ function MyStack() {
       <Stack.Screen name="TeacherMainScreen" component={TeacherMainScreen} options={{
         headerShown: false
       }}/>
+
+       <Stack.Screen name="StudentMainScreen" component={StudentMainScreen} options={{
+        headerShown: false
+      }}/>
+
       <Stack.Screen name="MarksScreen" component={MarksScreen} options={{
         headerShadowVisible: false,
         headerLeftLabelVisible: true,
@@ -59,7 +65,7 @@ function MyStack() {
             fontSize: 22,
         },
       }}/>
-      <Stack.Screen name="StudentMainScreen" component={StudentMainScreen} />
+      
     </Stack.Navigator>
     </NavigationContainer>
   );

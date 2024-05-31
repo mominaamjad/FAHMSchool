@@ -11,9 +11,10 @@ import {
 
 import { loginStudent } from '../../api/student';
 
+
 const Login = ( {navigation} ) => {
-    const [regNo, setReg] = useState("")
-    const [password, setPassword] = useState("")
+    const [regNo, setReg] = useState("2024-001")
+    const [password, setPassword] = useState("momina123")
 
     const [regError, setRegError] = useState('');
     const [passwordError, setPasswordError] = useState('');
@@ -21,15 +22,19 @@ const Login = ( {navigation} ) => {
 
     const handleLogin = async () => {
         try {
+          // main main error was the student object that was being returned
           const student = await loginStudent({
             regNo: regNo,
             password: password,
           });
-          console.log(
-            'Login Successful',
-            `Welcome ${student.firstName} ${student.lastName}`,
-          );
-          navigation.navigate('StudentMainScreen')
+          if (student!=undefined){
+            console.log(`Login Successful Welcome ${student.studentName} ${student.regNo}`);
+            // navigation was being undefined if we directly started from this screen 
+            // instead of navigating from MainScreen because navigation container is in MainScreen
+
+           
+            navigation.navigate('StudentMainScreen', student.regNo)  
+          }
         } catch (error) {
           console.log('Login Failed', error.message);
           setLoginError('Login failed. Please try again!');
@@ -43,11 +48,11 @@ const Login = ( {navigation} ) => {
 
         }
 
-        // const regRegex = /^\(\d{4}\)-\d{3}$/;
+        const regRegex = /^\d{4}-\d{3}$/;
 
-        const regRegex = /^[a-zA-Z]{4}-\w{3}$/
+        // const regRegex = /^[0-9]{4}-\[0-9]{3}$/
 
-        let isValid = regRegex.test(regNo);
+        let isValid = regRegex.test(regNo.trim());
         if (!isValid) {
             setRegError('Invalid registration no. format');
             return false;
