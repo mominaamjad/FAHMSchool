@@ -1,8 +1,7 @@
 export default class Student {
   constructor(
     regNo,
-    firstName,
-    lastName,
+    studentName,
     email,
     dob,
     gender,
@@ -14,10 +13,10 @@ export default class Student {
     phoneNo,
     admissionDate,
     admissionClass,
+    currentClass
   ) {
     this.regNo = regNo;
-    this.firstName = firstName;
-    this.lastName = lastName;
+    this.studentName = studentName;
     this.email = email;
     this.dob = dob;
     this.gender = gender;
@@ -29,5 +28,6 @@ export default class Student {
     this.phoneNo = phoneNo;
     this.admissionDate = admissionDate;
     this.admissionClass = admissionClass;
+    this.currentClass = currentClass;
   }
 }

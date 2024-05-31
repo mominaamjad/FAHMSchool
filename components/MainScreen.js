@@ -65,9 +65,9 @@ function MyStack() {
             fontSize: 22,
         },
       }}/>
-
-      <Stack.Screen name = "SampleScreen" component={SampleScreen}/>
-     
+      <Stack.Screen name="StudentMainScreen" component={StudentMainScreen} options={{
+        headerShown: false
+      }} />
     </Stack.Navigator>
     </NavigationContainer>
   );

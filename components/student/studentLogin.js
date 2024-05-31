@@ -13,8 +13,8 @@ import { loginStudent } from '../../api/student';
 
 
 const Login = ( {navigation} ) => {
-    const [regNo, setReg] = useState("")
-    const [password, setPassword] = useState("")
+    const [regNo, setReg] = useState("2024-001")
+    const [password, setPassword] = useState("momina123")
 
     const [regError, setRegError] = useState('');
     const [passwordError, setPasswordError] = useState('');
@@ -22,19 +22,17 @@ const Login = ( {navigation} ) => {
 
     const handleLogin = async () => {
         try {
+          // main main error was the student object that was being returned
           const student = await loginStudent({
             regNo: regNo,
             password: password,
           });
-          console.log(
-            'Login Successful',
-            `Welcome ${student.regNo.studentName} ${student.regNo.fatherName}`,
-          );
-
-          console.log(student.regNo.regNo)
-
-          navigation.navigate('StudentMainScreen', student.regNo.regNo)  
-        
+          if (student!=undefined){
+            console.log(`Login Successful Welcome ${student.studentName} ${student.regNo}`);
+            // navigation was being undefined if we directly started from this screen 
+            // instead of navigating from MainScreen because navigation container is in MainScreen
+            navigation.navigate('StudentMainScreen', student.regNo)  
+          }
         } catch (error) {
           console.log('Login Failed', error.message);
           setLoginError('Login failed. Please try again!');

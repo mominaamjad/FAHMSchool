@@ -9,7 +9,6 @@ import MarksSummaryScreen from './MarksSummaryScreen'
 import StudentFee from './StudentFee';
 import StudentTimetable from './StudentTimetable'
 import StudentSyllabus from './StudentSyllabus'
-import StudentLogin from './StudentLogin'
 import { MainScreen } from '../MainScreen';
 
 const Drawer = createDrawerNavigator();
@@ -21,7 +20,7 @@ const StudentMainScreen = ({navigation , route}) =>{
   // const { regNo } = route.params;
 
     return(
-    <NavigationContainer>
+    // <NavigationContainer>
       <Drawer.Navigator
         screenOptions={{
           drawerStyle: {
@@ -74,7 +73,7 @@ const StudentMainScreen = ({navigation , route}) =>{
         <Drawer.Screen name="Logout" component={MainScreen} options={{headerShown: false}}/>
 
         </Drawer.Navigator>
-    </NavigationContainer>
+    // </NavigationContainer>
     )
 }
 
