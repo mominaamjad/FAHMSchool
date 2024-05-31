@@ -49,12 +49,7 @@ export const loginStudent = async (loginData) => {
         where('password', '==', loginData.password)            
     );
 
-    console.log(studentQuery);
-
-
     const querySnapshot = await getDocs(studentQuery);
-   
-    console.log(querySnapshot.docs);
 
     if (querySnapshot.empty) {
       throw new Error('Invalid email or password');
@@ -63,29 +58,28 @@ export const loginStudent = async (loginData) => {
     const studentDoc = querySnapshot.docs[0];
     const studentData = studentDoc.data();
 
+   //this wass causing main error because data waasnt being constructed properly 
      // Use the spread operator to extract all data from the document
-  const student = new Student({
-    ...studentData,
-  });
-    console.log(student);
-  return student;
-    // return new Student(
-    //   studentData.regNo = regNo,
-    //   studentData.firstName = firstName,
-    //   studentData.lastName = lastName,
-    //   studentData.email = email,
-    //   studentData.dob = dob,
-    //   studentData.gender = gender,
-    //   studentData.fatherName = fatherName,
-    //   studentData.caste = caste,
-    //   studentData.occupation = occupation,
-    //   studentData.residence = residence,
-    //   studentData.remarks = remarks,
-    //   studentData.phoneNo = phoneNo,
-    //   studentData.admissionDate = admissionDate,
-    //   studentData.admissionClass = admissionClass,
-      
-    // );
+  // const student = new Student({
+  //   ...studentData,
+  // });
+    const newStudent= new Student(
+      studentData.regNo,
+      studentData.studentName,
+      studentData.email,
+      studentData.dob,
+      studentData.gender,
+      studentData.fatherName,
+      studentData.caste,
+      studentData.occupation,
+      studentData.residence,
+      studentData.remarks,
+      studentData.phoneNo,
+      studentData.admissionDate,
+      studentData.admissionClass,
+    studentData.currentClass
+    );
+    return newStudent;
   } catch (error) {
     console.error('Error during login: ', error);
     throw error;
@@ -193,7 +187,7 @@ export const currMarks = async regNo => {
     }
       }
     });
-    console.log(marksArray);
+    console.log("marksArray in api: ",marksArray);
     // setMarks(marksArray);
     return marksArray
   } catch (error) {

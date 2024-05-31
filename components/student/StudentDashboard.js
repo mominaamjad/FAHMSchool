@@ -20,17 +20,18 @@ const StudentDashboard = ({route}) => {
     const fetchMarks = async () => {
       try {
           const fetchedMarks = await currMarks('2024-002');
+          console.log("data recieved:",fetchedMarks);
           setMarks(fetchedMarks);
-
-          console.log(marks);
-        //   await getYears());
-        
       } catch (error) {
         console.error('Error fetching marks: ', error);
       }
     };
     fetchMarks();
   }, []);
+
+  useEffect(() => {
+    console.log("marks in dashboard after setting:", marks);
+  }, [marks]);
 
     return(
 
