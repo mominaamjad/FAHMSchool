@@ -31,7 +31,7 @@ Classes range from Nursery to Class 8th. Each class has specific subjects as fol
   - Computer Science Part 1: 70 marks
   - Computer Science Part 2: 30 marks
 
-## Admin Portal Requirements
+## Admin Portal Functionality
 - Single account for admin (Email and Password)
 - **Class Management**:
   - Assign or remove a class to/from a teacher
@@ -51,14 +51,14 @@ Classes range from Nursery to Class 8th. Each class has specific subjects as fol
 - **Report Download**:
   - Download reports in PDF format
 
-## Teacher’s Portal Requirements
+## Teacher’s Portal Functionality
 - Each teacher has individual login credentials (Email and Password)
 - Assigned to a specific class by admin
 - **Marks Management**:
   - View, search, insert, update, and delete marks for First, Midterm, and Final examinations
   - CRUD operations limited to their assigned class
 
-## Student’s Portal Requirements
+## Student’s Portal Functionality
 - Individual login credentials (Registration No and Password)
 - **Marks Viewing**:
   - View marks for all subjects in First, Midterm, and Final examinations
