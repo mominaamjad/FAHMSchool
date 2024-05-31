@@ -31,6 +31,8 @@ const Login = ( {navigation} ) => {
             console.log(`Login Successful Welcome ${student.studentName} ${student.regNo}`);
             // navigation was being undefined if we directly started from this screen 
             // instead of navigating from MainScreen because navigation container is in MainScreen
+
+           
             navigation.navigate('StudentMainScreen', student.regNo)  
           }
         } catch (error) {

@@ -21,7 +21,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TeacherMainScreen from './teacher/TeacherMainScreen';
 import StudentMainScreen from './student/StudentMainScreen';
 import MarksScreen from './teacher/MarksScreen';
-import SampleScreen from './student/SampleScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -65,9 +65,7 @@ function MyStack() {
             fontSize: 22,
         },
       }}/>
-      <Stack.Screen name="StudentMainScreen" component={StudentMainScreen} options={{
-        headerShown: false
-      }} />
+      
     </Stack.Navigator>
     </NavigationContainer>
   );

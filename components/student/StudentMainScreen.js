@@ -18,6 +18,7 @@ const StudentMainScreen = ({navigation , route}) =>{
   // {route}
   // {navigation, route}
   // const { regNo } = route.params;
+  // console.log(regNo)
 
     return(
     // <NavigationContainer>

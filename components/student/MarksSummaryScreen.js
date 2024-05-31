@@ -21,7 +21,7 @@ const MarksSummaryScreen = ({route}) => {
     const [marks, setMarks] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    const {regNo} = route.params;
+    // const {regNo} = route.params;
 
     
     
@@ -29,7 +29,7 @@ const MarksSummaryScreen = ({route}) => {
         const fetchYears = async () => {
 
             setIsLoading(true);
-            console.log(regNo)
+            // console.log(regNo)
         try {
             const fetchedYears = await getYears('2024-001');
             

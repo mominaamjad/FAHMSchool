@@ -13,18 +13,34 @@ import { useEffect, useState } from "react";
 
 const StudentDashboard = ({route}) => {
     const [marks, setMarks] = useState([]);
-    // const {regNo} = route.params;
+    const [isLoading, setIsLoading] = useState(false)
+    // const regNo = route.params;
+    // console.log(regNo);
 
     
   useEffect(() => {
     const fetchMarks = async () => {
+
+        
+        // setIsLoading(true);
+       
       try {
-          const fetchedMarks = await currMarks('2024-002');
-          console.log("data recieved:",fetchedMarks);
-          setMarks(fetchedMarks);
+
+          const fetchedMarks = await currMarks('2024-001');
+
+          if(fetchedMarks){
+            // setIsLoading = false
+            console.log("data recieved:",fetchedMarks);
+            setMarks(fetchedMarks);
+
+          }
+          
       } catch (error) {
         console.error('Error fetching marks: ', error);
       }
+    //   finally{
+    //     setIsLoading(false)
+    //   }
     };
     fetchMarks();
   }, []);
@@ -48,7 +64,7 @@ const StudentDashboard = ({route}) => {
                     </DataTable.Header>
 
 
-                    {marks.map((element, index) => (
+                    {isLoading ? <></> : marks.map((element, index) => (
                         <DataTable.Row style={styles.row} key={index}>
                             <DataTable.Cell style={{ flex: 4 }}>
                             <Text style={styles.subjTitle}>{element.subjectName}</Text>
@@ -57,7 +73,8 @@ const StudentDashboard = ({route}) => {
                             <DataTable.Cell><Text style={styles.data}>{element.mids}</Text></DataTable.Cell>
                             <DataTable.Cell><Text style={styles.data}>{element.finals}</Text></DataTable.Cell>
                         </DataTable.Row>
-                    ))}      
+                        ) )} 
+
                 </DataTable>
             </ScrollView>
         
