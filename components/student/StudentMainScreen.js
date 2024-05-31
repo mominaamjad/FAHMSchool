@@ -1,23 +1,25 @@
 /* eslint-disable prettier/prettier */
-import {StyleSheet} from 'react-native';
 
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import {NavigationContainer} from '@react-navigation/native';
 
-import StudentDashboard from './StudentDashboard';
-import MarksSummaryScreen from './MarksSummaryScreen';
-import StudentFee from './StudentFee';
-import StudentTimetable from './StudentTimetable';
-import StudentSyllabus from './StudentSyllabus';
 import {MainScreen} from '../MainScreen';
+import MarksSummaryScreen from './MarksSummaryScreen';
+import StudentDashboard from './StudentDashboard';
+import StudentFee from './StudentFee';
+import StudentSyllabus from './StudentSyllabus';
+import StudentTimetable from './StudentTimetable';
 
 const Drawer = createDrawerNavigator();
 
 const StudentMainScreen = ({navigation, route}) => {
-  // {route}
-  // {navigation, route}
-  // const { regNo } = route.params;
-  // console.log(regNo)
+  {
+    route;
+  }
+  {
+    navigation, route;
+  }
+  const {regNo} = route.params;
+  console.log(regNo);
 
   return (
     // <NavigationContainer>
@@ -67,11 +69,7 @@ const StudentMainScreen = ({navigation, route}) => {
         component={MarksSummaryScreen}
         // initialParams={regNo}
       />
-      <Drawer.Screen
-        name="Fee"
-        component={StudentFee}
-        // initialParams={regNo}
-      />
+      <Drawer.Screen name="Fee" component={StudentFee} initialParams={regNo} />
       <Drawer.Screen name="Timetable" component={StudentTimetable} />
       <Drawer.Screen name="Syllabus" component={StudentSyllabus} />
       <Drawer.Screen

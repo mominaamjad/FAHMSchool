@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {fetchFees} from '../../api/admin';
+import {fetchFees, fetchStudents} from '../../api/admin';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -17,56 +17,11 @@ import Card from '../layouts/Card';
 const StudentFee = ({route}) => {
   const [allFeeData, setAllFeeData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  //   const {regNo} = route.params;
-  const [students, setStudents] = useState([
-    {
-      class: 'class1',
-      regNo: 'fa21-bcs-011',
-      name: 'amna sohaib',
-      amountDue: 1234,
-      amountPaid: 3245,
-      payableAmount: 356,
-      paymentDate: '1/1/2024',
-      lateFees: true,
-      remarks: 'smth',
-    },
-    {
-      class: 'class2',
-      regNo: 'fa21-bcs-011',
-      name: 'amna sohaib',
-      amountDue: 3456,
-      amountPaid: 3245,
-      payableAmount: 356,
-      paymentDate: '1/12/2023',
-      lateFees: true,
-      remarks: 'smth',
-    },
-    {
-      class: 'class3',
-      regNo: 'fa21-bcs-011',
-      name: 'amna sohaib',
-      amountDue: 0,
-      amountPaid: 3245,
-      payableAmount: 356,
-      paymentDate: '1/11/2023',
-      lateFees: false,
-      remarks: 'smth',
-    },
-    {
-      class: 'class4',
-      regNo: 'fa21-bcs-011',
-      name: 'amna sohaib',
-      amountDue: 0,
-      amountPaid: 3245,
-      payableAmount: 356,
-      paymentDate: '1/10/2023',
-      lateFees: false,
-      remarks: 'smth',
-    },
-  ]);
+  const regNo = '2024-001';
+  const [students, setStudents] = useState([]);
   const [list, setList] = useState(students);
   const [index, setIndex] = useState(null);
-
+  const [filteredStudent, setFilteredStudent] = useState(null);
   const [value, setValue] = useState('Select');
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
@@ -88,6 +43,24 @@ const StudentFee = ({route}) => {
 
     loadFees();
   }, []);
+
+  useEffect(() => {
+    const loadStudents = async () => {
+      try {
+        const studentList = await fetchStudents();
+        console.log(studentList);
+        console.log(studentList.map(s => s.regNo));
+        console.log(regNo);
+        const newStudent = studentList.find(s => s.regNo === regNo);
+        setStudents(newStudent ? [newStudent] : []);
+        setList(newStudent ? [newStudent] : []);
+        console.log(newStudent);
+      } catch (error) {
+        console.error('Error loading students: ', error);
+      }
+    };
+    loadStudents();
+  }, []);
   const handleFilteredList = () => {
     var check;
     if (value == 'paid') {
@@ -102,9 +75,7 @@ const StudentFee = ({route}) => {
       setList(() => students.filter(element => element.lateFees === check));
     }
   };
-
   // dropdown dalna hai instead of search
-
   // handlePaidClass = () => {
   //     if (value == null) {
   //         Alert.alert("pls select teacher");
@@ -142,15 +113,15 @@ const StudentFee = ({route}) => {
       <ScrollView style={{zIndex: -1}}>
         {list.map((element, index) => (
           <TouchableOpacity
-            key={element.paymentDate}
+            key={index}
             onPress={() => {
               setModalVisible(true);
               setIndex(index);
             }}>
             <Card
-              name={element.paymentDate}
-              regNo={element.amountDue}
-              paid={!element.lateFees}
+              name={allFeeData[index].amountDue}
+              regNo={allFeeData[index].payableAmount}
+              paid={element.status}
               cardType="fee"></Card>
           </TouchableOpacity>
         ))}
@@ -177,7 +148,9 @@ const StudentFee = ({route}) => {
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Name </Text>
-                <Text style={styles.modalText}>{students[index].name}</Text>
+                <Text style={styles.modalText}>
+                  {students[index].studentName}
+                </Text>
               </View>
 
               <View style={styles.rowStyle}>
