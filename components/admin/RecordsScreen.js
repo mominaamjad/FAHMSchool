@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Modal,
@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 
-import { RadioButton } from 'react-native-paper';
+import {RadioButton} from 'react-native-paper';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -21,6 +21,7 @@ import {
   fetchFees,
   fetchStudents,
   updateFees,
+  updateStudent,
 } from '../../api/admin';
 import Card from '../layouts/Card';
 const RecordsScreen = () => {
@@ -66,16 +67,16 @@ const RecordsScreen = () => {
   const [value, setValue] = useState('allClasses');
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
-    { label: 'Nursery', value: '01' },
-    { label: 'Prep', value: '02' },
-    { label: 'Class 1', value: '03' },
-    { label: 'Class 2', value: '04' },
-    { label: 'Class 3', value: '05' },
-    { label: 'Class 4', value: '06' },
-    { label: 'Class 5', value: '07' },
-    { label: 'Class 6', value: '08' },
-    { label: 'Class 7', value: '09' },
-    { label: 'Class 8', value: '10' },
+    {label: 'Nursery', value: '01'},
+    {label: 'Prep', value: '02'},
+    {label: 'Class 1', value: '03'},
+    {label: 'Class 2', value: '04'},
+    {label: 'Class 3', value: '05'},
+    {label: 'Class 4', value: '06'},
+    {label: 'Class 5', value: '07'},
+    {label: 'Class 6', value: '08'},
+    {label: 'Class 7', value: '09'},
+    {label: 'Class 8', value: '10'},
   ]);
 
   useEffect(() => {
@@ -121,70 +122,6 @@ const RecordsScreen = () => {
     }
     setSearch(text);
   };
-  const handleAddFees = async () => {
-    try {
-      const addFees = {...feeData};
-      const studentId = students[index].id;
-      await createSpecificFeeStatus(addFees, studentId);
-      const currentMonth = new Date().getMonth();
-      const currentYear = new Date().getFullYear();
-      setFeeData({
-        amountDue: 0,
-        amountPaid: 0,
-        lateFees: 0,
-        payableAmount: 0,
-        paymentDate: '',
-        remarks: '',
-        status: '',
-        createdAt: `${currentMonth}-${currentYear}`,
-        studentRef: studentId,
-      });
-    } catch (error) {
-      console.error('Error adding fees: ', error);
-    }
-  };
-  const handleUpdateStudent = async (property, changedValue) => {
-    try {
-      const newValue = [...students];
-      newValue[index][property] = changedValue;
-      setStudents(newValue);
-
-      const updatedStudent = newValue[index];
-      await updateFees(updatedStudent.id, updatedStudent);
-      console.log('Student updated successfully');
-    } catch (error) {
-      console.error('Error updating student: ', error);
-    }
-  };
-
-  const handleChangedFee = async (property, changedValue) => {
-    try {
-      if (index !== null) {
-        const updatedFeeData = {...allFeeData};
-        updatedFeeData[index][property] = changedValue;
-        const studentId = allFeeData[index];
-        console.log('FIne tiil niw');
-        await updateFees(studentId.id, updatedFeeData);
-        console.log('Fees updated successfully');
-      } else {
-        console.error('No student selected to update fees');
-      }
-    } catch (error) {
-      console.error('Error updating Fees:', error);
-    }
-  };
-
-  const handleFilteredList = () => {
-    if (value == 'allClasses') {
-      setList(students);
-    } else {
-      setList(() =>
-        students.filter(element =>
-          element.currentClass.toLowerCase().includes(value),
-        ),
-      );
-    }
-  };
 
   const handleAddStudent = async () => {
     try {
@@ -206,7 +143,7 @@ const RecordsScreen = () => {
         newRegNo = `${currentYear}-0001`;
       }
 
-      const studentWithRegNo = { ...newStudent, regNo: newRegNo };
+      const studentWithRegNo = {...newStudent, regNo: newRegNo};
       await addStudent(studentWithRegNo);
       setStudents([...students, studentWithRegNo]);
       setAddModalVisible(false);
@@ -223,10 +160,85 @@ const RecordsScreen = () => {
         email: '',
         password: '',
         remarks: '',
-        dateOfAdmission: currentDate
+        dateOfAdmission: currentDate,
       });
     } catch (error) {
       console.error('Error adding student: ', error);
+    }
+  };
+
+  const handleAddFees = async () => {
+    try {
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
+      const studentId = students[index].id;
+      const feesId = `${studentId}-${currentMonth}-${currentYear}`;
+      const addFees = {...feeData, id: feesId};
+      await createSpecificFeeStatus(addFees);
+
+      setFeeData({
+        amountDue: 0,
+        amountPaid: 0,
+        lateFees: 0,
+        payableAmount: 0,
+        paymentDate: '',
+        remarks: '',
+        status: false,
+        createdAt: `${currentMonth}-${currentYear}`,
+        studentRef: studentId,
+      });
+    } catch (error) {
+      console.error('Error adding fees: ', error);
+    }
+  };
+  const handleUpdateStudent = async (property, changedValue) => {
+    try {
+      const newValue = [...students];
+      newValue[index][property] = changedValue;
+      setStudents(newValue);
+
+      const updatedStudent = newValue[index];
+      console.log(updatedStudent.regNo);
+      console.log(updatedStudent);
+      console.log(students);
+
+      await updateStudent(updatedStudent.regNo, updatedStudent);
+      console.log('Student updated successfully');
+    } catch (error) {
+      console.error('Error updating student: ', error);
+    }
+  };
+
+  const handleChangedFee = async (property, changedValue) => {
+    try {
+      if (index !== null) {
+        const currentMonth = new Date().getMonth();
+        const currentYear = new Date().getFullYear();
+        const updatedFeeData = [...allFeeData];
+        const newValue = [...students];
+        const studentId = newValue[index].regNo;
+        updatedFeeData[index][property] = changedValue;
+        const feesId = `${studentId}-${currentMonth}-${currentYear}`;
+        await updateFees(feesId, updatedFeeData);
+        console.log('Fees updated successfully');
+        setAllFeeData(updatedFeeData);
+      } else {
+        console.error('No student selected to update fees');
+      }
+    } catch (error) {
+      console.error('Error updating Fees:', error);
+    }
+  };
+
+  const handleFilteredList = () => {
+    if (value == 'allClasses') {
+      setList(students);
+    } else {
+      setList(() =>
+        students.filter(element =>
+          element.currentClass.toLowerCase().includes(value),
+        ),
+      );
     }
   };
 
@@ -262,13 +274,13 @@ const RecordsScreen = () => {
           onChangeValue={() => handleFilteredList()}
         />
       </View>
-      <View style={{ alignSelf: 'center', zIndex: -1  }}>
+      <View style={{alignSelf: 'center', zIndex: -1}}>
         <TouchableOpacity
           style={styles.buttonAdd}
           onPress={() => {
             setAddModalVisible(true);
           }}>
-          <View style={{ flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row'}}>
             <Icon name="plus" size={30} color="white" />
             <Text style={styles.textStyle}> Add Record</Text>
           </View>
@@ -323,7 +335,7 @@ const RecordsScreen = () => {
                   value={students[index].studentName}
                   style={styles.TextInput}
                   onChangeText={text => {
-                    handleUpdateStudent('name', text);
+                    handleUpdateStudent('studentName', text);
                   }}
                   editable={edit}
                   underlineColor="transparent"
@@ -336,7 +348,7 @@ const RecordsScreen = () => {
                   value={students[index].fatherName}
                   style={styles.TextInput}
                   onChangeText={text => {
-                    handleUpdateStudent('fathername', text);
+                    handleUpdateStudent('fatherName', text);
                   }}
                   editable={edit}
                   underlineColor="transparent"
@@ -488,7 +500,6 @@ const RecordsScreen = () => {
 
             <ScrollView>
               {Object.keys(newStudent).map((key, index) => {
-
                 let component;
                 // if ( key  === 'dob') {
                 //   component = (<DateTimePicker
@@ -503,13 +514,13 @@ const RecordsScreen = () => {
                 // }
                 if (key === 'gender') {
                   component = (
-                    <View style={{flexDirection:'row'}}>
+                    <View style={{flexDirection: 'row'}}>
                       <RadioButton
                         value="male"
                         status={checked === 'male' ? 'checked' : 'unchecked'}
                         onPress={() => {
-                          setChecked('male'); 
-                          setNewStudent({ ...newStudent, [key]: value })
+                          setChecked('male');
+                          setNewStudent({...newStudent, [key]: value});
                         }}
                       />
                       <Text style={styles.modalText}>Male</Text>
@@ -517,44 +528,41 @@ const RecordsScreen = () => {
                         value="female"
                         status={checked === 'female' ? 'checked' : 'unchecked'}
                         onPress={() => {
-                          setChecked('female'); 
-                          setNewStudent({ ...newStudent, [key]: value })
+                          setChecked('female');
+                          setNewStudent({...newStudent, [key]: value});
                         }}
                       />
                       <Text style={styles.modalText}>Female</Text>
                     </View>
-                  )
-                }
-                else if ( key === 'password' ) {
+                  );
+                } else if (key === 'password') {
                   component = (
                     <TextInput
                       value={newStudent[key]}
                       style={styles.TextInputAdd}
                       onChangeText={text => {
-                        setNewStudent({ ...newStudent, [key]: text })
-                      }
-                      }
+                        setNewStudent({...newStudent, [key]: text});
+                      }}
                       secureTextEntry
                     />
-                  )
-                }
-                else {
-                  component =
-                    (<TextInput
+                  );
+                } else {
+                  component = (
+                    <TextInput
                       value={newStudent[key]}
                       style={styles.TextInputAdd}
                       onChangeText={text => {
-                        setNewStudent({ ...newStudent, [key]: text })
-                      }
-                      }
-                    />);
+                        setNewStudent({...newStudent, [key]: text});
+                      }}
+                    />
+                  );
                 }
                 return (
                   <View style={styles.rowStyle} key={index}>
                     <Text style={styles.modalText}>{key}</Text>
                     {component}
                   </View>
-                )
+                );
               })}
             </ScrollView>
 
@@ -562,7 +570,7 @@ const RecordsScreen = () => {
               <TouchableOpacity
                 style={styles.buttonSubmit}
                 onPress={handleAddStudent}
-              // onPress={validateInput}
+                // onPress={validateInput}
               >
                 <Text style={styles.submitText}>Add Record</Text>
               </TouchableOpacity>
@@ -579,7 +587,7 @@ const RecordsScreen = () => {
         </View>
       </Modal>
 
-      {index != null && (
+      {index != null && allFeeData[index] && (
         <Modal
           animationType="slide"
           transparent={true}
@@ -611,7 +619,7 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Due </Text>
                 <TextInput
-                  value={String(allFeeData[index].amountDue)}
+                  value={allFeeData[index].amountDue}
                   style={styles.TextInput}
                   editable={edit}
                   underlineColor="transparent"
@@ -622,11 +630,8 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Paid </Text>
                 <TextInput
-                  value={String(allFeeData.amountPaid)}
+                  value={allFeeData[index].amountPaid}
                   style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('amountPaid', text);
-                  }}
                   editable={edit}
                   underlineColor="transparent"
                   keyboardType="numeric"
@@ -636,12 +641,8 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payable Amount </Text>
                 <TextInput
-                  value={String(allFeeData.payableAmount)}
+                  value={allFeeData[index].payableAmount}
                   style={styles.TextInput}
-                  // onChangeText={text => {
-                  //   handleChangedFee('payableAmount', parseInt(text));
-                  // }}
-                  editable={edit}
                   underlineColor="transparent"
                   keyboardType="numeric"
                 />
@@ -650,21 +651,17 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payment Date </Text>
                 <TextInput
-                  value={feeData.paymentDate}
+                  value={allFeeData[index].paymentDate}
                   style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('paymentDate', text);
-                  }}
-                  editable={edit}
                   underlineColor="transparent"
                   keyboardType="numeric"
                 />
               </View>
 
               <View style={styles.rowStyle}>
-                <Text style={feeData.modalText}>Late Fees </Text>
+                <Text style={styles.modalText}>Late Fees </Text>
                 <TextInput
-                  value={String(allFeeData[index].lateFees)}
+                  value={allFeeData[index].lateFees}
                   style={styles.TextInput}
                   // onChangeText={text => {
                   //   handleChangedFee('lateFees', text);
@@ -675,7 +672,7 @@ const RecordsScreen = () => {
               </View>
 
               <View style={styles.rowStyle}>
-                <Text style={feeData.modalText}>Remarks </Text>
+                <Text style={styles.modalText}>Remarks </Text>
                 <TextInput
                   value={allFeeData[index].remarks}
                   style={styles.TextInput}
@@ -690,8 +687,7 @@ const RecordsScreen = () => {
               <View style={styles.btnRow}>
                 <TouchableOpacity
                   style={styles.buttonSubmit}
-                  onPress={async () => {
-                    await handleAddFees();
+                  onPress={() => {
                     setAddFeeModalVisible(false);
                   }}>
                   <Text style={styles.submitText}>Done</Text>
@@ -713,13 +709,13 @@ const RecordsScreen = () => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View style={styles.rowStyle}>
-                <Text style={styles.modalHeading}>Fee Information</Text>
+                <Text style={styles.modalHeading}>Create New Fee</Text>
               </View>
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Due </Text>
                 <TextInput
-                  value={feeData.amountDue}
+                  value={allFeeData.amountDue}
                   style={styles.TextInputAdd}
                   onChangeText={text =>
                     setFeeData({...feeData, amountDue: text})
@@ -730,7 +726,7 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Paid </Text>
                 <TextInput
-                  value={feeData.amountPaid}
+                  value={allFeeData.amountPaid}
                   style={styles.TextInputAdd}
                   onChangeText={text =>
                     setFeeData({...feeData, amountPaid: text})
@@ -741,7 +737,7 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payable Amount </Text>
                 <TextInput
-                  value={feeData.payableAmount}
+                  value={allFeeData.payableAmount}
                   style={styles.TextInputAdd}
                   onChangeText={text =>
                     setFeeData({...feeData, payableAmount: text})
@@ -752,7 +748,7 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payment Date </Text>
                 <TextInput
-                  value={feeData.paymentDate}
+                  value={allFeeData.paymentDate}
                   style={styles.TextInputAdd}
                   onChangeText={text =>
                     setFeeData({...feeData, paymentDate: text})
@@ -761,9 +757,9 @@ const RecordsScreen = () => {
               </View>
 
               <View style={styles.rowStyle}>
-                <Text style={feeData.modalText}>Late Fees </Text>
+                <Text>Late Fees </Text>
                 <TextInput
-                  value={feeData.lateFees}
+                  value={allFeeData.lateFees}
                   style={styles.TextInputAdd}
                   onChangeText={text =>
                     setFeeData({...feeData, lateFees: text})
@@ -774,7 +770,7 @@ const RecordsScreen = () => {
               <View style={styles.rowStyle}>
                 <Text style={feeData.modalText}>Remarks </Text>
                 <TextInput
-                  value={feeData.remarks}
+                  value={allFeeData.remarks}
                   style={styles.TextInputAdd}
                   onChangeText={text => setFeeData({...feeData, remarks: text})}
                 />
@@ -924,7 +920,7 @@ const styles = StyleSheet.create({
 
   cancelButton: {
     marginTop: 20,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
 
   buttonSubmit: {
@@ -974,7 +970,7 @@ const styles = StyleSheet.create({
     width: 160,
     backgroundColor: '#F4F4F4',
     borderColor: '#9C70EA',
-    elevation: 2
+    elevation: 2,
   },
 
   dropdownText: {
