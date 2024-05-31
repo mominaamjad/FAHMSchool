@@ -246,6 +246,7 @@ export const addStudent = async studentData => {
     throw error;
   }
 };
+
 export const addStudentsFromFile = async filePath => {
   try {
     const data = fs.readFileSync(filePath, 'utf8');
@@ -317,6 +318,7 @@ export const updateStudent = async (regNo, updatedData) => {
     throw error;
   }
 };
+
 export const deleteStudent = async studentId => {
   try {
     const docRef = doc(db, 'students', studentId);
@@ -361,56 +363,18 @@ export const updateFees = async (id, updatedData) => {
 //   );
 // };
 
-export const createSpecificFeeStatus = async (feeData, studentId) => {
+export const createSpecificFeeStatus = async feeData => {
   try {
-    const feeId = doc(collection(db, 'fees')).id;
-    await setDoc(doc(db, 'fees', feeId), {
-      studentRef: studentId,
-      amountDue: feeData.amountDue,
-      amountPaid: feeData.amountPaid,
-      lateFees: feeData.amountPaid,
-      payableAmount: feeData.payableAmount,
-      paymentAmount: feeData.paymentDate,
-      remarks: feeData.remarks,
-      status: feeData.status,
+    console.log(feeData);
+    console.log(feeData.id);
+    await setDoc(doc(db, 'fees', feeData.id), {
+      ...feeData,
     });
     console.log(feeData.amountDue);
-    console.log('Fee added with ID: ', feeId);
-    return feeId;
+    console.log('Fee added with ID: ', feeData.id);
+    return feeData.id;
   } catch (error) {
     console.error('Error creating specific fee status: ', error);
-    throw error;
-  }
-};
-
-export const editSpecificFeeStatus = async feeData => {
-  try {
-  } catch (error) {
-    console.error('Error editing specific fee status: ', error);
-    throw error;
-  }
-};
-
-export const deleteSpecificFeeStatus = async feeId => {
-  try {
-  } catch (error) {
-    console.error('Error deleting specific fee status: ', error);
-    throw error;
-  }
-};
-
-export const viewStudentAgeRecord = async () => {
-  try {
-  } catch (error) {
-    console.error('Error viewing student age record: ', error);
-    throw error;
-  }
-};
-
-export const viewResultSheet = async studentId => {
-  try {
-  } catch (error) {
-    console.error('Error viewing Result Sheet: ', error);
     throw error;
   }
 };
@@ -428,14 +392,6 @@ export const getTimetable = async year => {
     }
   } catch (error) {
     console.error('Error fetching timetable: ', error);
-    throw error;
-  }
-};
-
-export const removeTimetable = async timetableId => {
-  try {
-  } catch (error) {
-    console.error('Error removing Timetable: ', error);
     throw error;
   }
 };
@@ -492,14 +448,6 @@ export const uploadSyllabus = async syllabusData => {
     console.log('Syllabus Uploaded: ', syllabusData.id);
   } catch (error) {
     console.error('Error uploading Syllabus: ', error);
-    throw error;
-  }
-};
-
-export const removeSyllabus = async syllabusId => {
-  try {
-  } catch (error) {
-    console.error('Error removing Syllabus: ', error);
     throw error;
   }
 };
