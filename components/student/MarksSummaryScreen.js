@@ -15,14 +15,21 @@ import { getMarksByYear, getYears, yearsMap } from "../../api/student";
 
 const MarksSummaryScreen = ({route}) => {
 
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState(null);
     const [open, setOpen] = useState(false);
     const [years, setYears] = useState([])
     const [marks, setMarks] = useState([]);
-    // const {regNo} = route.params;
+    const [isLoading, setIsLoading] = useState(false);
+
+    const {regNo} = route.params;
+
+    
     
     useEffect(() => {
         const fetchYears = async () => {
+
+            setIsLoading(true);
+            console.log(regNo)
         try {
             const fetchedYears = await getYears('2024-001');
             
@@ -35,6 +42,8 @@ const MarksSummaryScreen = ({route}) => {
             }))
 
             setYears(years);
+
+            setIsLoading(false);
         
 
 
@@ -49,25 +58,29 @@ const MarksSummaryScreen = ({route}) => {
         };
         fetchYears();
     }, []);
+     
    
     useEffect(() => {
         const fetchMarks = async () => {
-          try {
-            console.log(value);
-            // const index = years.findIndex(item => item.value === valueToFind);
-            // const selectedYear = 2024 - (years.length - index)
-            // console.log(selectedYear);
-            const fetchedMarks = await getMarksByYear('2024-001', value);
 
-            console.log("yeh marks screen waley")
-            console.log(fetchedMarks);
-
-            setMarks(fetchedMarks);
-            console.log(fetchedMarks);
-              
-          } catch (error) {
-            console.error('Error fetching marks: ', error);
-          }
+        if(value){
+            try {
+              console.log(value);
+              // const index = years.findIndex(item => item.value === valueToFind);
+              // const selectedYear = 2024 - (years.length - index)
+              // console.log(selectedYear);
+              const fetchedMarks = await getMarksByYear('2024-001', value);
+  
+              console.log("yeh marks screen waley")
+              console.log(fetchedMarks);
+  
+              setMarks(fetchedMarks);
+              // console.log(fetchedMarks);
+                
+            } catch (error) {
+              console.error('Error fetching marks: ', error);
+            }
+        }
         };
         fetchMarks();
       }, [value]);
@@ -76,23 +89,23 @@ const MarksSummaryScreen = ({route}) => {
 
         <View style={styles.container}>
             <DropDownPicker
-            textStyle={styles.dropdownText}
-            style={styles.dropdown}
-            dropDownContainerStyle={styles.dropdown}
-            open={open}
-            value={value}
+                textStyle={styles.dropdownText}
+                style={styles.dropdown}
+                dropDownContainerStyle={styles.dropdown}
+                open={open}
+                value={value}
 
-            // items={years.map(element, index) =>{
-            //     {label: }
-            // }}
+                // items={years.map(element, index) =>{
+                //     {label: }
+                // }}
 
-            items={
-                years
-                // display it like it
-            }
-            setOpen={setOpen}
-            setValue={setValue}
-      />
+                items={
+                    years
+                    // display it like it
+                }
+                setOpen={setOpen}
+                setValue={setValue}
+            />
 
                 <DataTable style = {styles.table}>
                     <DataTable.Header style={styles.head}>
@@ -103,7 +116,7 @@ const MarksSummaryScreen = ({route}) => {
                         
                     </DataTable.Header>
 
-                    {marks.map((element, index) => (
+                    {isLoading ? <></> : marks.map((element, index) => (
                         <DataTable.Row style={styles.row} key={index}>
                             <DataTable.Cell style={{ flex: 4 }}>
                             <Text style={styles.subjTitle}>{element.subjectName}</Text>
@@ -113,6 +126,8 @@ const MarksSummaryScreen = ({route}) => {
                             <DataTable.Cell><Text style={styles.data}>{element.finals}</Text></DataTable.Cell>
                         </DataTable.Row>
                     ))}
+                    
+
                     {/* <DataTable.Row style= {styles.row}>
                         <DataTable.Cell style = {{flex: 5}}> <Text style = {styles.subjTitle}>Mobile Application Dev</Text></DataTable.Cell>
                         <DataTable.Cell><Text style = {styles.data}>18</Text></DataTable.Cell>
