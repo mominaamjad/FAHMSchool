@@ -1,79 +1,110 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# FAHM School System
 
-# Getting Started
+## Overview
+The FAHM School System is designed to streamline and manage the various functions of a school, including administration, teacher, and student activities. The system encompasses functionalities for managing classes, subjects, student registrations, fee statuses, examination marks, and more.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Actors Involved
+1. **Student**
+2. **Teacher**
+3. **Admin**
 
-## Step 1: Start the Metro Server
+## Classes & Subjects Information
+Classes range from Nursery to Class 8th. Each class has specific subjects as follows:
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+| Class      | Subjects                                                                                        |
+|------------|-------------------------------------------------------------------------------------------------|
+| Nursery    | English, Urdu, Math, Nazra-e-Quran                                                              |
+| Prep       | English, Urdu, Math, Nazra-e-Quran, General Knowledge                                           |
+| Class 1    | English, Urdu, Math, General Knowledge, Islamyat                                                |
+| Class 2-3  | English, Urdu, Math, General Knowledge, Islamyat, Computer (Part 1, Part 2)                     |
+| Class 4-5  | English, Urdu, Math, General Knowledge, Social Study, Islamyat, Computer (Part 1, Part 2)       |
+| Class 6-8  | English, Urdu, Math, General Knowledge, Social Study, Islamyat, Computer (Part 1, Part 2), Quran|
 
-To start Metro, run the following command from the _root_ of your React Native project:
+## Marks Distribution
+- **First and Midterm Examinations**:
+  - Each subject: 50 marks
+  - Computer Science Part 1: 35 marks
+  - Computer Science Part 2: 15 marks
 
-```bash
-# using npm
-npm start
+- **Final Term Examination**:
+  - Each subject: 100 marks
+  - Computer Science Part 1: 70 marks
+  - Computer Science Part 2: 30 marks
 
-# OR using Yarn
-yarn start
-```
+## Admin Portal Requirements
+- Single account for admin (Email and Password)
+- **Class Management**:
+  - Assign or remove a class to/from a teacher
+- **Student Account Management**:
+  - Create, view, edit, and delete student records
+  - Information required: Registration Number, Date of Admission/Registration, Name, Date of Birth, Gender, Father's Details, Admission Class, Email & Password, Remarks
+- **Fee Status Management**:
+  - Insert, view, update, and delete fee status records
+  - Information required: Registration, Student Name, Amount Due, Amount Paid, Payable Amount, Payment Date, Late Fees, Remarks
+- **Report Management**:
+  - View student age record report
+  - View overall result sheet report
+- **Timetable Management**:
+  - Upload and remove the annual timetable (image format)
+- **Syllabus Management**:
+  - Upload and remove the syllabus for all classes (image format)
+- **Report Download**:
+  - Download reports in PDF format
 
-## Step 2: Start your Application
+## Teacher’s Portal Requirements
+- Each teacher has individual login credentials (Email and Password)
+- Assigned to a specific class by admin
+- **Marks Management**:
+  - View, search, insert, update, and delete marks for First, Midterm, and Final examinations
+  - CRUD operations limited to their assigned class
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+## Student’s Portal Requirements
+- Individual login credentials (Registration No and Password)
+- **Marks Viewing**:
+  - View marks for all subjects in First, Midterm, and Final examinations
+  - View past academic records
+- **Fee Status Viewing**:
+  - View fee status (Paid/Unpaid) with payment dates and history
+- **Timetable and Syllabus Viewing**:
+  - View class timetable
+  - View class syllabus
 
-### For Android
+## Technologies Used
+1. **React Native CLI**
+2. **Firebase**
+3. **Third-party packages**
 
-```bash
-# using npm
-npm run android
+## Getting Started
+### Prerequisites
+- Node.js
+- React Native CLI
+- Firebase account
 
-# OR using Yarn
-yarn android
-```
+### Installation
+1. Clone the repository:
+   ```sh
+   git clone [<repository-url>](https://github.com/mominaamjad/FAHMSchool.git)
+   ```
+2. Install dependencies:
+   ```sh
+   cd fahmschool
+   npm install
+   ```
+3. Set up Firebase:
+   - Create a Firebase project and configure it with app.
+   - Download the `google-services.json` file and place it in `android/app/`.
 
-### For iOS
+4. Start the development server:
+   ```sh
+   npm run android
+   ```
 
-```bash
-# using npm
-npm run ios
+## Contribution Guidelines
+1. Fork the repository.
+2. Create a new branch (`feature/your-feature`).
+3. Commit your changes.
+4. Push to the branch.
+5. Open a pull request.
 
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## License
+This project is licensed under the MIT License.
