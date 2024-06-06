@@ -17,7 +17,7 @@ const StudentMainScreen = ({navigation , route}) =>{
 
   // {route}
   // {navigation, route}
-  // const { regNo } = route.params;
+  const { regNo } = route.params;
   // console.log(regNo)
 
     return(
@@ -63,9 +63,12 @@ const StudentMainScreen = ({navigation , route}) =>{
             }
           }
         />
-        <Drawer.Screen name="Marks Summary" component={MarksSummaryScreen} 
+        {/* <Drawer.Screen name="Marks Summary" component={MarksSummaryScreen} 
         // initialParams={regNo}
-           />
+           /> */}
+
+        <Drawer.Screen name="Marks Summary" component={(props) => <MarksSummaryScreen {...props} regNo ={regNo}/>}/> 
+        
         <Drawer.Screen name="Fee" component={StudentFee} 
         // initialParams={regNo}
            />

@@ -33,7 +33,7 @@ const Login = ( {navigation} ) => {
             // instead of navigating from MainScreen because navigation container is in MainScreen
 
            
-            navigation.navigate('StudentMainScreen', student.regNo)  
+            navigation.navigate('StudentMainScreen', {regNo: student.regNo} )  
           }
         } catch (error) {
           console.log('Login Failed', error.message);
