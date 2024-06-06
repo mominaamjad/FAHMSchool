@@ -146,19 +146,6 @@ const FeeScreen = () => {
         </View>
       </View>
 
-      <View style={{alignSelf: 'center'}}>
-        <TouchableOpacity
-          style={styles.buttonAdd}
-          onPress={() => {
-            setFeeModalVisible(true);
-          }}>
-          <View style={{flexDirection: 'row'}}>
-            <Icon name="plus" size={30} color="white" />
-            <Text style={styles.textStyle}> Add Record</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-
       <ScrollView style={{zIndex: -1, height: 500}}>
         {list.map((element, index) => (
           <TouchableOpacity
@@ -201,93 +188,6 @@ const FeeScreen = () => {
               </View>
 
               <View style={styles.rowStyle}>
-                <Text style={styles.modalText}>Names </Text>
-                <Text style={styles.modalText}>
-                  {students[index].studentName}
-                </Text>
-              </View>
-
-              <View style={styles.rowStyle}>
-                <Text style={styles.modalText}>Amount Due </Text>
-
-                <Text style={styles.modalText}>
-                  {students[index].amountDue}
-                </Text>
-              </View>
-
-              <View style={styles.rowStyle}>
-                <Text style={styles.modalText}>Amount Paid </Text>
-
-                <Text style={styles.modalText}>
-                  {students[index].amountPaid}
-                </Text>
-              </View>
-
-              <View style={styles.rowStyle}>
-                <Text style={styles.modalText}>Payable Amount </Text>
-
-                <Text style={styles.modalText}>
-                  {students[index].payableAmount}
-                </Text>
-              </View>
-
-              <View style={styles.rowStyle}>
-                <Text style={styles.modalText}>Payment Date </Text>
-                <Text style={styles.modalText}>
-                  {students[index].paymentDate}
-                </Text>
-              </View>
-
-              <View style={styles.rowStyle}>
-                <Text style={styles.modalText}>Late Fees </Text>
-
-                <Text style={styles.modalText}>{students[index].lateFees}</Text>
-              </View>
-
-              <View style={styles.rowStyle}>
-                <Text style={styles.modalText}>Remarks </Text>
-
-                <Text style={styles.modalText}>{students[index].remarks}</Text>
-              </View>
-
-              <View style={styles.btnRow}>
-                <TouchableOpacity
-                  style={styles.buttonSubmit}
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                    setEdit(false);
-                  }}>
-                  <Text style={styles.submitText}>Done</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      )}
-
-      {index != null && (
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={feeModalVisible}
-          onRequestClose={() => {
-            setFeeModalVisible(!feeModalVisible);
-          }}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <View style={styles.rowStyle}>
-                <Text style={styles.modalHeading}>Fee Information</Text>
-                <TouchableOpacity onPress={() => setEdit(true)}>
-                  <Icon name="pencil" size={20} style={styles.editIcon} />
-                </TouchableOpacity>
-              </View>
-
-              <View style={styles.rowStyle}>
-                <Text style={styles.modalText}>Registration Number </Text>
-                <Text style={styles.modalText}>{students[index].regNo}</Text>
-              </View>
-
-              <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Name </Text>
                 <Text style={styles.modalText}>
                   {students[index].studentName}
@@ -296,78 +196,55 @@ const FeeScreen = () => {
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Due </Text>
-                <TextInput
-                  value={String(allFeeData.amountDue)}
-                  style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('amountDue', text);
-                  }}
-                  editable={edit}
-                  underlineColor="transparent"
-                  keyboardType="numeric"
-                />
+                <Text style={styles.modalText}>
+                  {allFeeData[index].amountDue}
+                </Text>
               </View>
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Amount Paid </Text>
-                <TextInput
-                  value={String(allFeeData.amountPaid)}
-                  style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('amountPaid', text);
-                  }}
-                  editable={edit}
-                  underlineColor="transparent"
-                  keyboardType="numeric"
-                />
+                <Text style={styles.modalText}>
+                  {allFeeData[index].amountPaid}
+                </Text>
               </View>
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payable Amount </Text>
-                <TextInput
-                  value={String(allFeeData.payableAmount)}
-                  style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('payableAmount', parseInt(text));
-                  }}
-                  editable={edit}
-                  underlineColor="transparent"
-                  keyboardType="numeric"
-                />
+                <Text style={styles.modalText}>
+                  {allFeeData[index].payableAmount}
+                </Text>
               </View>
 
               <View style={styles.rowStyle}>
                 <Text style={styles.modalText}>Payment Date </Text>
-                <Text>{allFeeData.paymentDate}</Text>
+                <Text style={styles.modalText}>
+                  {allFeeData[index].paymentDate}
+                </Text>
               </View>
 
               <View style={styles.rowStyle}>
-                <Text style={allFeeData.modalText}>Late Fees </Text>
-                <Text>{String(students[index].lateFees)}</Text>
+                <Text style={styles.modalText}>Late Fees </Text>
+                <Text style={styles.modalText}>
+                  {allFeeData[index].lateFees}
+                </Text>
               </View>
 
               <View style={styles.rowStyle}>
-                <Text style={allFeeData.modalText}>Remarks </Text>
-                <TextInput
-                  value={students[index].remarks}
-                  style={styles.TextInput}
-                  onChangeText={text => {
-                    handleChangedFee('remarks', text);
-                  }}
-                  editable={edit}
-                  underlineColor="transparent"
-                />
+                <Text style={styles.modalText}>Remarks </Text>
+                <Text style={styles.modalText}>
+                  {allFeeData[index].remarks}
+                </Text>
               </View>
 
               <View style={styles.btnRow}>
-                <TouchableOpacity
-                  style={styles.buttonSubmit}
-                  onPress={async () => {
-                    await handleChangedFee();
-                    setFeeModalVisible(!feeModalVisible);
-                    setEdit(false);
-                  }}>
-                  <Text style={styles.submitText}>Done</Text>
+                <TouchableOpacity style={styles.buttonSubmit}>
+                  <Text
+                    style={styles.submitText}
+                    onPress={() => {
+                      setModalVisible(false);
+                    }}>
+                    Done
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>

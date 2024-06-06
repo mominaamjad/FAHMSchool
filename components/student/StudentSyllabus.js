@@ -10,9 +10,8 @@ import {
 
  import { viewSyllabus } from '../../api/student';
 
-const StudentSyllabus = () => {
+const StudentSyllabus = ( {student} ) => {
   
-  const [selectedImage, setSelectedImage] = useState(null);
   const [syllabusImg, setSyllabusImg] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -23,9 +22,11 @@ const StudentSyllabus = () => {
     // }
   },);
 
+  const studentClass = student.currentClass;
+
   const fetchSyllabus = async () => {
     try {
-      const syllabusData = await viewSyllabus('01');
+      const syllabusData = await viewSyllabus(studentClass);
       console.log(syllabusData);
       if (syllabusData.syllabus) {
         setSyllabusImg(syllabusData.syllabus);
@@ -77,9 +78,10 @@ const styles = StyleSheet.create({
         height: 300,
       },
       NoImageText: {
+        color: 'black',
         fontFamily: 'Poppins-Medium',
         textAlign: 'center',
-        marginTop: 120
+        marginTop: 140
       }
 })
 

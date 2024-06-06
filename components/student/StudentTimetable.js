@@ -13,6 +13,8 @@ import { getTimetable } from '../../api/student';
 
 const StudentTimetable = () => {
 
+  const year = new Date().getFullYear().toString();
+
   const [value, setValue] = useState();
   const [open, setOpen] = useState(false);
 
@@ -27,22 +29,22 @@ const StudentTimetable = () => {
     console.log(timetableImg)
   });
 
-  // const fetchTimetable = async () => {
-  //   try {
-  //     // setIsLoading(true)
-  //     const timetableData = await getTimetable('2024');
-  //     if (timetableData && timetableData.timetableImg) {
-  //       setTimetableImg(timetableData.timetableImg);
-  //       console.log('found table')
-  //     } else {
-  //       setTimetableImg(null);
-  //       console.log('no table') 
-  //     }
-  //     setIsLoading(false)
-  //   } catch (error) {
-  //     console.error('Error fetching timetable: ', error);
-  //   }
-  // };
+  const fetchTimetable = async () => {
+    try {
+      // setIsLoading(true)
+      const timetableData = await getTimetable(year);
+      if (timetableData && timetableData.timetableImg) {
+        setTimetableImg(timetableData.timetableImg);
+        console.log('found table')
+      } else {
+        setTimetableImg(null);
+        console.log('no table') 
+      }
+      setIsLoading(false)
+    } catch (error) {
+      console.error('Error fetching timetable: ', error);
+    }
+  };
 
 
   return (
@@ -83,6 +85,7 @@ const styles = StyleSheet.create({
     height: 300,
   },
   NoImageText: {
+    color: 'black',
     fontFamily: 'Poppins-Medium',
     textAlign: 'center',
     marginTop: 120

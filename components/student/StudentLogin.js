@@ -1,8 +1,6 @@
 /* eslint-disable prettier/prettier */
-// needs work still with navigation
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
-  Alert,
   Image,
   StyleSheet,
   Text,
@@ -12,12 +10,13 @@ import {
   ActivityIndicator
 } from 'react-native';
 
-import { loginTeacher } from '../../api/teacher';
+import {loginStudent} from '../../api/student';
 
-const Login = ( {navigation} ) => {
-  const [email, setEmail] = useState('');
+const Login = ({navigation}) => {
+  const [regNo, setReg] = useState('');
   const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
+
+  const [regError, setRegError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loginError, setLoginError] = useState('');
 
@@ -26,16 +25,22 @@ const Login = ( {navigation} ) => {
   const handleLogin = async () => {
     try {
       setIsLoading(true)
-      const teacher = await loginTeacher({
-        email: email, 
+
+      // main main error was the student object that was being returned
+      const student = await loginStudent({
+        regNo: regNo,
         password: password,
       });
-      if (teacher!=undefined){
-        console.log(`Login Successful for ${teacher}`);
-      setIsLoading(false)
-        navigation.navigate('TeacherMainScreen', {teacher});
+      if (student != undefined) {
+        console.log(
+          `Login Successful Welcome ${student.studentName} ${student.regNo}`,
+        );
+        // navigation was being undefined if we directly started from this screen
+        // instead of navigating from MainScreen because navigation container is in MainScreen
+        console.log(student.regNo);
+        navigation.navigate('StudentMainScreen', {student});
       }
-
+      setIsLoading(false)
     } catch (error) {
       console.log('Login Failed', error.message);
       setLoginError('Login failed. Please try again!');
@@ -43,18 +48,22 @@ const Login = ( {navigation} ) => {
     }
   };
 
-  const checkEmail = () => {
-    if (email.trim() === '') {
-      setEmailError('Email is required');
+  const checkReg = () => {
+    if (regNo.trim() === '') {
+      setRegError('Registration no. is required');
       return false;
     }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let isValid = emailRegex.test(email);
+
+    const regRegex = /^\d{4}-\d{3}$/;
+
+    // const regRegex = /^[0-9]{4}-\[0-9]{3}$/
+
+    let isValid = regRegex.test(regNo.trim());
     if (!isValid) {
-      setEmailError('Invalid email format');
+      setRegError('Invalid registration no. format');
       return false;
     } else {
-      setEmailError('');
+      setRegError('');
       return true;
     }
   };
@@ -77,16 +86,19 @@ const Login = ( {navigation} ) => {
   return (
     <View style={styles.alignment}>
       <View style={styles.container}>
-        <Image source={require('../assets/teacherLogin.png')} style={styles.image} />
+        <Image
+          source={require('../assets/studentLogin.png')}
+          style={styles.image}
+        />
       </View>
-      <Text style={styles.login}>Login as Teacher</Text>
+      <Text style={styles.login}>Welcome!</Text>
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="Registration no."
         placeholderTextColor={'#333333'}
-        onChangeText={text => setEmail(text)}
-        onBlur={checkEmail}></TextInput>
-      {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+        onChangeText={text => setReg(text)}
+        onBlur={checkReg}></TextInput>
+      {regError ? <Text style={styles.errorText}>{regError}</Text> : null}
 
       <TextInput
         style={styles.input}
@@ -95,12 +107,16 @@ const Login = ( {navigation} ) => {
         onChangeText={text => setPassword(text)}
         secureTextEntry
         onBlur={checkPassword}></TextInput>
-      {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+
+      {passwordError ? (
+        <Text style={styles.errorText}>{passwordError}</Text>
+      ) : null}
 
       <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
-      {isLoading ? <ActivityIndicator size="large" color='#8349EA' /> :
-        <Text style={styles.submitText}>Login</Text> }
+      {isLoading ? <ActivityIndicator size="large" color='lavender' /> :
+          <Text style={styles.submitText}>Login</Text>}
       </TouchableOpacity>
+
       {loginError ? <Text style={styles.errorText}>{loginError}</Text> : null}
     </View>
   );
@@ -112,7 +128,6 @@ const styles = StyleSheet.create({
     height: 250,
   },
   login: {
-    // fontWeight: 'bold',
     fontFamily: 'Poppins-SemiBold',
     color: 'black',
     fontSize: 30,
@@ -128,43 +143,41 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-
   input: {
-        height: 45,
-        margin: 8,
-        padding: 10,
-        width: '80%', 
-        borderWidth: 0.3,
-        borderRadius: 8,
-        color: "#333333",
-        backgroundColor: '#F4F4F4',
-        fontFamily: 'Poppins-Regular',
-        fontSize: 13
-    
+    height: 45,
+    margin: 8,
+    padding: 10,
+    width: '80%',
+    borderWidth: 0.3,
+    borderRadius: 8,
+    color: '#333333',
+    backgroundColor: '#F4F4F4',
+    fontFamily: 'Poppins-Regular',
+    fontSize: 13,
   },
 
   submitButton: {
-        backgroundColor: '#7239d6',
-        borderRadius: 18,
-        alignItems: 'center',
-        width: 290, 
-        height: 50,
-        margin:20,
-        elevation: 7,
-        justifyContent: 'center'
+    backgroundColor: '#7239d6',
+    borderRadius: 18,
+    alignItems: 'center',
+    width: 290,
+    height: 50,
+    margin: 20,
+    elevation: 7,
+    justifyContent: 'center',
   },
 
   submitText: {
-        fontFamily: 'Poppins-SemiBold',
-        fontSize: 15,
-        color:'#ffffff',
-        paddingTop: 7,
-        alignSelf: 'center',
-        paddingBottom:5,
-        paddingLeft:10,
-        paddingRight:10,
+    fontFamily: 'Poppins-Regular',
+    fontSize: 15,
+    color: '#ffffff',
+    paddingTop: 7,
+    alignSelf: 'center',
+    paddingBottom: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
-  
+
   errorText: {
     color: 'red',
     fontSize: 12,
@@ -173,15 +186,3 @@ const styles = StyleSheet.create({
 });
 
 export default Login;
-
-
-// import Login from "../Login";
-// import React from "react";
-
-// const TeacherLogin = ()=>{
-//     return (
-//         <Login imagePath={} role="Teacher"></Login>
-//     )
-// }
-
-// export default TeacherLogin;
