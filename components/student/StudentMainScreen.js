@@ -18,8 +18,9 @@ const StudentMainScreen = ({navigation, route}) => {
   {
     navigation, route;
   }
-  const {regNo} = route.params;
-  console.log(regNo);
+  const {student} = route.params;
+  console.log(student);
+  const {currentClass} = route.params;
 
   return (
     // <NavigationContainer>
@@ -69,9 +70,9 @@ const StudentMainScreen = ({navigation, route}) => {
         component={MarksSummaryScreen}
         // initialParams={regNo}
       />
-      <Drawer.Screen name="Fee" component={StudentFee} initialParams={regNo} />
+      <Drawer.Screen name="Fee" component={props => <StudentFee {...props} student={student} />} />
       <Drawer.Screen name="Timetable" component={StudentTimetable} />
-      <Drawer.Screen name="Syllabus" component={StudentSyllabus} />
+      <Drawer.Screen name="Syllabus" component={props => <StudentSyllabus {...props} student={student} />} />
       <Drawer.Screen
         name="Logout"
         component={MainScreen}

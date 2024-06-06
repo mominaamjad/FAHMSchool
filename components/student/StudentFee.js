@@ -14,10 +14,10 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 import Card from '../layouts/Card';
 
-const StudentFee = ({route}) => {
+const StudentFee = ({student}) => {
   const [allFeeData, setAllFeeData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const regNo = '2024-001';
+  const regNo = student.regNo;
   const [students, setStudents] = useState([]);
   const [list, setList] = useState(students);
   const [index, setIndex] = useState(null);
@@ -31,7 +31,7 @@ const StudentFee = ({route}) => {
   ]);
 
   useEffect(() => {
-    console.log(route);
+    // console.log(route);
     const loadFees = async () => {
       try {
         const feeList = await fetchFees();
@@ -75,7 +75,6 @@ const StudentFee = ({route}) => {
       setList(() => students.filter(element => element.lateFees === check));
     }
   };
-  // dropdown dalna hai instead of search
   // handlePaidClass = () => {
   //     if (value == null) {
   //         Alert.alert("pls select teacher");
@@ -93,9 +92,8 @@ const StudentFee = ({route}) => {
 
   return (
     <View>
-      {/* fee is displayed month-wise for each student and details in pop-up/*}
+      {/* fee is displayed month-wise for each student and details in pop-up*/}
 
-            {/* change the function to find fee instead of students  */}
 
       <DropDownPicker
         textStyle={styles.dropdownText}
