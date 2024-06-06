@@ -688,7 +688,7 @@ const RecordsScreen = () => {
                 <TouchableOpacity
                   style={styles.buttonSubmit}
                   onPress={() => {
-                    setAddFeeModalVisible(false);
+                    setFeeModalVisible(false);
                   }}>
                   <Text style={styles.submitText}>Done</Text>
                 </TouchableOpacity>
@@ -865,6 +865,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#9C70EA',
     width: 120,
+    color: '#333333',
     marginBottom: 20,
     height: 35,
   },
