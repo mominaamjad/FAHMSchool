@@ -1,9 +1,9 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable prettier/prettier */
 
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 
-import { MainScreen } from '../MainScreen';
+import {MainScreen} from '../MainScreen';
 import MarksSummaryScreen from './MarksSummaryScreen';
 import StudentDashboard from './StudentDashboard';
 import StudentFee from './StudentFee';
@@ -70,31 +70,25 @@ const StudentMainScreen = ({navigation, route}) => {
         name="Marks Summary"
         component={MarksSummaryScreen}
         // initialParams={regNo}
-<<<<<<< HEAD
       />
+
       <Drawer.Screen
         name="Fee"
-        component={StudentFee}
-        // initialParams={regNo}
+        component={props => <StudentFee {...props} student={student} />}
       />
       <Drawer.Screen name="Timetable" component={StudentTimetable} />
-      <Drawer.Screen name="Syllabus" component={StudentSyllabus} />
+      <Drawer.Screen
+        name="Syllabus"
+        component={props => <StudentSyllabus {...props} student={student} />}
+      />
+
       <Drawer.Screen
         name="Logout"
         component={MainScreen}
         options={{headerShown: false}}
       />
     </Drawer.Navigator>
-=======
-           />
 
-      <Drawer.Screen name="Fee" component={props => <StudentFee {...props} student={student} />} />
-      <Drawer.Screen name="Timetable" component={StudentTimetable} />
-      <Drawer.Screen name="Syllabus" component={props => <StudentSyllabus {...props} student={student} />} />
-
-        <Drawer.Screen name="Logout" component={MainScreen} options={{headerShown: false}}/>
-        </Drawer.Navigator>
->>>>>>> 68247e739fae0dc417531a0f558f16f566a8a4e6
     // </NavigationContainer>
   );
 };

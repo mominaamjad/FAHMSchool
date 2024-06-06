@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 
 import {loginStudent} from '../../api/student';
@@ -15,17 +15,15 @@ import {loginStudent} from '../../api/student';
 const Login = ({navigation}) => {
   const [regNo, setReg] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [regError, setRegError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loginError, setLoginError] = useState('');
 
-  const [isLoading, setIsLoading] = useState(false);
-
   const handleLogin = async () => {
     try {
-      setIsLoading(true)
-
+      setIsLoading(true);
       // main main error was the student object that was being returned
       const student = await loginStudent({
         regNo: regNo,
@@ -37,14 +35,14 @@ const Login = ({navigation}) => {
         );
         // navigation was being undefined if we directly started from this screen
         // instead of navigating from MainScreen because navigation container is in MainScreen
-        console.log(student.regNo);
+
         navigation.navigate('StudentMainScreen', {student});
       }
-      setIsLoading(false)
+      setIsLoading(false);
     } catch (error) {
       console.log('Login Failed', error.message);
       setLoginError('Login failed. Please try again!');
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -113,8 +111,11 @@ const Login = ({navigation}) => {
       ) : null}
 
       <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
-      {isLoading ? <ActivityIndicator size="large" color='lavender' /> :
-          <Text style={styles.submitText}>Login</Text>}
+        {isLoading ? (
+          <ActivityIndicator size="large" color="lavender" />
+        ) : (
+          <Text style={styles.submitText}>Login</Text>
+        )}
       </TouchableOpacity>
 
       {loginError ? <Text style={styles.errorText}>{loginError}</Text> : null}
