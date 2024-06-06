@@ -70,6 +70,7 @@ const StudentMainScreen = ({navigation, route}) => {
         name="Marks Summary"
         component={MarksSummaryScreen}
         // initialParams={regNo}
+<<<<<<< HEAD
       />
       <Drawer.Screen
         name="Fee"
@@ -84,6 +85,16 @@ const StudentMainScreen = ({navigation, route}) => {
         options={{headerShown: false}}
       />
     </Drawer.Navigator>
+=======
+           />
+
+      <Drawer.Screen name="Fee" component={props => <StudentFee {...props} student={student} />} />
+      <Drawer.Screen name="Timetable" component={StudentTimetable} />
+      <Drawer.Screen name="Syllabus" component={props => <StudentSyllabus {...props} student={student} />} />
+
+        <Drawer.Screen name="Logout" component={MainScreen} options={{headerShown: false}}/>
+        </Drawer.Navigator>
+>>>>>>> 68247e739fae0dc417531a0f558f16f566a8a4e6
     // </NavigationContainer>
   );
 };

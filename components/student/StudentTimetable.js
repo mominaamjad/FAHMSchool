@@ -15,8 +15,6 @@ const StudentTimetable = () => {
 
   const year = new Date().getFullYear().toString();
 
-  const [value, setValue] = useState();
-  const [open, setOpen] = useState(false);
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [timetableImg, setTimetableImg] = useState(null);
