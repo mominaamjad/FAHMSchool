@@ -13,8 +13,8 @@ import {
 import {loginStudent} from '../../api/student';
 
 const Login = ({navigation}) => {
-  const [regNo, setReg] = useState('2024-001');
-  const [password, setPassword] = useState('momina123');
+  const [regNo, setReg] = useState('');
+  const [password, setPassword] = useState('');
 
   const [regError, setRegError] = useState('');
   const [passwordError, setPasswordError] = useState('');
