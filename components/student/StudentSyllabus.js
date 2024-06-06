@@ -17,9 +17,7 @@ const StudentSyllabus = ( {student} ) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // if (value) {
       fetchSyllabus();
-    // }
   },);
 
   const studentClass = student.currentClass;

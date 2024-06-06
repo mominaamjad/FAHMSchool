@@ -6,7 +6,7 @@ import {
     TextInput,
     TouchableOpacity,
     View,
-
+    ActivityIndicator
 } from 'react-native';
 
 import { loginStudent } from '../../api/student';
@@ -15,6 +15,7 @@ import { loginStudent } from '../../api/student';
 const Login = ( {navigation} ) => {
     const [regNo, setReg] = useState("2024-001")
     const [password, setPassword] = useState("momina123")
+    const [isLoading, setIsLoading] = useState(false);
 
     const [regError, setRegError] = useState('');
     const [passwordError, setPasswordError] = useState('');
@@ -22,6 +23,7 @@ const Login = ( {navigation} ) => {
 
     const handleLogin = async () => {
         try {
+          setIsLoading(true)
           // main main error was the student object that was being returned
           const student = await loginStudent({
             regNo: regNo,
@@ -33,11 +35,13 @@ const Login = ( {navigation} ) => {
             // instead of navigating from MainScreen because navigation container is in MainScreen
 
            
-            navigation.navigate('StudentMainScreen', {regNo: student.regNo} )  
+            navigation.navigate('StudentMainScreen', {student} )  
           }
+          setIsLoading(false)
         } catch (error) {
           console.log('Login Failed', error.message);
           setLoginError('Login failed. Please try again!');
+          setIsLoading(false)
         }
       };
 
@@ -107,7 +111,8 @@ const Login = ( {navigation} ) => {
 
         <TouchableOpacity style={styles.submitButton} 
            onPress={handleLogin}>
-            <Text style={styles.submitText}>Log in</Text>
+            {isLoading ? <ActivityIndicator size="large" color='lavender' /> :
+          <Text style={styles.submitText}>Login</Text>}
         </TouchableOpacity>
 
         {loginError ? <Text style={styles.errorText}>{loginError}</Text> : null}

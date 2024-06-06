@@ -68,13 +68,12 @@ const StudentMainScreen = ({navigation, route}) => {
         <Drawer.Screen name="Marks Summary" component={MarksSummaryScreen} 
         // initialParams={regNo}
            />
-        <Drawer.Screen name="Fee" component={StudentFee} 
-        // initialParams={regNo}
-           />
-        <Drawer.Screen name="Timetable" component={StudentTimetable} />
-        <Drawer.Screen name="Syllabus" component={StudentSyllabus} />
-        <Drawer.Screen name="Logout" component={MainScreen} options={{headerShown: false}}/>
 
+      <Drawer.Screen name="Fee" component={props => <StudentFee {...props} student={student} />} />
+      <Drawer.Screen name="Timetable" component={StudentTimetable} />
+      <Drawer.Screen name="Syllabus" component={props => <StudentSyllabus {...props} student={student} />} />
+
+        <Drawer.Screen name="Logout" component={MainScreen} options={{headerShown: false}}/>
         </Drawer.Navigator>
     // </NavigationContainer>
   );

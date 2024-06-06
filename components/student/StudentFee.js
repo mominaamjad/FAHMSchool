@@ -31,7 +31,6 @@ const StudentFee = ({student}) => {
   ]);
 
   useEffect(() => {
-    // console.log(route);
     const loadFees = async () => {
       try {
         const feeList = await fetchFees();
