@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+/* eslint-disable prettier/prettier */
+import React, {useState} from 'react';
 import {
+
     Image,
     StyleSheet,
     Text,
@@ -116,72 +118,72 @@ const Login = ( {navigation} ) => {
         </TouchableOpacity>
 
         {loginError ? <Text style={styles.errorText}>{loginError}</Text> : null}
-        
+
     </View>
-    )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-    image: {
-        width: 300,
-        height: 250,
-    },
-    login: {
-        fontFamily: 'Poppins-SemiBold',
-        color: 'black',
-        fontSize: 30,
-        padding: 20,
-    },
-    alignment: {
-        backgroundColor: "#ffffff",
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    input: {
-        height: 45,
-        margin: 8,
-        padding: 10,
-        width: '80%', 
-        borderWidth: 0.3,
-        borderRadius: 8,
-        color: "#333333",
-        backgroundColor: '#F4F4F4',
-        fontFamily: 'Poppins-Regular',
-        fontSize: 13
-    },
+  image: {
+    width: 300,
+    height: 250,
+  },
+  login: {
+    fontFamily: 'Poppins-SemiBold',
+    color: 'black',
+    fontSize: 30,
+    padding: 20,
+  },
+  alignment: {
+    backgroundColor: '#ffffff',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  input: {
+    height: 45,
+    margin: 8,
+    padding: 10,
+    width: '80%',
+    borderWidth: 0.3,
+    borderRadius: 8,
+    color: '#333333',
+    backgroundColor: '#F4F4F4',
+    fontFamily: 'Poppins-Regular',
+    fontSize: 13,
+  },
 
-    submitButton: {
-        backgroundColor: '#7239d6',
-        borderRadius: 18,
-        alignItems: 'center',
-        width: 290, 
-        height: 50,
-        margin:20,
-        elevation: 7,
-        justifyContent: 'center'
-    },
+  submitButton: {
+    backgroundColor: '#7239d6',
+    borderRadius: 18,
+    alignItems: 'center',
+    width: 290,
+    height: 50,
+    margin: 20,
+    elevation: 7,
+    justifyContent: 'center',
+  },
 
-    submitText:{
-        fontFamily: 'Poppins-Regular',
-        fontSize: 15,
-        color: '#ffffff',
-        paddingTop: 7,
-        alignSelf: 'center',
-        paddingBottom:5,
-        paddingLeft:10,
-        paddingRight:10,
-    },
+  submitText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 15,
+    color: '#ffffff',
+    paddingTop: 7,
+    alignSelf: 'center',
+    paddingBottom: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
 
-    errorText: {
-            color: 'red',
-            fontSize: 12,
-            fontFamily: 'Poppins-Regular',
-          }
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    fontFamily: 'Poppins-Regular',
+  },
 });
 
 export default Login;
