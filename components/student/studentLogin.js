@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, {useState} from 'react';
 import {
-<<<<<<< HEAD
   Image,
   StyleSheet,
   Text,
@@ -9,15 +8,6 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator
-=======
-    Image,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-    ActivityIndicator
->>>>>>> 68247e739fae0dc417531a0f558f16f566a8a4e6
 } from 'react-native';
 
 import {loginStudent} from '../../api/student';
@@ -26,20 +16,12 @@ const Login = ({navigation}) => {
   const [regNo, setReg] = useState('');
   const [password, setPassword] = useState('');
 
-<<<<<<< HEAD
   const [regError, setRegError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loginError, setLoginError] = useState('');
-=======
-const Login = ( {navigation} ) => {
-    const [regNo, setReg] = useState("2024-001")
-    const [password, setPassword] = useState("momina123")
-    const [isLoading, setIsLoading] = useState(false);
->>>>>>> 68247e739fae0dc417531a0f558f16f566a8a4e6
 
   const [isLoading, setIsLoading] = useState(false);
 
-<<<<<<< HEAD
   const handleLogin = async () => {
     try {
       setIsLoading(true)
@@ -65,31 +47,6 @@ const Login = ( {navigation} ) => {
       setIsLoading(false)
     }
   };
-=======
-    const handleLogin = async () => {
-        try {
-          setIsLoading(true)
-          // main main error was the student object that was being returned
-          const student = await loginStudent({
-            regNo: regNo,
-            password: password,
-          });
-          if (student!=undefined){
-            console.log(`Login Successful Welcome ${student.studentName} ${student.regNo}`);
-            // navigation was being undefined if we directly started from this screen 
-            // instead of navigating from MainScreen because navigation container is in MainScreen
-
-           
-            navigation.navigate('StudentMainScreen', {student} )  
-          }
-          setIsLoading(false)
-        } catch (error) {
-          console.log('Login Failed', error.message);
-          setLoginError('Login failed. Please try again!');
-          setIsLoading(false)
-        }
-      };
->>>>>>> 68247e739fae0dc417531a0f558f16f566a8a4e6
 
   const checkReg = () => {
     if (regNo.trim() === '') {
@@ -160,18 +117,7 @@ const Login = ( {navigation} ) => {
           <Text style={styles.submitText}>Login</Text>}
       </TouchableOpacity>
 
-<<<<<<< HEAD
       {loginError ? <Text style={styles.errorText}>{loginError}</Text> : null}
-=======
-        <TouchableOpacity style={styles.submitButton} 
-           onPress={handleLogin}>
-            {isLoading ? <ActivityIndicator size="large" color='lavender' /> :
-          <Text style={styles.submitText}>Login</Text>}
-        </TouchableOpacity>
-
-        {loginError ? <Text style={styles.errorText}>{loginError}</Text> : null}
-        
->>>>>>> 68247e739fae0dc417531a0f558f16f566a8a4e6
     </View>
   );
 };
