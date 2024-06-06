@@ -1,124 +1,124 @@
 /* eslint-disable prettier/prettier */
 import React, {useState} from 'react';
 import {
-
-    Image,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-    ActivityIndicator
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
 } from 'react-native';
 
-import { loginStudent } from '../../api/student';
+import {loginStudent} from '../../api/student';
 
+const Login = ({navigation}) => {
+  const [regNo, setReg] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-const Login = ( {navigation} ) => {
-    const [regNo, setReg] = useState("2024-001")
-    const [password, setPassword] = useState("momina123")
-    const [isLoading, setIsLoading] = useState(false);
+  const [regError, setRegError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [loginError, setLoginError] = useState('');
 
-    const [regError, setRegError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
-    const [loginError, setLoginError] = useState('');
+  const handleLogin = async () => {
+    try {
+      setIsLoading(true);
+      // main main error was the student object that was being returned
+      const student = await loginStudent({
+        regNo: regNo,
+        password: password,
+      });
+      if (student != undefined) {
+        console.log(
+          `Login Successful Welcome ${student.studentName} ${student.regNo}`,
+        );
+        // navigation was being undefined if we directly started from this screen
+        // instead of navigating from MainScreen because navigation container is in MainScreen
 
-    const handleLogin = async () => {
-        try {
-          setIsLoading(true)
-          // main main error was the student object that was being returned
-          const student = await loginStudent({
-            regNo: regNo,
-            password: password,
-          });
-          if (student!=undefined){
-            console.log(`Login Successful Welcome ${student.studentName} ${student.regNo}`);
-            // navigation was being undefined if we directly started from this screen 
-            // instead of navigating from MainScreen because navigation container is in MainScreen
+        navigation.navigate('StudentMainScreen', {student});
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.log('Login Failed', error.message);
+      setLoginError('Login failed. Please try again!');
+      setIsLoading(false);
+    }
+  };
 
-           
-            navigation.navigate('StudentMainScreen', {student} )  
-          }
-          setIsLoading(false)
-        } catch (error) {
-          console.log('Login Failed', error.message);
-          setLoginError('Login failed. Please try again!');
-          setIsLoading(false)
-        }
-      };
+  const checkReg = () => {
+    if (regNo.trim() === '') {
+      setRegError('Registration no. is required');
+      return false;
+    }
 
-    const checkReg = () => {
-        if (regNo.trim()===""){
-            setRegError('Registration no. is required');
-            return false;
+    const regRegex = /^\d{4}-\d{3}$/;
 
-        }
+    // const regRegex = /^[0-9]{4}-\[0-9]{3}$/
 
-        const regRegex = /^\d{4}-\d{3}$/;
+    let isValid = regRegex.test(regNo.trim());
+    if (!isValid) {
+      setRegError('Invalid registration no. format');
+      return false;
+    } else {
+      setRegError('');
+      return true;
+    }
+  };
 
-        // const regRegex = /^[0-9]{4}-\[0-9]{3}$/
+  const checkPassword = () => {
+    if (password === '') {
+      setPasswordError('Password is required');
+      return false;
+    }
+    let isValid = password.length > 6;
+    if (!isValid) {
+      setPasswordError('Password must be at least 7 characters long');
+      return false;
+    } else {
+      setPasswordError('');
+      return true;
+    }
+  };
 
-        let isValid = regRegex.test(regNo.trim());
-        if (!isValid) {
-            setRegError('Invalid registration no. format');
-            return false;
-        } else {
-            setRegError('');
-            return true;
-        }
-    };
-
-    const checkPassword = () => {
-        if (password === '') {
-          setPasswordError('Password is required');
-          return false;
-        }
-        let isValid = password.length > 6;
-        if (!isValid) {
-          setPasswordError('Password must be at least 7 characters long');
-          return false;
-        } else {
-          setPasswordError('');
-          return true;
-        }
-      };
-
-    return (
-    
+  return (
     <View style={styles.alignment}>
-        <View style={styles.container}>
-            <Image source={require('../assets/studentLogin.png')} style={styles.image} />
-        </View>
-        <Text style={styles.login}>Welcome!</Text>
-        <TextInput 
-            style={styles.input} 
-            placeholder='Registration no.' 
-            placeholderTextColor={'#333333'} 
-            onChangeText={text => setReg(text)}
-            onBlur={checkReg}>
+      <View style={styles.container}>
+        <Image
+          source={require('../assets/studentLogin.png')}
+          style={styles.image}
+        />
+      </View>
+      <Text style={styles.login}>Welcome!</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Registration no."
+        placeholderTextColor={'#333333'}
+        onChangeText={text => setReg(text)}
+        onBlur={checkReg}></TextInput>
+      {regError ? <Text style={styles.errorText}>{regError}</Text> : null}
 
-        </TextInput>
-        {regError ? <Text style={styles.errorText}>{regError}</Text> : null}
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        placeholderTextColor={'#333333'}
+        onChangeText={text => setPassword(text)}
+        secureTextEntry
+        onBlur={checkPassword}></TextInput>
 
-        <TextInput style={styles.input} 
-            placeholder='Password' 
-            placeholderTextColor={'#333333'} 
-            onChangeText={text => setPassword(text)} 
-            secureTextEntry
-            onBlur={checkPassword}>
+      {passwordError ? (
+        <Text style={styles.errorText}>{passwordError}</Text>
+      ) : null}
 
-        </TextInput>
-        
-        {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+      <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
+        {isLoading ? (
+          <ActivityIndicator size="large" color="lavender" />
+        ) : (
+          <Text style={styles.submitText}>Login</Text>
+        )}
+      </TouchableOpacity>
 
-        <TouchableOpacity style={styles.submitButton} 
-           onPress={handleLogin}>
-            {isLoading ? <ActivityIndicator size="large" color='lavender' /> :
-          <Text style={styles.submitText}>Login</Text>}
-        </TouchableOpacity>
-
-        {loginError ? <Text style={styles.errorText}>{loginError}</Text> : null}
-
+      {loginError ? <Text style={styles.errorText}>{loginError}</Text> : null}
     </View>
   );
 };

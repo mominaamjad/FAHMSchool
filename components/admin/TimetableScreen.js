@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-import storage from '@react-native-firebase/storage';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
@@ -12,6 +11,7 @@ import {
 import DropDownPicker from 'react-native-dropdown-picker';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {getTimetable, uploadTimetable} from '../../api/admin';
+
 const TimetableScreen = () => {
   const [modalVisible, setModalVisible] = useState(false); // for pop-up
 
@@ -87,18 +87,8 @@ const TimetableScreen = () => {
         'and link ',
         selectedImage,
       );
-      const uploadUri = selectedImage;
-      const filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
-      const storageRef = storage().ref(`timetables/${filename}`);
-      await storageRef.putFile(uploadUri);
-      const downloadURL = await storageRef.getDownloadURL();
-
-      await uploadTimetable({id: value, timetableImg: downloadURL});
+      await uploadTimetable({id: value, timetableImg: selectedImage});
       console.log('Timetable uploaded successfully');
-      setTimetableImg(downloadURL); // Update the timetableImg state with the new URL
-      setIsUploaded(false);
-      setIsLoading(false);
-
       setIsUploaded(false);
     } catch (error) {
       console.error('Error uploading timetable: ', error);
