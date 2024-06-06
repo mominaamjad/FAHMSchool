@@ -1,8 +1,9 @@
+/* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable prettier/prettier */
 
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import {MainScreen} from '../MainScreen';
+import { MainScreen } from '../MainScreen';
 import MarksSummaryScreen from './MarksSummaryScreen';
 import StudentDashboard from './StudentDashboard';
 import StudentFee from './StudentFee';
@@ -51,22 +52,25 @@ const StudentMainScreen = ({navigation, route}) => {
           fontSize: 22,
         },
 
-          drawerActiveTintColor: '#BFA8E5',
-        }}>
-        <Drawer.Screen
-          name="Dashboard"
-          component={StudentDashboard}
-          // initialParams={}
-          options={
-            {
-              // drawerIcon: () =>{
-              //     <Icon name = "home-filled"/>
-              // }
-            }
+        drawerActiveTintColor: '#BFA8E5',
+      }}>
+      <Drawer.Screen
+        name="Dashboard"
+        component={StudentDashboard}
+        // initialParams={}
+        options={
+          {
+            // drawerIcon: () =>{
+            //     <Icon name = "home-filled"/>
+            // }
           }
-        />
-        <Drawer.Screen name="Marks Summary" component={MarksSummaryScreen} 
+        }
+      />
+      <Drawer.Screen
+        name="Marks Summary"
+        component={MarksSummaryScreen}
         // initialParams={regNo}
+
            />
 
       <Drawer.Screen name="Fee" component={props => <StudentFee {...props} student={student} />} />
@@ -75,6 +79,7 @@ const StudentMainScreen = ({navigation, route}) => {
 
         <Drawer.Screen name="Logout" component={MainScreen} options={{headerShown: false}}/>
         </Drawer.Navigator>
+
     // </NavigationContainer>
   );
 };
