@@ -1,19 +1,25 @@
 /* eslint-disable prettier/prettier */
+import storage from '@react-native-firebase/storage';
 import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {getTimetable, uploadTimetable} from '../../api/admin';
-
 const TimetableScreen = () => {
-
   const [modalVisible, setModalVisible] = useState(false); // for pop-up
-  
+
   const [value, setValue] = useState();
   const [open, setOpen] = useState(false);
 
   const [isUploaded, setIsUploaded] = useState(false);
-  
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -23,7 +29,7 @@ const TimetableScreen = () => {
     if (value) {
       fetchTimetable();
     }
-    console.log(timetableImg)
+    console.log(timetableImg);
   }, [value]);
 
   const fetchTimetable = async () => {
@@ -31,10 +37,10 @@ const TimetableScreen = () => {
       setIsLoading(true);
       const timetableData = await getTimetable(value);
       if (timetableData && timetableData.timetableImg) {
-        console.log("image ka link ", timetableImg)
+        console.log('image ka link ', timetableImg);
         setTimetableImg(timetableData.timetableImg);
       } else {
-        console.log("image ka link ", timetableImg)
+        console.log('image ka link ', timetableImg);
         setTimetableImg(null);
       }
       setIsLoading(false);
@@ -57,12 +63,12 @@ const TimetableScreen = () => {
         console.log('Image picker error: ', response.error);
       } else {
         setIsLoading(true);
-        console.log(response)
+        console.log(response);
         let imageUri = response.uri || response.assets?.[0]?.uri;
         setSelectedImage(imageUri);
         setTimetableImg(imageUri);
-        console.log("selected image ka link ", imageUri)
-        setIsUploaded(true)
+        console.log('selected image ka link ', imageUri);
+        setIsUploaded(true);
         setIsLoading(false);
       }
     });
@@ -75,11 +81,25 @@ const TimetableScreen = () => {
     }
 
     try {
-      console.log("selected image ki value ", value, "and link ", selectedImage)
-      await uploadTimetable({id: value, timetableImg: selectedImage});
-      console.log('Timetable uploaded successfully');
-      setIsUploaded(false);
+      console.log(
+        'selected image ki value ',
+        value,
+        'and link ',
+        selectedImage,
+      );
+      const uploadUri = selectedImage;
+      const filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+      const storageRef = storage().ref(`timetables/${filename}`);
+      await storageRef.putFile(uploadUri);
+      const downloadURL = await storageRef.getDownloadURL();
 
+      await uploadTimetable({id: value, timetableImg: downloadURL});
+      console.log('Timetable uploaded successfully');
+      setTimetableImg(downloadURL); // Update the timetableImg state with the new URL
+      setIsUploaded(false);
+      setIsLoading(false);
+
+      setIsUploaded(false);
     } catch (error) {
       console.error('Error uploading timetable: ', error);
     }
@@ -106,19 +126,27 @@ const TimetableScreen = () => {
       />
 
       <View>
-      {isLoading ? <ActivityIndicator size="large" color= '#9C70EA' /> : (
-        timetableImg && (
-          <Image source={{uri: timetableImg}} style={styles.pic} />
-        )
-      )}
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#9C70EA" />
+        ) : (
+          timetableImg && (
+            <Image source={{uri: timetableImg}} style={styles.pic} />
+          )
+        )}
 
         <TouchableOpacity style={styles.buttonUpload} onPress={openImagePicker}>
-          <Text style={styles.uploadText}>{isUploaded ? 'Upload Again' : 'Upload'}</Text>
+          <Text style={styles.uploadText}>
+            {isUploaded ? 'Upload Again' : 'Upload'}
+          </Text>
         </TouchableOpacity>
 
-        {isUploaded ? (<TouchableOpacity style={styles.buttonUpload} onPress={handleUpload}>
-          <Text style={styles.uploadText}>Done</Text>
-        </TouchableOpacity>) : (<></>)}
+        {isUploaded ? (
+          <TouchableOpacity style={styles.buttonUpload} onPress={handleUpload}>
+            <Text style={styles.uploadText}>Done</Text>
+          </TouchableOpacity>
+        ) : (
+          <></>
+        )}
       </View>
     </View>
   );
@@ -154,7 +182,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     marginTop: 10,
-    width: 200
+    width: 200,
   },
 
   dropdown: {

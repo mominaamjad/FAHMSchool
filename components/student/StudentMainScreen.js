@@ -1,8 +1,9 @@
+/* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable prettier/prettier */
 
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import {MainScreen} from '../MainScreen';
+import { MainScreen } from '../MainScreen';
 import MarksSummaryScreen from './MarksSummaryScreen';
 import StudentDashboard from './StudentDashboard';
 import StudentFee from './StudentFee';
@@ -51,31 +52,38 @@ const StudentMainScreen = ({navigation, route}) => {
           fontSize: 22,
         },
 
-          drawerActiveTintColor: '#BFA8E5',
-        }}>
-        <Drawer.Screen
-          name="Dashboard"
-          component={StudentDashboard}
-          // initialParams={}
-          options={
-            {
-              // drawerIcon: () =>{
-              //     <Icon name = "home-filled"/>
-              // }
-            }
+        drawerActiveTintColor: '#BFA8E5',
+      }}>
+      <Drawer.Screen
+        name="Dashboard"
+        component={StudentDashboard}
+        // initialParams={}
+        options={
+          {
+            // drawerIcon: () =>{
+            //     <Icon name = "home-filled"/>
+            // }
           }
-        />
-        <Drawer.Screen name="Marks Summary" component={MarksSummaryScreen} 
+        }
+      />
+      <Drawer.Screen
+        name="Marks Summary"
+        component={MarksSummaryScreen}
         // initialParams={regNo}
-           />
-        <Drawer.Screen name="Fee" component={StudentFee} 
+      />
+      <Drawer.Screen
+        name="Fee"
+        component={StudentFee}
         // initialParams={regNo}
-           />
-        <Drawer.Screen name="Timetable" component={StudentTimetable} />
-        <Drawer.Screen name="Syllabus" component={StudentSyllabus} />
-        <Drawer.Screen name="Logout" component={MainScreen} options={{headerShown: false}}/>
-
-        </Drawer.Navigator>
+      />
+      <Drawer.Screen name="Timetable" component={StudentTimetable} />
+      <Drawer.Screen name="Syllabus" component={StudentSyllabus} />
+      <Drawer.Screen
+        name="Logout"
+        component={MainScreen}
+        options={{headerShown: false}}
+      />
+    </Drawer.Navigator>
     // </NavigationContainer>
   );
 };

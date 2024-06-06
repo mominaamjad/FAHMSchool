@@ -12,9 +12,10 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-community/datetimepicker": "^8.0.1",
-    "@react-native-firebase/app": "^20.0.0",
+    "@react-native-firebase/app": "^20.1.0",
     "@react-native-firebase/firestore": "^20.0.0",
     "@react-native-firebase/messaging": "^20.0.0",
+    "@react-native-firebase/storage": "^20.1.0",
     "@react-native-masked-view/masked-view": "^0.3.1",
     "@react-native-vector-icons/material-icons": "^0.0.1-alpha.9",
     "@react-native/gradle-plugin": "^0.74.83",
